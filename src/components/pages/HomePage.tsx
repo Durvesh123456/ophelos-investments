@@ -61,7 +61,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
-                <Link to="/mutual-funds">Explore Our Funds</Link>
+                <Link to="/contact">Explore Our Funds</Link>
               </Button>
               <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-secondary-foreground px-8 py-3 text-lg">
                 <Link to="/contact">Schedule Consultation</Link>
@@ -175,7 +175,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
-              <Link to="/mutual-funds">View Our Funds</Link>
+              <Link to="/contact">View Our Funds</Link>
             </Button>
             <Button variant="outline" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-lg">
               <Link to="/contact">Contact Us Today</Link>

@@ -561,7 +561,7 @@ export default function InvestorResourcesPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 py-3 text-lg">
-              <Link to="/mutual-funds">Explore Our Funds</Link>
+              <Link to="/contact">Explore Our Funds</Link>
             </Button>
             <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
               <Link to="/contact">Get Expert Advice</Link>

@@ -297,7 +297,7 @@ export default function AumDetailsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 py-3 text-lg">
-              <Link to="/mutual-funds">Start Investing</Link>
+              <Link to="/contact">Start Investing</Link>
             </Button>
             <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
               <Link to="/contact">Schedule Meeting</Link>
