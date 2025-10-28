@@ -251,9 +251,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Phone Numbers</h3>
                       <p className="font-paragraph text-secondary-foreground/70">
-                        Main: +91 999999999<br />
+                        Main: +91 7620408920<br />
                         Toll Free: 1800-123-4567<br />
-                        WhatsApp: +91 999999999
+                        WhatsApp: +91 7620408920
                       </p>
                     </div>
                   </div>
@@ -265,9 +265,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Email Addresses</h3>
                       <p className="font-paragraph text-secondary-foreground/70">
-                        General: gmail@gmail.com<br />
-                        Support: support@wealthgrowcapital.com<br />
-                        Compliance: compliance@wealthgrowcapital.com
+                        General: ophelosinvestments@gmail.com<br />
+                        Support: support@ophelosinvestments.com<br />
+                        Compliance: compliance@ophelosinvestments.com
                       </p>
                     </div>
                   </div>
