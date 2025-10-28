@@ -70,7 +70,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right Content - Contact Form */}
           <div className="bg-primary p-8 rounded-lg shadow-2xl">
             <h3 className="font-heading text-2xl font-bold text-primary-foreground mb-6">
               GET AN INVESTMENT CONSULTATION TODAY
@@ -134,9 +133,9 @@ export default function HomePage() {
               </Button>
             </form>
           </div>
-        </div>
+        {/* Right Content - Contact Form */}
+          </div>
       </section>
-
       {/* Features Section */}
       <section className="py-20 bg-secondary">
         <div className="max-w-[100rem] mx-auto px-6">
@@ -200,7 +199,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Stats Section */}
       <section className="py-20 bg-primary">
         <div className="max-w-[100rem] mx-auto px-6">
@@ -232,7 +230,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-secondary">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
@@ -252,7 +249,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-secondary-foreground text-primary-foreground py-12">
         <div className="max-w-[100rem] mx-auto px-6">
