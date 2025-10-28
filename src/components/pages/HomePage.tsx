@@ -46,9 +46,8 @@ export default function HomePage() {
         </nav>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-white">
+        <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
+          <div className="text-white max-w-4xl mx-auto">
             <p className="text-lg font-paragraph mb-4 tracking-wide">
               BUILDING YOUR FINANCIAL FUTURE
             </p>
@@ -60,7 +59,7 @@ export default function HomePage() {
             <p className="text-xl font-paragraph mb-8 leading-relaxed opacity-90">
               Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
@@ -69,72 +68,7 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-
-          <div className="bg-primary p-8 rounded-lg shadow-2xl">
-            <h3 className="font-heading text-2xl font-bold text-primary-foreground mb-6">
-              GET AN INVESTMENT CONSULTATION TODAY
-            </h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-primary-foreground font-paragraph text-sm mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 rounded border-0 bg-white/90 text-secondary-foreground font-paragraph"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-primary-foreground font-paragraph text-sm mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 rounded border-0 bg-white/90 text-secondary-foreground font-paragraph"
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-primary-foreground font-paragraph text-sm mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  className="w-full px-4 py-3 rounded border-0 bg-white/90 text-secondary-foreground font-paragraph"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-primary-foreground font-paragraph text-sm mb-2">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  className="w-full px-4 py-3 rounded border-0 bg-white/90 text-secondary-foreground font-paragraph"
-                />
-              </div>
-              <div>
-                <label className="block text-primary-foreground font-paragraph text-sm mb-2">
-                  Investment Amount
-                </label>
-                <select className="w-full px-4 py-3 rounded border-0 bg-white/90 text-secondary-foreground font-paragraph">
-                  <option>Select Range</option>
-                  <option>₹1 Lakh - ₹5 Lakhs</option>
-                  <option>₹5 Lakhs - ₹25 Lakhs</option>
-                  <option>₹25 Lakhs - ₹1 Crore</option>
-                  <option>₹1 Crore+</option>
-                </select>
-              </div>
-              <Button type="submit" className="w-full bg-white text-primary hover:bg-white/90 py-3 text-lg font-semibold">
-                Submit
-              </Button>
-            </form>
-          </div>
-        {/* Right Content - Contact Form */}
-          </div>
+        </div>
       </section>
       {/* Features Section */}
       <section className="py-20 bg-secondary">
@@ -278,9 +212,9 @@ export default function HomePage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
-                <p>ARN: 12345-AMFI-67890</p>
-                <p>Email: info@wealthgrowcapital.com</p>
-                <p>Phone: +91 98765 43210</p>
+                <p>ARN: 285360</p>
+                <p>Email: ophelosinvestments@gmail.com</p>
+                <p>Phone: +91 7620408920</p>
               </div>
             </div>
           </div>
