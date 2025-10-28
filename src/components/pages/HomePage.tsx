@@ -23,7 +23,7 @@ export default function HomePage() {
         <nav className="absolute top-0 left-0 right-0 z-20 p-6">
           <div className="max-w-[100rem] mx-auto flex justify-between items-center">
             <div className="text-white font-heading text-2xl font-bold">
-              WealthGrow Capital
+              Ophelos Investments
             </div>
             <div className="hidden md:flex space-x-8">
               <Link to="/" className="text-white hover:text-primary-foreground transition-colors font-paragraph">
@@ -141,7 +141,7 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6">
-              Why Choose WealthGrow Capital
+              Why Choose Ophelos Investments
             </h2>
             <p className="font-paragraph text-xl text-secondary-foreground/80 max-w-3xl mx-auto">
               Our commitment to excellence and client success drives everything we do in mutual fund management.
@@ -237,7 +237,7 @@ export default function HomePage() {
             Ready to Start Your Investment Journey?
           </h2>
           <p className="font-paragraph text-xl text-secondary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Join thousands of investors who trust WealthGrow Capital for their mutual fund investments.
+            Join thousands of investors who trust Ophelos Investments for their mutual fund investments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
@@ -254,7 +254,7 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4">WealthGrow Capital</h3>
+              <h3 className="font-heading text-xl font-bold mb-4">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
@@ -285,7 +285,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center font-paragraph text-primary-foreground/60">
-            <p>&copy; 2024 WealthGrow Capital. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
+            <p>&copy; 2024 Ophelos Investments. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
           </div>
         </div>
       </footer>

@@ -88,7 +88,7 @@ export default function MutualFundsPage() {
                 </Link>
               </Button>
               <div className="text-primary font-heading text-2xl font-bold">
-                WealthGrow Capital
+                Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
@@ -258,7 +258,7 @@ export default function MutualFundsPage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4">WealthGrow Capital</h3>
+              <h3 className="font-heading text-xl font-bold mb-4">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
@@ -289,7 +289,7 @@ export default function MutualFundsPage() {
             </div>
           </div>
           <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center font-paragraph text-primary-foreground/60">
-            <p>&copy; 2024 WealthGrow Capital. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
+            <p>&copy; 2024 Ophelos Investments. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
           </div>
         </div>
       </footer>

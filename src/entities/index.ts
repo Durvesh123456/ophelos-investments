@@ -36,6 +36,8 @@ export interface MutualFunds {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType number */
+  xirr?: number;
   /** @wixFieldType text */
   fundName?: string;
   /** @wixFieldType text */
@@ -54,6 +56,4 @@ export interface MutualFunds {
   fundLogo?: string;
   /** @wixFieldType url */
   factSheetUrl?: string;
-  /** @wixFieldType number */
-  xirr?: number;
 }

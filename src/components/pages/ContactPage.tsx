@@ -58,7 +58,7 @@ export default function ContactPage() {
                 </Link>
               </Button>
               <div className="text-primary font-heading text-2xl font-bold">
-                WealthGrow Capital
+                Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
@@ -236,7 +236,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Office Address</h3>
                       <p className="font-paragraph text-secondary-foreground/70">
-                        WealthGrow Capital Pvt. Ltd.<br />
+                        Ophelos Investments Pvt. Ltd.<br />
                         123, Financial District<br />
                         Bandra Kurla Complex<br />
                         Mumbai, Maharashtra 400051
@@ -294,7 +294,7 @@ export default function ContactPage() {
                   <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                     <Image
                       src="https://static.wixstatic.com/media/7afb6a_64e2018dcccc43479ee214cb7166b824~mv2.png?originWidth=576&originHeight=320"
-                      alt="WealthGrow Capital office location map showing Bandra Kurla Complex, Mumbai"
+                      alt="Ophelos Investments office location map showing Bandra Kurla Complex, Mumbai"
                       className="w-full h-full object-cover"
                       width={600}
                     />
@@ -320,7 +320,7 @@ export default function ContactPage() {
                     <strong>CIN:</strong> U65999MH2020PTC123456
                   </p>
                   <p className="font-paragraph text-sm text-primary-foreground/70 mt-4">
-                    WealthGrow Capital is a SEBI registered investment advisor and AMFI registered mutual fund distributor.
+                    Ophelos Investments is a SEBI registered investment advisor and AMFI registered mutual fund distributor.
                   </p>
                 </CardContent>
               </Card>
@@ -375,7 +375,7 @@ export default function ContactPage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4">WealthGrow Capital</h3>
+              <h3 className="font-heading text-xl font-bold mb-4">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
@@ -406,7 +406,7 @@ export default function ContactPage() {
             </div>
           </div>
           <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center font-paragraph text-primary-foreground/60">
-            <p>&copy; 2024 WealthGrow Capital. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
+            <p>&copy; 2024 Ophelos Investments. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
           </div>
         </div>
       </footer>
