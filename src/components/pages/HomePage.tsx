@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, Shield, Users, Award } from 'lucide-react';
+import { TrendingUp, Shield, Users, Award, Phone } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -61,7 +61,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
-                <Link to="/contact">Explore Our Funds</Link>
+                <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
               <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-secondary-foreground px-8 py-3 text-lg">
                 <Link to="/contact">Schedule Consultation</Link>
@@ -175,7 +175,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
-              <Link to="/contact">View Our Funds</Link>
+              <Link to="/mutual-funds">View Our Funds</Link>
             </Button>
             <Button variant="outline" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-lg">
               <Link to="/contact">Contact Us Today</Link>
@@ -183,6 +183,35 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Direct Call Box */}
+      <section className="py-8 bg-primary">
+        <div className="max-w-[100rem] mx-auto px-6">
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="flex items-center justify-center mb-4">
+              <Phone className="w-8 h-8 text-primary mr-3" />
+              <h3 className="font-heading text-2xl font-bold text-secondary-foreground">
+                Need Immediate Assistance?
+              </h3>
+            </div>
+            <p className="font-paragraph text-secondary-foreground/70 mb-6">
+              Speak directly with our investment experts for personalized guidance
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
+                <a href="tel:+917620408920">
+                  <Phone className="w-5 h-5 mr-2" />
+                  Call Now: +91 7620408920
+                </a>
+              </Button>
+              <span className="font-paragraph text-sm text-secondary-foreground/60">
+                Available Mon-Fri, 9 AM - 6 PM
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-secondary-foreground text-primary-foreground py-12">
         <div className="max-w-[100rem] mx-auto px-6">

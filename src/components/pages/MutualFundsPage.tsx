@@ -214,8 +214,8 @@ export default function MutualFundsPage() {
                     </div>
 
                     <div className="flex space-x-3 pt-4">
-                      <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
-                        Invest Now
+                      <Button asChild className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+                        <Link to="/contact">Invest Now</Link>
                       </Button>
                       {fund.factSheetUrl && (
                         <Button variant="outline" size="sm" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
