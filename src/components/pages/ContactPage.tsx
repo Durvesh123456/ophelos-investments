@@ -251,9 +251,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Phone Numbers</h3>
                       <p className="font-paragraph text-secondary-foreground/70">
-                        Main: +91 98765 43210<br />
+                        Main: +91 999999999<br />
                         Toll Free: 1800-123-4567<br />
-                        WhatsApp: +91 98765 43210
+                        WhatsApp: +91 999999999
                       </p>
                     </div>
                   </div>
@@ -265,7 +265,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Email Addresses</h3>
                       <p className="font-paragraph text-secondary-foreground/70">
-                        General: info@wealthgrowcapital.com<br />
+                        General: gmail@gmail.com<br />
                         Support: support@wealthgrowcapital.com<br />
                         Compliance: compliance@wealthgrowcapital.com
                       </p>
@@ -400,8 +400,8 @@ export default function ContactPage() {
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
                 <p>ARN: 12345-AMFI-67890</p>
-                <p>Email: info@wealthgrowcapital.com</p>
-                <p>Phone: +91 98765 43210</p>
+                <p>Email: gmail@gmail.com</p>
+                <p>Phone: +91 999999999</p>
               </div>
             </div>
           </div>

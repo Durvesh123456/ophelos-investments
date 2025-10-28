@@ -6,7 +6,7 @@ import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, ExternalLink, Calendar, User, TrendingUp } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Calendar, User, TrendingUp, BarChart3 } from 'lucide-react';
 
 export default function MutualFundsPage() {
   const [funds, setFunds] = useState<MutualFunds[]>([]);
@@ -56,6 +56,11 @@ export default function MutualFundsPage() {
       month: 'long',
       day: 'numeric',
     });
+  };
+
+  const formatXIRR = (xirr?: number) => {
+    if (!xirr) return 'N/A';
+    return `${xirr.toFixed(2)}%`;
   };
 
   if (loading) {
@@ -192,6 +197,20 @@ export default function MutualFundsPage() {
                           </span>
                         </div>
                       )}
+                      
+                      {fund.xirr && (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <BarChart3 className="w-4 h-4 text-secondary-foreground/50" />
+                            <span className="font-paragraph text-sm text-secondary-foreground/70">
+                              XIRR (Since Inception):
+                            </span>
+                          </div>
+                          <span className="font-paragraph text-sm font-semibold text-green-600">
+                            {formatXIRR(fund.xirr)}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex space-x-3 pt-4">
@@ -264,8 +283,8 @@ export default function MutualFundsPage() {
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
                 <p>ARN: 12345-AMFI-67890</p>
-                <p>Email: info@wealthgrowcapital.com</p>
-                <p>Phone: +91 98765 43210</p>
+                <p>Email: gmail@gmail.com</p>
+                <p>Phone: +91 999999999</p>
               </div>
             </div>
           </div>

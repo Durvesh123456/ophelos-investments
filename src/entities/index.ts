@@ -54,4 +54,6 @@ export interface MutualFunds {
   fundLogo?: string;
   /** @wixFieldType url */
   factSheetUrl?: string;
+  /** @wixFieldType number */
+  xirr?: number;
 }

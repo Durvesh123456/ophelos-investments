@@ -11,10 +11,10 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://static.wixstatic.com/media/7afb6a_3b2d0ff8b9d243428f919efcc1b4cb34~mv2.png?originWidth=1920&originHeight=1024"
-            alt="Professional financial district skyline representing investment growth and prosperity"
+            src="https://static.wixstatic.com/media/7afb6a_0691f8b4c514473c8fd7e13c193c65f8~mv2.png?originWidth=1600&originHeight=896"
+            alt="Late-night view of New York City's highest building with rectangular forest area, modern cityscape with illuminated windows"
             className="w-full h-full object-cover"
-            width={1920}
+            width={1600}
           />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>

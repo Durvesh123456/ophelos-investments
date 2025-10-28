@@ -23,15 +23,15 @@ export default {
                 paragraph: ["open sans"]
             },
             colors: {
-                foreground: "#A8511E",
-                background: "#F9F7F3",
-                secondary: "#F9F7F3",
-                "secondary-foreground": "#A8511E",
+                foreground: "#1E3A8A",
+                background: "#F0F9FF",
+                secondary: "#E0F2FE",
+                "secondary-foreground": "#1E3A8A",
                 "primary-foreground": "#FFFFFF",
-                primary: "#A8511E",
-                contentblockbackground: "#F9F7F3",
-                buttonborder: "#A8511E",
-                "secondary-foreground-alt": "#1A1A1A"
+                primary: "#0EA5E9",
+                contentblockbackground: "#F0F9FF",
+                buttonborder: "#0EA5E9",
+                "secondary-foreground-alt": "#1E293B"
             },
         },
     },
