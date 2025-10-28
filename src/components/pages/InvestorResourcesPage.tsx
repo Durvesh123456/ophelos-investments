@@ -5,7 +5,240 @@ import { InvestorResources } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, ExternalLink, Calendar, User, BookOpen } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Calendar, User, BookOpen, Calculator } from 'lucide-react';
+
+// SIP Calculator Component
+function SIPCalculator() {
+  const [monthlyInvestment, setMonthlyInvestment] = useState<number>(5000);
+  const [expectedReturn, setExpectedReturn] = useState<number>(12);
+  const [timePeriod, setTimePeriod] = useState<number>(10);
+  const [results, setResults] = useState({
+    totalInvestment: 0,
+    estimatedReturns: 0,
+    totalValue: 0
+  });
+
+  const calculateSIP = () => {
+    const monthlyRate = expectedReturn / 100 / 12;
+    const totalMonths = timePeriod * 12;
+    const totalInvestment = monthlyInvestment * totalMonths;
+    
+    // SIP Future Value formula: P * [((1 + r)^n - 1) / r] * (1 + r)
+    const futureValue = monthlyInvestment * 
+      (((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate));
+    
+    const estimatedReturns = futureValue - totalInvestment;
+
+    setResults({
+      totalInvestment,
+      estimatedReturns,
+      totalValue: futureValue
+    });
+  };
+
+  useEffect(() => {
+    calculateSIP();
+  }, [monthlyInvestment, expectedReturn, timePeriod]);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <Card className="bg-white shadow-lg">
+        <CardHeader>
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+              <Calculator className="w-6 h-6 text-primary-foreground" />
+            </div>
+            <div>
+              <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                SIP Calculator
+              </CardTitle>
+              <p className="font-paragraph text-secondary-foreground/70">
+                Calculate potential returns from your Systematic Investment Plan
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Input Section */}
+            <div className="space-y-6">
+              <div>
+                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                  Monthly Investment Amount
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-foreground/60">₹</span>
+                  <input
+                    type="number"
+                    value={monthlyInvestment}
+                    onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                    className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                    min="500"
+                    step="500"
+                  />
+                </div>
+                <input
+                  type="range"
+                  min="500"
+                  max="100000"
+                  step="500"
+                  value={monthlyInvestment}
+                  onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                  className="w-full mt-2 accent-primary"
+                />
+                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                  <span>₹500</span>
+                  <span>₹1,00,000</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                  Expected Annual Return (%)
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={expectedReturn}
+                    onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                    min="1"
+                    max="30"
+                    step="0.5"
+                  />
+                  <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-foreground/60">%</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  step="0.5"
+                  value={expectedReturn}
+                  onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                  className="w-full mt-2 accent-primary"
+                />
+                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                  <span>1%</span>
+                  <span>30%</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                  Investment Period (Years)
+                </label>
+                <input
+                  type="number"
+                  value={timePeriod}
+                  onChange={(e) => setTimePeriod(Number(e.target.value))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                  min="1"
+                  max="40"
+                />
+                <input
+                  type="range"
+                  min="1"
+                  max="40"
+                  value={timePeriod}
+                  onChange={(e) => setTimePeriod(Number(e.target.value))}
+                  className="w-full mt-2 accent-primary"
+                />
+                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                  <span>1 Year</span>
+                  <span>40 Years</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Results Section */}
+            <div className="space-y-6">
+              <div className="bg-secondary p-6 rounded-lg">
+                <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
+                  Investment Summary
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-paragraph text-secondary-foreground/70">Total Investment:</span>
+                    <span className="font-paragraph font-semibold text-secondary-foreground">
+                      {formatCurrency(results.totalInvestment)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-paragraph text-secondary-foreground/70">Estimated Returns:</span>
+                    <span className="font-paragraph font-semibold text-green-600">
+                      {formatCurrency(results.estimatedReturns)}
+                    </span>
+                  </div>
+                  <div className="border-t pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="font-paragraph font-semibold text-secondary-foreground">Total Value:</span>
+                      <span className="font-heading text-xl font-bold text-primary">
+                        {formatCurrency(results.totalValue)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Visual Representation */}
+              <div className="bg-secondary p-6 rounded-lg">
+                <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
+                  Investment Breakdown
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-paragraph text-secondary-foreground/70">Principal Amount</span>
+                      <span className="font-paragraph text-secondary-foreground">
+                        {((results.totalInvestment / results.totalValue) * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-primary h-2 rounded-full" 
+                        style={{ width: `${(results.totalInvestment / results.totalValue) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-paragraph text-secondary-foreground/70">Returns</span>
+                      <span className="font-paragraph text-secondary-foreground">
+                        {((results.estimatedReturns / results.totalValue) * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-green-500 h-2 rounded-full" 
+                        style={{ width: `${(results.estimatedReturns / results.totalValue) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                <p className="font-paragraph text-sm text-yellow-800">
+                  <strong>Note:</strong> This calculator provides estimates based on the inputs provided. 
+                  Actual returns may vary depending on market conditions. Mutual fund investments are subject to market risks.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export default function InvestorResourcesPage() {
   const [resources, setResources] = useState<InvestorResources[]>([]);
@@ -249,30 +482,24 @@ export default function InvestorResourcesPage() {
         </div>
       </section>
 
-      {/* Investment Tools Section */}
+      {/* SIP Calculator Section */}
       <section className="py-16 bg-white">
         <div className="max-w-[100rem] mx-auto px-6">
           <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
-            Investment Calculators & Tools
+            SIP Calculator
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="bg-secondary shadow-lg text-center">
-              <CardHeader>
-                <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
-                  SIP Calculator
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="font-paragraph text-secondary-foreground/80 text-sm mb-4">
-                  Calculate potential returns from your systematic investment plan.
-                </p>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Calculate
-                </Button>
-              </CardContent>
-            </Card>
+          <SIPCalculator />
+        </div>
+      </section>
 
-            <Card className="bg-secondary shadow-lg text-center">
+      {/* Investment Tools Section */}
+      <section className="py-16 bg-secondary">
+        <div className="max-w-[100rem] mx-auto px-6">
+          <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
+            Other Investment Tools
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="bg-white shadow-lg text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Goal Planner
@@ -288,7 +515,7 @@ export default function InvestorResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary shadow-lg text-center">
+            <Card className="bg-white shadow-lg text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Risk Profiler
@@ -304,7 +531,7 @@ export default function InvestorResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary shadow-lg text-center">
+            <Card className="bg-white shadow-lg text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Tax Calculator
