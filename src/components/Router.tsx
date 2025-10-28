@@ -7,8 +7,6 @@ import MutualFundsPage from '@/components/pages/MutualFundsPage';
 import InvestorResourcesPage from '@/components/pages/InvestorResourcesPage';
 import AumDetailsPage from '@/components/pages/AumDetailsPage';
 import ContactPage from '@/components/pages/ContactPage';
-import GoalPlannerPage from '@/components/pages/GoalPlannerPage';
-import TempCleanup from '@/temp-cleanup';
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -43,16 +41,8 @@ const router = createBrowserRouter([
         element: <AumDetailsPage />,
       },
       {
-        path: "goal-planner",
-        element: <GoalPlannerPage />,
-      },
-      {
         path: "contact",
         element: <ContactPage />,
-      },
-      {
-        path: "cleanup",
-        element: <TempCleanup />,
       },
       {
         path: "*",
