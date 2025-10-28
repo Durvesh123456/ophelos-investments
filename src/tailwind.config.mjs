@@ -23,10 +23,10 @@ export default {
                 paragraph: ["open sans"]
             },
             colors: {
-                foreground: "#1E3A8A",
+                foreground: "#0C4A6E",
                 background: "#F0F9FF",
                 secondary: "#E0F2FE",
-                "secondary-foreground": "#1E3A8A",
+                "secondary-foreground": "#0C4A6E",
                 "primary-foreground": "#FFFFFF",
                 primary: "#0EA5E9",
                 contentblockbackground: "#F0F9FF",
