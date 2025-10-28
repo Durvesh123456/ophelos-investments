@@ -213,17 +213,10 @@ export default function MutualFundsPage() {
                       )}
                     </div>
 
-                    <div className="flex space-x-3 pt-4">
-                      <Button asChild className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <div className="flex pt-4">
+                      <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                         <Link to="/contact">Invest Now</Link>
                       </Button>
-                      {fund.factSheetUrl && (
-                        <Button variant="outline" size="sm" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                          <a href={fund.factSheetUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      )}
                     </div>
                   </CardContent>
                 </Card>
