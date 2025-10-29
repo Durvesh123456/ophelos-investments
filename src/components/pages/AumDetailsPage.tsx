@@ -61,7 +61,7 @@ export default function AumDetailsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
             <div>
               <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6">
-                ₹2,500 Crores+
+                ₹40 Lakh+
               </h2>
               <p className="font-paragraph text-xl text-secondary-foreground/80 mb-8">
                 Total Assets Under Management as of December 2024, representing the trust of over 15,000 investors across India.
@@ -99,7 +99,7 @@ export default function AumDetailsPage() {
                   <TrendingUp className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                  ₹1,500 Cr
+                  ₹24 Lakh
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -114,7 +114,7 @@ export default function AumDetailsPage() {
                   <Shield className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                  ₹750 Cr
+                  ₹12 Lakh
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -129,7 +129,7 @@ export default function AumDetailsPage() {
                   <PieChart className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                  ₹200 Cr
+                  ₹3.2 Lakh
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -144,7 +144,7 @@ export default function AumDetailsPage() {
                   <BarChart3 className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                  ₹50 Cr
+                  ₹80,000
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -168,7 +168,7 @@ export default function AumDetailsPage() {
                 <Calendar className="w-10 h-10 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">2020</h3>
-              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹500 Crores</p>
+              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹5 Lakh</p>
               <p className="font-paragraph text-sm text-secondary-foreground/70">Foundation year with strong client base</p>
             </div>
 
@@ -177,7 +177,7 @@ export default function AumDetailsPage() {
                 <TrendingUp className="w-10 h-10 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">2021</h3>
-              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹1,000 Crores</p>
+              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹10 Lakh</p>
               <p className="font-paragraph text-sm text-secondary-foreground/70">Doubled AUM through strategic growth</p>
             </div>
 
@@ -186,7 +186,7 @@ export default function AumDetailsPage() {
                 <Users className="w-10 h-10 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">2022</h3>
-              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹1,800 Crores</p>
+              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹18 Lakh</p>
               <p className="font-paragraph text-sm text-secondary-foreground/70">Expanded client base to 10,000+ investors</p>
             </div>
 
@@ -195,7 +195,7 @@ export default function AumDetailsPage() {
                 <Award className="w-10 h-10 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">2024</h3>
-              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹2,500 Crores</p>
+              <p className="font-paragraph text-lg font-semibold text-primary mb-2">₹40 Lakh</p>
               <p className="font-paragraph text-sm text-secondary-foreground/70">Achieved milestone with 15,000+ clients</p>
             </div>
           </div>

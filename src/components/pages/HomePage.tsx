@@ -139,7 +139,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div>
               <div className="text-5xl font-heading font-bold text-primary-foreground mb-4">
-                ₹2,500 Cr+
+                ₹40 Lakh+
               </div>
               <p className="font-paragraph text-xl text-primary-foreground/90">
                 Assets Under Management
