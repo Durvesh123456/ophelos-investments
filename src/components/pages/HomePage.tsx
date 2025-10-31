@@ -19,7 +19,7 @@ export default function HomePage() {
           <Image
             src="https://static.wixstatic.com/media/7afb6a_0691f8b4c514473c8fd7e13c193c65f8~mv2.png?originWidth=1600&originHeight=896"
             alt="Late-night view of New York City's highest building with rectangular forest area, modern cityscape with illuminated windows"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
             width={1600}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-dark-900/80 via-dark-800/70 to-dark-700/60"></div>
