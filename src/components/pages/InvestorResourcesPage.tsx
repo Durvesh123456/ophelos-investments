@@ -174,7 +174,7 @@ function SIPCalculator() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-paragraph text-secondary-foreground/70">Estimated Returns:</span>
-                    <span className="font-paragraph font-semibold text-green-600">
+                    <span className="font-paragraph font-semibold text-white">
                       {formatCurrency(results.estimatedReturns)}
                     </span>
                   </div>

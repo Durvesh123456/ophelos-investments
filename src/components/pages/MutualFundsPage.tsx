@@ -30,11 +30,11 @@ export default function MutualFundsPage() {
   const getRiskColor = (riskLevel?: string) => {
     switch (riskLevel?.toLowerCase()) {
       case 'low':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gray-100 text-gray-800';
       case 'moderate':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-gray-200 text-gray-900';
       case 'high':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gray-300 text-black';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -214,7 +214,7 @@ export default function MutualFundsPage() {
                               XIRR (Since Inception):
                             </span>
                           </div>
-                          <span className="font-paragraph text-sm font-semibold text-neon-green">
+                          <span className="font-paragraph text-sm font-semibold text-white">
                             {formatXIRR(fund.xirr)}
                           </span>
                         </div>

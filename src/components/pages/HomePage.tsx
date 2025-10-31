@@ -10,7 +10,7 @@ export default function HomePage() {
       <div className="fixed inset-0 bg-cyber-grid opacity-20 pointer-events-none"></div>
       
       {/* Animated Scan Line */}
-      <div className="fixed top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-neon-cyan to-transparent opacity-50 animate-cyber-scan pointer-events-none"></div>
+      <div className="fixed top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-white to-transparent opacity-50 animate-cyber-scan pointer-events-none"></div>
       
       {/* Hero Section - Full Bleed */}
       <section className="relative w-full max-w-[120rem] mx-auto min-h-screen flex items-center">
@@ -23,11 +23,11 @@ export default function HomePage() {
             width={1600}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-dark-900/80 via-dark-800/70 to-dark-700/60"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-neon-cyan/10 via-transparent to-neon-purple/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-gray-300/10"></div>
         </div>
 
         {/* Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-20 p-6 backdrop-blur-sm bg-dark-900/30 border-b border-neon-cyan/10">
+        <nav className="absolute top-0 left-0 right-0 z-20 p-6 backdrop-blur-sm bg-dark-900/30 border-b border-white/10">
           <div className="max-w-[100rem] mx-auto flex justify-between items-center">
             <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
               Ophelos Investments
@@ -60,10 +60,10 @@ export default function HomePage() {
         {/* Hero Content */}
         <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
           <div className="text-foreground max-w-4xl mx-auto">
-            <p className="text-lg font-paragraph mb-4 tracking-wide text-neon-cyan animate-float">
+            <p className="text-lg font-paragraph mb-4 tracking-wide text-white animate-float">
               BUILDING YOUR FINANCIAL FUTURE
             </p>
-            <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent animate-glow">
+            <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent animate-glow">
               Expert Mutual Fund
               <br />
               Investment Solutions
@@ -72,10 +72,10 @@ export default function HomePage() {
               Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+              <Button asChild className="bg-gradient-to-r from-white to-gray-300 hover:from-gray-300 hover:to-white text-primary-foreground px-8 py-3 text-lg border border-white/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
-              <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+              <Button variant="outline" asChild className="border-gray-300/60 text-gray-300 hover:bg-gray-300/10 hover:text-gray-300 px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
                 <Link to="/contact">Schedule Consultation</Link>
               </Button>
             </div>

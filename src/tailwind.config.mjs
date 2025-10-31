@@ -24,35 +24,35 @@ export default {
                 roboto: ["roboto", "sans-serif"]
             },
             colors: {
-                foreground: "#E0E7FF",
-                background: "#0F0F23",
-                secondary: "#1A1A2E",
-                "secondary-foreground": "#E0E7FF",
-                "primary-foreground": "#0F0F23",
-                primary: "#00FFFF",
-                contentblockbackground: "#0F0F23",
-                buttonborder: "#00FFFF",
-                "secondary-foreground-alt": "#A855F7",
-                // Futuristic accent colors
+                foreground: "#FFFFFF",
+                background: "#000000",
+                secondary: "#1A1A1A",
+                "secondary-foreground": "#FFFFFF",
+                "primary-foreground": "#000000",
+                primary: "#FFFFFF",
+                contentblockbackground: "#000000",
+                buttonborder: "#FFFFFF",
+                "secondary-foreground-alt": "#CCCCCC",
+                // Black and white accent colors
                 neon: {
-                    cyan: "#00FFFF",
-                    purple: "#A855F7",
-                    pink: "#EC4899",
-                    green: "#10B981",
-                    blue: "#3B82F6",
+                    cyan: "#FFFFFF",
+                    purple: "#CCCCCC",
+                    pink: "#DDDDDD",
+                    green: "#EEEEEE",
+                    blue: "#F5F5F5",
                 },
                 dark: {
-                    900: "#0F0F23",
-                    800: "#1A1A2E",
-                    700: "#16213E",
-                    600: "#0E4B99",
+                    900: "#000000",
+                    800: "#1A1A1A",
+                    700: "#333333",
+                    600: "#4A4A4A",
                 }
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                 'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-                'neon-glow': 'linear-gradient(45deg, #00FFFF, #A855F7, #EC4899)',
-                'cyber-grid': 'linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)',
+                'neon-glow': 'linear-gradient(45deg, #FFFFFF, #CCCCCC, #DDDDDD)',
+                'cyber-grid': 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
             },
             animation: {
                 'pulse-neon': 'pulse-neon 3s ease-in-out infinite alternate',
@@ -64,20 +64,20 @@ export default {
             keyframes: {
                 'pulse-neon': {
                     '0%': { 
-                        boxShadow: '0 0 3px rgba(0, 255, 255, 0.3), 0 0 6px rgba(0, 255, 255, 0.2)',
-                        textShadow: '0 0 3px rgba(0, 255, 255, 0.4)'
+                        boxShadow: '0 0 3px rgba(255, 255, 255, 0.3), 0 0 6px rgba(255, 255, 255, 0.2)',
+                        textShadow: '0 0 3px rgba(255, 255, 255, 0.4)'
                     },
                     '100%': { 
-                        boxShadow: '0 0 6px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.3)',
-                        textShadow: '0 0 6px rgba(0, 255, 255, 0.5)'
+                        boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 12px rgba(255, 255, 255, 0.3)',
+                        textShadow: '0 0 6px rgba(255, 255, 255, 0.5)'
                     }
                 },
                 'subtle-glow': {
                     '0%': { 
-                        textShadow: '0 0 2px rgba(0, 255, 255, 0.3)'
+                        textShadow: '0 0 2px rgba(255, 255, 255, 0.3)'
                     },
                     '100%': { 
-                        textShadow: '0 0 4px rgba(0, 255, 255, 0.4)'
+                        textShadow: '0 0 4px rgba(255, 255, 255, 0.4)'
                     }
                 },
                 'glow': {
@@ -94,10 +94,10 @@ export default {
                 }
             },
             boxShadow: {
-                'neon': '0 0 3px rgba(0, 255, 255, 0.4), 0 0 6px rgba(0, 255, 255, 0.3)',
-                'neon-lg': '0 0 6px rgba(0, 255, 255, 0.5), 0 0 12px rgba(0, 255, 255, 0.4)',
-                'cyber': '0 0 15px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.05)',
-                'soft-glow': '0 0 8px rgba(0, 255, 255, 0.2), 0 0 16px rgba(0, 255, 255, 0.1)',
+                'neon': '0 0 3px rgba(255, 255, 255, 0.4), 0 0 6px rgba(255, 255, 255, 0.3)',
+                'neon-lg': '0 0 6px rgba(255, 255, 255, 0.5), 0 0 12px rgba(255, 255, 255, 0.4)',
+                'cyber': '0 0 15px rgba(255, 255, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.05)',
+                'soft-glow': '0 0 8px rgba(255, 255, 255, 0.2), 0 0 16px rgba(255, 255, 255, 0.1)',
             },
         },
     },

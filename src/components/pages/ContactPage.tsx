@@ -115,7 +115,7 @@ export default function ContactPage() {
                 <CardContent>
                   {isSubmitted ? (
                     <div className="text-center py-8">
-                      <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                      <CheckCircle className="w-16 h-16 text-white mx-auto mb-4" />
                       <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">
                         Thank You!
                       </h3>
