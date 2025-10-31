@@ -586,7 +586,7 @@ export default function InvestorResourcesPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary-foreground text-primary-foreground py-12">
+      <footer className="bg-gray-600 text-primary-foreground py-12">
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
