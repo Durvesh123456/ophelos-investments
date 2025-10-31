@@ -566,7 +566,7 @@ export default function InvestorResourcesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
           <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6">
             Ready to Start Your Investment Journey?
