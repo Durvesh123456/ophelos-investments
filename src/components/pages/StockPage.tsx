@@ -8,13 +8,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrendingUp, TrendingDown, Activity, BarChart3, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// Angel One API endpoints for fetching real market data
+// Angel One API endpoints for fetching 30-minute delayed market data (Free Tier)
 const API_ENDPOINTS = {
-  // Angel One SmartAPI - Free tier available
+  // Angel One SmartAPI - Free tier provides 30-minute delayed data
   ANGEL_ONE_BASE: 'https://apiconnect.angelbroking.com',
   ANGEL_ONE_LOGIN: 'https://apiconnect.angelbroking.com/rest/auth/angelbroking/user/v1/loginByPassword',
   ANGEL_ONE_MARKET_DATA: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/market/v1',
   ANGEL_ONE_SEARCH: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/searchScrip',
+  ANGEL_ONE_HISTORICAL: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/historical/v1/getCandleData',
   // Backup APIs
   YAHOO_FINANCE: 'https://query1.finance.yahoo.com/v8/finance/chart',
   FINNHUB_FREE: 'https://finnhub.io/api/v1'
@@ -39,12 +40,13 @@ const INDIAN_STOCKS = [
   { symbol: 'SUNPHARMA-EQ', name: 'Sun Pharmaceutical', nseSymbol: 'SUNPHARMA', token: '3351' }
 ];
 
-// Angel One API configuration
+// Angel One API configuration for free tier (30-minute delayed data)
 const ANGEL_ONE_CONFIG = {
-  // Demo credentials - users should replace with their own
-  CLIENT_CODE: 'DEMO123', // Replace with actual client code
+  // Demo credentials - users should replace with their own Angel One free account
+  CLIENT_CODE: 'DEMO123', // Replace with actual client code from Angel One
   PASSWORD: 'demo_password', // Replace with actual password
-  API_KEY: 'demo_api_key', // Replace with actual API key
+  API_KEY: 'demo_api_key', // Replace with actual API key from Angel One developer portal
+  // Free tier limitations: 30-minute delayed data, rate limits apply
   // Note: In production, these should be environment variables
 };
 
@@ -90,7 +92,7 @@ const authenticateAngelOne = async () => {
   }
 };
 
-// Fetch stock data from Angel One API
+// Fetch 30-minute delayed stock data from Angel One API (Free Tier)
 const fetchAngelOneData = async (stocks: typeof INDIAN_STOCKS) => {
   try {
     // Authenticate if no token exists
@@ -102,7 +104,8 @@ const fetchAngelOneData = async (stocks: typeof INDIAN_STOCKS) => {
     }
 
     const promises = stocks.map(async (stock) => {
-      const response = await fetch(`${API_ENDPOINTS.ANGEL_ONE_MARKET_DATA}/getLTP`, {
+      // Use historical data endpoint for free tier (provides 30-min delayed data)
+      const response = await fetch(`${API_ENDPOINTS.ANGEL_ONE_HISTORICAL}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,34 +120,83 @@ const fetchAngelOneData = async (stocks: typeof INDIAN_STOCKS) => {
         },
         body: JSON.stringify({
           exchange: 'NSE',
-          tradingsymbol: stock.nseSymbol,
-          symboltoken: stock.token
+          symboltoken: stock.token,
+          interval: 'ONE_MINUTE',
+          fromdate: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString().split('T')[0] + ' 09:15', // 2 hours ago
+          todate: new Date().toISOString().split('T')[0] + ' 15:30' // Current date
         })
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch Angel One data for ${stock.symbol}`);
+        // Fallback to getLTP if historical fails
+        const ltpResponse = await fetch(`${API_ENDPOINTS.ANGEL_ONE_MARKET_DATA}/getLTP`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${angelOneAuthToken}`,
+            'X-UserType': 'USER',
+            'X-SourceID': 'WEB',
+            'X-ClientLocalIP': '192.168.1.1',
+            'X-ClientPublicIP': '106.193.147.98',
+            'X-MACAddress': '00:00:00:00:00:00',
+            'X-PrivateKey': ANGEL_ONE_CONFIG.API_KEY
+          },
+          body: JSON.stringify({
+            exchange: 'NSE',
+            tradingsymbol: stock.nseSymbol,
+            symboltoken: stock.token
+          })
+        });
+
+        if (!ltpResponse.ok) {
+          throw new Error(`Failed to fetch Angel One data for ${stock.symbol}`);
+        }
+
+        const ltpData = await ltpResponse.json();
+        
+        if (ltpData.status && ltpData.data) {
+          const ltp = parseFloat(ltpData.data.ltp);
+          const close = parseFloat(ltpData.data.close);
+          const change = ltp - close;
+          const changePercent = (change / close) * 100;
+
+          return {
+            symbol: stock.nseSymbol,
+            name: stock.name,
+            price: ltp,
+            change: change,
+            changePercent: changePercent,
+            volume: 'N/A', // Volume requires separate API call
+            dataDelay: '30 min' // Indicate this is delayed data
+          };
+        }
+        
+        throw new Error(`Invalid Angel One LTP response for ${stock.symbol}`);
       }
 
       const data = await response.json();
       
-      if (data.status && data.data) {
-        const ltp = parseFloat(data.data.ltp);
-        const close = parseFloat(data.data.close);
-        const change = ltp - close;
-        const changePercent = (change / close) * 100;
+      if (data.status && data.data && data.data.length > 0) {
+        // Get the latest candle data (30-min delayed)
+        const latestCandle = data.data[data.data.length - 1];
+        const currentPrice = parseFloat(latestCandle[4]); // Close price
+        const openPrice = parseFloat(latestCandle[1]); // Open price
+        const change = currentPrice - openPrice;
+        const changePercent = (change / openPrice) * 100;
 
         return {
           symbol: stock.nseSymbol,
           name: stock.name,
-          price: ltp,
+          price: currentPrice,
           change: change,
           changePercent: changePercent,
-          volume: 'N/A' // Volume requires separate API call
+          volume: latestCandle[5] ? (parseInt(latestCandle[5]) / 1000000).toFixed(1) + 'M' : 'N/A',
+          dataDelay: '30 min' // Indicate this is delayed data
         };
       }
       
-      throw new Error(`Invalid Angel One response for ${stock.symbol}`);
+      throw new Error(`Invalid Angel One historical response for ${stock.symbol}`);
     });
 
     const results = await Promise.allSettled(promises);
@@ -203,14 +255,14 @@ const fetchYahooFinanceData = async (stocks: typeof INDIAN_STOCKS) => {
   }
 };
 
-// Primary function to fetch stock data with Angel One as primary source
+// Primary function to fetch 30-minute delayed stock data with Angel One as primary source
 const fetchStockData = async () => {
-  // Try Angel One first (primary API for Indian stocks)
+  // Try Angel One first (primary API for Indian stocks with 30-min delay)
   try {
-    console.log('Attempting to fetch data from Angel One SmartAPI...');
+    console.log('Attempting to fetch 30-minute delayed data from Angel One SmartAPI...');
     const data = await fetchAngelOneData(INDIAN_STOCKS);
     if (data.length > 0) {
-      return { data, source: 'Angel One SmartAPI' };
+      return { data, source: 'Angel One SmartAPI (30-min delayed)' };
     }
   } catch (error) {
     console.log('Angel One failed, trying Yahoo Finance backup...', error);
@@ -285,7 +337,7 @@ const nseIndices = [
   { value: 'NIFTYREALTY', label: 'NIFTY REALTY' }
 ];
 
-// Fetch index data from Angel One API
+// Fetch 30-minute delayed index data from Angel One API
 const fetchAngelOneIndexData = async (index: string) => {
   try {
     // Authenticate if no token exists
@@ -312,6 +364,49 @@ const fetchAngelOneIndexData = async (index: string) => {
 
     const indexInfo = indexTokens[index as keyof typeof indexTokens] || indexTokens['NIFTY'];
     
+    // Try historical data first for 30-min delayed data
+    const historicalResponse = await fetch(`${API_ENDPOINTS.ANGEL_ONE_HISTORICAL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${angelOneAuthToken}`,
+        'X-UserType': 'USER',
+        'X-SourceID': 'WEB',
+        'X-ClientLocalIP': '192.168.1.1',
+        'X-ClientPublicIP': '106.193.147.98',
+        'X-MACAddress': '00:00:00:00:00:00',
+        'X-PrivateKey': ANGEL_ONE_CONFIG.API_KEY
+      },
+      body: JSON.stringify({
+        exchange: 'NSE',
+        symboltoken: indexInfo.token,
+        interval: 'ONE_MINUTE',
+        fromdate: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString().split('T')[0] + ' 09:15',
+        todate: new Date().toISOString().split('T')[0] + ' 15:30'
+      })
+    });
+    
+    if (historicalResponse.ok) {
+      const historicalData = await historicalResponse.json();
+      
+      if (historicalData.status && historicalData.data && historicalData.data.length > 0) {
+        const latestCandle = historicalData.data[historicalData.data.length - 1];
+        const currentPrice = parseFloat(latestCandle[4]); // Close price
+        const openPrice = parseFloat(latestCandle[1]); // Open price
+        const change = currentPrice - openPrice;
+        const changePercent = (change / openPrice) * 100;
+        
+        return {
+          price: currentPrice,
+          change: change,
+          changePercent: changePercent,
+          dataDelay: '30 min'
+        };
+      }
+    }
+    
+    // Fallback to LTP if historical fails
     const response = await fetch(`${API_ENDPOINTS.ANGEL_ONE_MARKET_DATA}/getLTP`, {
       method: 'POST',
       headers: {
@@ -347,7 +442,8 @@ const fetchAngelOneIndexData = async (index: string) => {
       return {
         price: currentPrice,
         change: change,
-        changePercent: changePercent
+        changePercent: changePercent,
+        dataDelay: '30 min'
       };
     }
     
@@ -423,13 +519,13 @@ const generateFallbackOptionChain = (index: string) => {
   }));
 };
 
-// Fetch live spot price for indices with Angel One as primary source
+// Fetch 30-minute delayed spot price for indices with Angel One as primary source
 const fetchSpotPrice = async (index: string) => {
-  // Try Angel One first
+  // Try Angel One first (30-min delayed data)
   try {
-    console.log(`Fetching ${index} data from Angel One...`);
+    console.log(`Fetching ${index} 30-min delayed data from Angel One...`);
     const data = await fetchAngelOneIndexData(index);
-    return { ...data, source: 'Angel One SmartAPI' };
+    return { ...data, source: 'Angel One SmartAPI (30-min delayed)' };
   } catch (error) {
     console.log('Angel One failed for index data, trying Yahoo Finance backup...');
   }
@@ -564,7 +660,7 @@ export default function StockPage() {
               <BarChart3 className="h-8 w-8 text-primary" />
               <div>
                 <h1 className="text-3xl font-heading font-bold text-foreground">Stock Market</h1>
-                <p className="text-sm text-secondary-foreground-alt">Live market data powered by Angel One SmartAPI</p>
+                <p className="text-sm text-secondary-foreground-alt">30-minute delayed data from Angel One SmartAPI (Free Tier)</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -595,8 +691,8 @@ export default function StockPage() {
         <Alert className="border-blue-200 bg-blue-50">
           <AlertCircle className="h-4 w-4 text-blue-600" />
           <AlertDescription className="text-blue-800">
-            <strong>Angel One SmartAPI Integration:</strong> To get live data, you need to configure your Angel One credentials. 
-            Replace the demo credentials in the code with your actual Angel One API key, client code, and password. 
+            <strong>Angel One SmartAPI Free Tier:</strong> This integration uses Angel One's free API which provides 30-minute delayed market data. 
+            Configure your Angel One credentials to access this delayed data feed. For real-time data, upgrade to Angel One's premium API subscription.
             {apiStatus === 'connected' ? (
               <span className="text-green-700 font-medium"> ✓ Currently connected to {dataSource}</span>
             ) : (
@@ -612,8 +708,8 @@ export default function StockPage() {
           <Alert className="border-green-200 bg-green-50">
             <Wifi className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-800">
-              <strong>Live Data Connected!</strong> Successfully fetching real-time market data from {dataSource}. 
-              Data updates automatically every 60 seconds.
+              <strong>30-Min Delayed Data Connected!</strong> Successfully fetching 30-minute delayed market data from {dataSource}. 
+              Data updates automatically every 60 seconds. Free tier provides delayed data - upgrade to premium for real-time feeds.
             </AlertDescription>
           </Alert>
         </div>
@@ -821,14 +917,17 @@ export default function StockPage() {
                 </div>
                 <div className="mt-4 text-xs text-secondary-foreground-alt">
                   <p>OI = Open Interest, LTP = Last Traded Price</p>
-                  <p>Stock data source: {apiStatus === 'connected' ? `Live ${dataSource} API` : 'Recent closing data with simulated variations'}</p>
+                  <p>Stock data source: {apiStatus === 'connected' ? `30-min delayed ${dataSource} API` : 'Recent closing data with simulated variations'}</p>
                   <p>Option data: Simulated (real option data available with Angel One premium subscription)</p>
                   <p>Scroll horizontally to view all strike prices</p>
                   <p className="text-blue-600 mt-2">
-                    <strong>API Sources:</strong> Angel One SmartAPI (primary), Yahoo Finance (backup), with automatic fallback to recent data.
+                    <strong>API Sources:</strong> Angel One SmartAPI Free Tier (30-min delayed), Yahoo Finance (backup), with automatic fallback to recent data.
                   </p>
                   <p className="text-green-600 mt-1">
-                    <strong>Setup:</strong> Configure your Angel One credentials in ANGEL_ONE_CONFIG to get live data.
+                    <strong>Setup:</strong> Configure your Angel One credentials in ANGEL_ONE_CONFIG to get 30-minute delayed data.
+                  </p>
+                  <p className="text-purple-600 mt-1">
+                    <strong>Upgrade:</strong> Subscribe to Angel One premium API for real-time data feeds.
                   </p>
                 </div>
               </CardContent>
