@@ -20,7 +20,8 @@ export default {
             },
             fontFamily: {
                 heading: ["playfair display"],
-                paragraph: ["open sans"]
+                paragraph: ["open sans"],
+                roboto: ["roboto", "sans-serif"]
             },
             colors: {
                 foreground: "#0C4A6E",

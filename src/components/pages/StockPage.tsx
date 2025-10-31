@@ -157,7 +157,6 @@ export default function StockPage() {
           </div>
         </div>
       </header>
-
       <div className="max-w-[120rem] mx-auto px-6 py-8">
         <Tabs defaultValue="watchlist" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 max-w-md">
@@ -238,7 +237,7 @@ export default function StockPage() {
                       {nseIndices.find(idx => idx.value === selectedIndex)?.label} Spot Price
                     </h3>
                     <div className="flex items-center justify-center space-x-4">
-                      <span className="text-3xl font-heading font-bold text-foreground">
+                      <span className="text-3xl font-bold text-foreground font-roboto">
                         ₹{spotPrice.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                       </span>
                       <div className={`flex items-center space-x-1 ${
