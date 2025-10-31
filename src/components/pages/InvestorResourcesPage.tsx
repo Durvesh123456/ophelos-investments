@@ -76,12 +76,12 @@ function SIPCalculator() {
                   Monthly Investment Amount
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-foreground/60">₹</span>
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
                   <input
                     type="number"
                     value={monthlyInvestment}
                     onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
-                    className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                    className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                     min="500"
                     step="500"
                   />
@@ -110,12 +110,12 @@ function SIPCalculator() {
                     type="number"
                     value={expectedReturn}
                     onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                    className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                     min="1"
                     max="30"
                     step="0.5"
                   />
-                  <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-foreground/60">%</span>
+                  <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
                 </div>
                 <input
                   type="range"
@@ -140,7 +140,7 @@ function SIPCalculator() {
                   type="number"
                   value={timePeriod}
                   onChange={(e) => setTimePeriod(Number(e.target.value))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                  className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                   min="1"
                   max="40"
                 />
@@ -469,7 +469,7 @@ export default function InvestorResourcesPage() {
                           Read More
                         </Button>
                         {resource.externalUrl && (
-                          <Button variant="outline" size="sm" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
+                          <Button variant="outline" size="sm" asChild className="border-white/40 text-white hover:bg-white/10 hover:text-white">
                             <a href={resource.externalUrl} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="w-4 h-4" />
                             </a>
@@ -566,7 +566,7 @@ export default function InvestorResourcesPage() {
             <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg">
               <Link to="/contact">Explore Our Funds</Link>
             </Button>
-            <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg">
+            <Button variant="outline" asChild className="border-white/40 text-white hover:bg-white/10 hover:text-white px-8 py-3 text-lg">
               <Link to="/contact">Get Expert Advice</Link>
             </Button>
           </div>
