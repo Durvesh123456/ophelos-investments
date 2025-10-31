@@ -54,9 +54,9 @@ const nseIndices = [
   { value: 'NIFTYREALTY', label: 'NIFTY REALTY' }
 ];
 
-// Mock option chain data
+// Mock option chain data with more strike prices for horizontal scroll
 const generateOptionChain = (index: string) => {
-  const strikes = [18000, 18100, 18200, 18300, 18400, 18500, 18600, 18700, 18800, 18900, 19000];
+  const strikes = [17000, 17100, 17200, 17300, 17400, 17500, 17600, 17700, 17800, 17900, 18000, 18100, 18200, 18300, 18400, 18500, 18600, 18700, 18800, 18900, 19000, 19100, 19200, 19300, 19400, 19500, 19600, 19700, 19800, 19900, 20000];
   return strikes.map(strike => ({
     strike,
     callOI: Math.floor(Math.random() * 100000) + 10000,
@@ -70,10 +70,39 @@ const generateOptionChain = (index: string) => {
   }));
 };
 
+// Generate live spot price for indices
+const generateSpotPrice = (index: string) => {
+  const basePrices = {
+    'NIFTY': 18450,
+    'BANKNIFTY': 42500,
+    'FINNIFTY': 19800,
+    'MIDCPNIFTY': 8950,
+    'NIFTYNEXT50': 42300,
+    'NIFTYIT': 28500,
+    'NIFTYPHARMA': 15200,
+    'NIFTYAUTO': 14800,
+    'NIFTYMETAL': 6750,
+    'NIFTYREALTY': 4200
+  };
+  
+  const basePrice = basePrices[index as keyof typeof basePrices] || 18450;
+  const priceVariation = (Math.random() - 0.5) * 0.02; // ±1% variation
+  const currentPrice = basePrice * (1 + priceVariation);
+  const change = currentPrice - basePrice;
+  const changePercent = (change / basePrice) * 100;
+  
+  return {
+    price: currentPrice,
+    change,
+    changePercent
+  };
+};
+
 export default function StockPage() {
   const [selectedIndex, setSelectedIndex] = useState('NIFTY');
   const [optionChainData, setOptionChainData] = useState(generateOptionChain('NIFTY'));
   const [nifty50Stocks, setNifty50Stocks] = useState(generateNifty50Stocks());
+  const [spotPrice, setSpotPrice] = useState(generateSpotPrice('NIFTY'));
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Auto-refresh data every 5 seconds to simulate live updates
@@ -81,6 +110,7 @@ export default function StockPage() {
     const interval = setInterval(() => {
       setOptionChainData(generateOptionChain(selectedIndex));
       setNifty50Stocks(generateNifty50Stocks());
+      setSpotPrice(generateSpotPrice(selectedIndex));
       setRefreshKey(prev => prev + 1);
     }, 5000);
 
@@ -89,11 +119,13 @@ export default function StockPage() {
 
   useEffect(() => {
     setOptionChainData(generateOptionChain(selectedIndex));
+    setSpotPrice(generateSpotPrice(selectedIndex));
   }, [selectedIndex]);
 
   const handleRefresh = () => {
     setOptionChainData(generateOptionChain(selectedIndex));
     setNifty50Stocks(generateNifty50Stocks());
+    setSpotPrice(generateSpotPrice(selectedIndex));
     setRefreshKey(prev => prev + 1);
   };
 
@@ -197,6 +229,39 @@ export default function StockPage() {
 
           {/* Option Chain Tab */}
           <TabsContent value="options" className="space-y-6">
+            {/* Live Spot Price Display */}
+            <Card className="bg-gradient-to-r from-primary/10 to-secondary/20">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-center space-x-8">
+                  <div className="text-center">
+                    <h3 className="text-lg font-heading font-semibold text-foreground mb-2">
+                      {nseIndices.find(idx => idx.value === selectedIndex)?.label} Spot Price
+                    </h3>
+                    <div className="flex items-center justify-center space-x-4">
+                      <span className="text-3xl font-heading font-bold text-foreground">
+                        ₹{spotPrice.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                      </span>
+                      <div className={`flex items-center space-x-1 ${
+                        spotPrice.change >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {spotPrice.change >= 0 ? (
+                          <TrendingUp className="h-5 w-5" />
+                        ) : (
+                          <TrendingDown className="h-5 w-5" />
+                        )}
+                        <span className="text-lg font-medium">
+                          {spotPrice.change >= 0 ? '+' : ''}₹{Math.abs(spotPrice.change).toFixed(2)}
+                        </span>
+                        <span className="text-lg font-medium">
+                          ({spotPrice.changePercent >= 0 ? '+' : ''}{spotPrice.changePercent.toFixed(2)}%)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -222,68 +287,71 @@ export default function StockPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-center" colSpan={4}>CALL OPTIONS</TableHead>
-                        <TableHead className="text-center">STRIKE</TableHead>
-                        <TableHead className="text-center" colSpan={4}>PUT OPTIONS</TableHead>
-                      </TableRow>
-                      <TableRow>
-                        <TableHead className="text-right">OI</TableHead>
-                        <TableHead className="text-right">Volume</TableHead>
-                        <TableHead className="text-right">LTP</TableHead>
-                        <TableHead className="text-right">Change</TableHead>
-                        <TableHead className="text-center font-bold">Strike Price</TableHead>
-                        <TableHead className="text-left">Change</TableHead>
-                        <TableHead className="text-left">LTP</TableHead>
-                        <TableHead className="text-left">Volume</TableHead>
-                        <TableHead className="text-left">OI</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {optionChainData.map((option) => (
-                        <TableRow key={option.strike} className="hover:bg-secondary/50">
-                          <TableCell className="text-right text-sm">
-                            {option.callOI.toLocaleString()}
-                          </TableCell>
-                          <TableCell className="text-right text-sm">
-                            {option.callVolume.toLocaleString()}
-                          </TableCell>
-                          <TableCell className="text-right font-medium">
-                            ₹{option.callLTP}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <span className={parseFloat(option.callChange) >= 0 ? 'text-green-600' : 'text-red-600'}>
-                              {parseFloat(option.callChange) >= 0 ? '+' : ''}{option.callChange}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-center font-bold bg-secondary/30">
-                            {option.strike}
-                          </TableCell>
-                          <TableCell className="text-left">
-                            <span className={parseFloat(option.putChange) >= 0 ? 'text-green-600' : 'text-red-600'}>
-                              {parseFloat(option.putChange) >= 0 ? '+' : ''}{option.putChange}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-left font-medium">
-                            ₹{option.putLTP}
-                          </TableCell>
-                          <TableCell className="text-left text-sm">
-                            {option.putVolume.toLocaleString()}
-                          </TableCell>
-                          <TableCell className="text-left text-sm">
-                            {option.putOI.toLocaleString()}
-                          </TableCell>
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                  <div className="min-w-[1200px]">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-center sticky left-0 bg-background z-10" colSpan={4}>CALL OPTIONS</TableHead>
+                          <TableHead className="text-center sticky left-0 bg-background z-10">STRIKE</TableHead>
+                          <TableHead className="text-center sticky right-0 bg-background z-10" colSpan={4}>PUT OPTIONS</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                        <TableRow>
+                          <TableHead className="text-right min-w-[100px]">OI</TableHead>
+                          <TableHead className="text-right min-w-[100px]">Volume</TableHead>
+                          <TableHead className="text-right min-w-[100px]">LTP</TableHead>
+                          <TableHead className="text-right min-w-[100px]">Change</TableHead>
+                          <TableHead className="text-center font-bold min-w-[120px] sticky left-0 bg-background z-10 border-x-2 border-primary/20">Strike Price</TableHead>
+                          <TableHead className="text-left min-w-[100px]">Change</TableHead>
+                          <TableHead className="text-left min-w-[100px]">LTP</TableHead>
+                          <TableHead className="text-left min-w-[100px]">Volume</TableHead>
+                          <TableHead className="text-left min-w-[100px]">OI</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {optionChainData.map((option) => (
+                          <TableRow key={option.strike} className="hover:bg-secondary/50">
+                            <TableCell className="text-right text-sm">
+                              {option.callOI.toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-right text-sm">
+                              {option.callVolume.toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-right font-medium">
+                              ₹{option.callLTP}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <span className={parseFloat(option.callChange) >= 0 ? 'text-green-600' : 'text-red-600'}>
+                                {parseFloat(option.callChange) >= 0 ? '+' : ''}{option.callChange}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-center font-bold bg-secondary/30 sticky left-0 z-10 border-x-2 border-primary/20">
+                              {option.strike}
+                            </TableCell>
+                            <TableCell className="text-left">
+                              <span className={parseFloat(option.putChange) >= 0 ? 'text-green-600' : 'text-red-600'}>
+                                {parseFloat(option.putChange) >= 0 ? '+' : ''}{option.putChange}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-left font-medium">
+                              ₹{option.putLTP}
+                            </TableCell>
+                            <TableCell className="text-left text-sm">
+                              {option.putVolume.toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-left text-sm">
+                              {option.putOI.toLocaleString()}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </div>
                 <div className="mt-4 text-xs text-secondary-foreground-alt">
                   <p>OI = Open Interest, LTP = Last Traded Price</p>
                   <p>Data refreshes every few seconds during market hours</p>
+                  <p>Scroll horizontally to view all strike prices</p>
                 </div>
               </CardContent>
             </Card>
