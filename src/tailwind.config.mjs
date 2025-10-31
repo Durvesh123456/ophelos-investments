@@ -24,15 +24,70 @@ export default {
                 roboto: ["roboto", "sans-serif"]
             },
             colors: {
-                foreground: "#0C4A6E",
-                background: "#F0F9FF",
-                secondary: "#E0F2FE",
-                "secondary-foreground": "#0C4A6E",
-                "primary-foreground": "#FFFFFF",
-                primary: "#0EA5E9",
-                contentblockbackground: "#F0F9FF",
-                buttonborder: "#0EA5E9",
-                "secondary-foreground-alt": "#1E293B"
+                foreground: "#E0E7FF",
+                background: "#0F0F23",
+                secondary: "#1A1A2E",
+                "secondary-foreground": "#E0E7FF",
+                "primary-foreground": "#0F0F23",
+                primary: "#00FFFF",
+                contentblockbackground: "#0F0F23",
+                buttonborder: "#00FFFF",
+                "secondary-foreground-alt": "#A855F7",
+                // Futuristic accent colors
+                neon: {
+                    cyan: "#00FFFF",
+                    purple: "#A855F7",
+                    pink: "#EC4899",
+                    green: "#10B981",
+                    blue: "#3B82F6",
+                },
+                dark: {
+                    900: "#0F0F23",
+                    800: "#1A1A2E",
+                    700: "#16213E",
+                    600: "#0E4B99",
+                }
+            },
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                'neon-glow': 'linear-gradient(45deg, #00FFFF, #A855F7, #EC4899)',
+                'cyber-grid': 'linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)',
+            },
+            animation: {
+                'pulse-neon': 'pulse-neon 2s ease-in-out infinite alternate',
+                'glow': 'glow 2s ease-in-out infinite alternate',
+                'float': 'float 3s ease-in-out infinite',
+                'cyber-scan': 'cyber-scan 3s linear infinite',
+            },
+            keyframes: {
+                'pulse-neon': {
+                    '0%': { 
+                        boxShadow: '0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF',
+                        textShadow: '0 0 5px #00FFFF'
+                    },
+                    '100%': { 
+                        boxShadow: '0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #00FFFF',
+                        textShadow: '0 0 10px #00FFFF'
+                    }
+                },
+                'glow': {
+                    '0%': { filter: 'brightness(1) saturate(1)' },
+                    '100%': { filter: 'brightness(1.2) saturate(1.3)' }
+                },
+                'float': {
+                    '0%, 100%': { transform: 'translateY(0px)' },
+                    '50%': { transform: 'translateY(-10px)' }
+                },
+                'cyber-scan': {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100vw)' }
+                }
+            },
+            boxShadow: {
+                'neon': '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor',
+                'neon-lg': '0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor',
+                'cyber': '0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.1)',
             },
         },
     },
