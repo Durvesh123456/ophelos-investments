@@ -8,40 +8,161 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrendingUp, TrendingDown, Activity, BarChart3, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// Multiple API endpoints for fetching real market data
+// Angel One API endpoints for fetching real market data
 const API_ENDPOINTS = {
-  // Free APIs that don't require API keys
+  // Angel One SmartAPI - Free tier available
+  ANGEL_ONE_BASE: 'https://apiconnect.angelbroking.com',
+  ANGEL_ONE_LOGIN: 'https://apiconnect.angelbroking.com/rest/auth/angelbroking/user/v1/loginByPassword',
+  ANGEL_ONE_MARKET_DATA: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/market/v1',
+  ANGEL_ONE_SEARCH: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/searchScrip',
+  // Backup APIs
   YAHOO_FINANCE: 'https://query1.finance.yahoo.com/v8/finance/chart',
-  FINNHUB_FREE: 'https://finnhub.io/api/v1',
-  ALPHA_VANTAGE: 'https://www.alphavantage.co/query',
-  // Backup NSE endpoint
-  NSE_BASE_URL: 'https://www.nseindia.com/api'
+  FINNHUB_FREE: 'https://finnhub.io/api/v1'
 };
 
-// Popular Indian stocks with their Yahoo Finance symbols
+// Popular Indian stocks with Angel One token symbols
 const INDIAN_STOCKS = [
-  { symbol: 'RELIANCE.NS', name: 'Reliance Industries', nseSymbol: 'RELIANCE' },
-  { symbol: 'TCS.NS', name: 'Tata Consultancy Services', nseSymbol: 'TCS' },
-  { symbol: 'HDFCBANK.NS', name: 'HDFC Bank', nseSymbol: 'HDFCBANK' },
-  { symbol: 'INFY.NS', name: 'Infosys', nseSymbol: 'INFY' },
-  { symbol: 'ICICIBANK.NS', name: 'ICICI Bank', nseSymbol: 'ICICIBANK' },
-  { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever', nseSymbol: 'HINDUNILVR' },
-  { symbol: 'ITC.NS', name: 'ITC Limited', nseSymbol: 'ITC' },
-  { symbol: 'SBIN.NS', name: 'State Bank of India', nseSymbol: 'SBIN' },
-  { symbol: 'BHARTIARTL.NS', name: 'Bharti Airtel', nseSymbol: 'BHARTIARTL' },
-  { symbol: 'KOTAKBANK.NS', name: 'Kotak Mahindra Bank', nseSymbol: 'KOTAKBANK' },
-  { symbol: 'LT.NS', name: 'Larsen & Toubro', nseSymbol: 'LT' },
-  { symbol: 'HCLTECH.NS', name: 'HCL Technologies', nseSymbol: 'HCLTECH' },
-  { symbol: 'ASIANPAINT.NS', name: 'Asian Paints', nseSymbol: 'ASIANPAINT' },
-  { symbol: 'MARUTI.NS', name: 'Maruti Suzuki', nseSymbol: 'MARUTI' },
-  { symbol: 'SUNPHARMA.NS', name: 'Sun Pharmaceutical', nseSymbol: 'SUNPHARMA' }
+  { symbol: 'RELIANCE-EQ', name: 'Reliance Industries', nseSymbol: 'RELIANCE', token: '2885' },
+  { symbol: 'TCS-EQ', name: 'Tata Consultancy Services', nseSymbol: 'TCS', token: '11536' },
+  { symbol: 'HDFCBANK-EQ', name: 'HDFC Bank', nseSymbol: 'HDFCBANK', token: '1333' },
+  { symbol: 'INFY-EQ', name: 'Infosys', nseSymbol: 'INFY', token: '1594' },
+  { symbol: 'ICICIBANK-EQ', name: 'ICICI Bank', nseSymbol: 'ICICIBANK', token: '4963' },
+  { symbol: 'HINDUNILVR-EQ', name: 'Hindustan Unilever', nseSymbol: 'HINDUNILVR', token: '356' },
+  { symbol: 'ITC-EQ', name: 'ITC Limited', nseSymbol: 'ITC', token: '1660' },
+  { symbol: 'SBIN-EQ', name: 'State Bank of India', nseSymbol: 'SBIN', token: '3045' },
+  { symbol: 'BHARTIARTL-EQ', name: 'Bharti Airtel', nseSymbol: 'BHARTIARTL', token: '10604' },
+  { symbol: 'KOTAKBANK-EQ', name: 'Kotak Mahindra Bank', nseSymbol: 'KOTAKBANK', token: '1922' },
+  { symbol: 'LT-EQ', name: 'Larsen & Toubro', nseSymbol: 'LT', token: '2939' },
+  { symbol: 'HCLTECH-EQ', name: 'HCL Technologies', nseSymbol: 'HCLTECH', token: '7229' },
+  { symbol: 'ASIANPAINT-EQ', name: 'Asian Paints', nseSymbol: 'ASIANPAINT', token: '3045' },
+  { symbol: 'MARUTI-EQ', name: 'Maruti Suzuki', nseSymbol: 'MARUTI', token: '10999' },
+  { symbol: 'SUNPHARMA-EQ', name: 'Sun Pharmaceutical', nseSymbol: 'SUNPHARMA', token: '3351' }
 ];
 
-// Fetch stock data from Yahoo Finance API (free, no API key required)
-const fetchYahooFinanceData = async (symbols: string[]) => {
+// Angel One API configuration
+const ANGEL_ONE_CONFIG = {
+  // Demo credentials - users should replace with their own
+  CLIENT_CODE: 'DEMO123', // Replace with actual client code
+  PASSWORD: 'demo_password', // Replace with actual password
+  API_KEY: 'demo_api_key', // Replace with actual API key
+  // Note: In production, these should be environment variables
+};
+
+// Angel One authentication and token management
+let angelOneAuthToken: string | null = null;
+let angelOneRefreshToken: string | null = null;
+
+// Authenticate with Angel One API
+const authenticateAngelOne = async () => {
   try {
-    const promises = symbols.map(async (symbol) => {
-      const response = await fetch(`${API_ENDPOINTS.YAHOO_FINANCE}/${symbol}?interval=1d&range=1d`, {
+    const response = await fetch(API_ENDPOINTS.ANGEL_ONE_LOGIN, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-UserType': 'USER',
+        'X-SourceID': 'WEB',
+        'X-ClientLocalIP': '192.168.1.1',
+        'X-ClientPublicIP': '106.193.147.98',
+        'X-MACAddress': '00:00:00:00:00:00',
+        'X-PrivateKey': ANGEL_ONE_CONFIG.API_KEY
+      },
+      body: JSON.stringify({
+        clientcode: ANGEL_ONE_CONFIG.CLIENT_CODE,
+        password: ANGEL_ONE_CONFIG.PASSWORD
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Angel One authentication failed');
+    }
+
+    const data = await response.json();
+    if (data.status && data.data) {
+      angelOneAuthToken = data.data.jwtToken;
+      angelOneRefreshToken = data.data.refreshToken;
+      return true;
+    }
+    throw new Error('Invalid Angel One response');
+  } catch (error) {
+    console.error('Angel One authentication error:', error);
+    return false;
+  }
+};
+
+// Fetch stock data from Angel One API
+const fetchAngelOneData = async (stocks: typeof INDIAN_STOCKS) => {
+  try {
+    // Authenticate if no token exists
+    if (!angelOneAuthToken) {
+      const authSuccess = await authenticateAngelOne();
+      if (!authSuccess) {
+        throw new Error('Angel One authentication failed');
+      }
+    }
+
+    const promises = stocks.map(async (stock) => {
+      const response = await fetch(`${API_ENDPOINTS.ANGEL_ONE_MARKET_DATA}/getLTP`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${angelOneAuthToken}`,
+          'X-UserType': 'USER',
+          'X-SourceID': 'WEB',
+          'X-ClientLocalIP': '192.168.1.1',
+          'X-ClientPublicIP': '106.193.147.98',
+          'X-MACAddress': '00:00:00:00:00:00',
+          'X-PrivateKey': ANGEL_ONE_CONFIG.API_KEY
+        },
+        body: JSON.stringify({
+          exchange: 'NSE',
+          tradingsymbol: stock.nseSymbol,
+          symboltoken: stock.token
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch Angel One data for ${stock.symbol}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.status && data.data) {
+        const ltp = parseFloat(data.data.ltp);
+        const close = parseFloat(data.data.close);
+        const change = ltp - close;
+        const changePercent = (change / close) * 100;
+
+        return {
+          symbol: stock.nseSymbol,
+          name: stock.name,
+          price: ltp,
+          change: change,
+          changePercent: changePercent,
+          volume: 'N/A' // Volume requires separate API call
+        };
+      }
+      
+      throw new Error(`Invalid Angel One response for ${stock.symbol}`);
+    });
+
+    const results = await Promise.allSettled(promises);
+    return results
+      .filter(result => result.status === 'fulfilled')
+      .map(result => (result as PromiseFulfilledResult<any>).value);
+  } catch (error) {
+    console.error('Error fetching Angel One data:', error);
+    throw error;
+  }
+};
+
+// Fetch stock data from Yahoo Finance API (backup)
+const fetchYahooFinanceData = async (stocks: typeof INDIAN_STOCKS) => {
+  try {
+    const promises = stocks.map(async (stock) => {
+      const yahooSymbol = `${stock.nseSymbol}.NS`;
+      const response = await fetch(`${API_ENDPOINTS.YAHOO_FINANCE}/${yahooSymbol}?interval=1d&range=1d`, {
         headers: {
           'Accept': 'application/json',
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -49,7 +170,7 @@ const fetchYahooFinanceData = async (symbols: string[]) => {
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch data for ${symbol}`);
+        throw new Error(`Failed to fetch data for ${yahooSymbol}`);
       }
       
       const data = await response.json();
@@ -63,8 +184,8 @@ const fetchYahooFinanceData = async (symbols: string[]) => {
       const changePercent = (change / previousClose) * 100;
       
       return {
-        symbol: symbol.replace('.NS', ''),
-        name: INDIAN_STOCKS.find(s => s.symbol === symbol)?.name || symbol,
+        symbol: stock.nseSymbol,
+        name: stock.name,
         price: currentPrice,
         change: change,
         changePercent: changePercent,
@@ -82,68 +203,28 @@ const fetchYahooFinanceData = async (symbols: string[]) => {
   }
 };
 
-// Fetch data from Finnhub API (free tier available)
-const fetchFinnhubData = async (symbols: string[]) => {
-  try {
-    // Note: Finnhub requires API key for most endpoints, using demo key for basic quotes
-    const promises = symbols.map(async (symbol) => {
-      const nseSymbol = symbol.replace('.NS', '');
-      const response = await fetch(`${API_ENDPOINTS.FINNHUB_FREE}/quote?symbol=${nseSymbol}&token=demo`, {
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch Finnhub data for ${symbol}`);
-      }
-      
-      const data = await response.json();
-      
-      return {
-        symbol: nseSymbol,
-        name: INDIAN_STOCKS.find(s => s.symbol === symbol)?.name || nseSymbol,
-        price: data.c, // current price
-        change: data.d, // change
-        changePercent: data.dp, // change percent
-        volume: 'N/A' // Volume not available in free tier
-      };
-    });
-    
-    const results = await Promise.allSettled(promises);
-    return results
-      .filter(result => result.status === 'fulfilled')
-      .map(result => (result as PromiseFulfilledResult<any>).value);
-  } catch (error) {
-    console.error('Error fetching Finnhub data:', error);
-    throw error;
-  }
-};
-
-// Primary function to fetch stock data with fallback APIs
+// Primary function to fetch stock data with Angel One as primary source
 const fetchStockData = async () => {
-  const symbols = INDIAN_STOCKS.map(stock => stock.symbol);
+  // Try Angel One first (primary API for Indian stocks)
+  try {
+    console.log('Attempting to fetch data from Angel One SmartAPI...');
+    const data = await fetchAngelOneData(INDIAN_STOCKS);
+    if (data.length > 0) {
+      return { data, source: 'Angel One SmartAPI' };
+    }
+  } catch (error) {
+    console.log('Angel One failed, trying Yahoo Finance backup...', error);
+  }
   
-  // Try Yahoo Finance first (most reliable for Indian stocks)
+  // Try Yahoo Finance as backup
   try {
     console.log('Attempting to fetch data from Yahoo Finance...');
-    const data = await fetchYahooFinanceData(symbols);
+    const data = await fetchYahooFinanceData(INDIAN_STOCKS);
     if (data.length > 0) {
-      return { data, source: 'Yahoo Finance' };
+      return { data, source: 'Yahoo Finance (Backup)' };
     }
   } catch (error) {
-    console.log('Yahoo Finance failed, trying Finnhub...');
-  }
-  
-  // Try Finnhub as backup
-  try {
-    console.log('Attempting to fetch data from Finnhub...');
-    const data = await fetchFinnhubData(symbols);
-    if (data.length > 0) {
-      return { data, source: 'Finnhub' };
-    }
-  } catch (error) {
-    console.log('Finnhub failed, using fallback data...');
+    console.log('Yahoo Finance failed, using fallback data...');
   }
   
   // If all APIs fail, use fallback data
@@ -204,7 +285,80 @@ const nseIndices = [
   { value: 'NIFTYREALTY', label: 'NIFTY REALTY' }
 ];
 
-// Fetch index data from Yahoo Finance
+// Fetch index data from Angel One API
+const fetchAngelOneIndexData = async (index: string) => {
+  try {
+    // Authenticate if no token exists
+    if (!angelOneAuthToken) {
+      const authSuccess = await authenticateAngelOne();
+      if (!authSuccess) {
+        throw new Error('Angel One authentication failed');
+      }
+    }
+
+    // Angel One index tokens
+    const indexTokens = {
+      'NIFTY': { token: '99926000', symbol: 'NIFTY 50' },
+      'BANKNIFTY': { token: '99926009', symbol: 'NIFTY BANK' },
+      'FINNIFTY': { token: '99926037', symbol: 'NIFTY FIN SERVICE' },
+      'MIDCPNIFTY': { token: '99926074', symbol: 'NIFTY MID SELECT' },
+      'NIFTYNEXT50': { token: '99926013', symbol: 'NIFTY NEXT 50' },
+      'NIFTYIT': { token: '99926018', symbol: 'NIFTY IT' },
+      'NIFTYPHARMA': { token: '99926020', symbol: 'NIFTY PHARMA' },
+      'NIFTYAUTO': { token: '99926016', symbol: 'NIFTY AUTO' },
+      'NIFTYMETAL': { token: '99926019', symbol: 'NIFTY METAL' },
+      'NIFTYREALTY': { token: '99926021', symbol: 'NIFTY REALTY' }
+    };
+
+    const indexInfo = indexTokens[index as keyof typeof indexTokens] || indexTokens['NIFTY'];
+    
+    const response = await fetch(`${API_ENDPOINTS.ANGEL_ONE_MARKET_DATA}/getLTP`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${angelOneAuthToken}`,
+        'X-UserType': 'USER',
+        'X-SourceID': 'WEB',
+        'X-ClientLocalIP': '192.168.1.1',
+        'X-ClientPublicIP': '106.193.147.98',
+        'X-MACAddress': '00:00:00:00:00:00',
+        'X-PrivateKey': ANGEL_ONE_CONFIG.API_KEY
+      },
+      body: JSON.stringify({
+        exchange: 'NSE',
+        tradingsymbol: indexInfo.symbol,
+        symboltoken: indexInfo.token
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch index data from Angel One');
+    }
+    
+    const data = await response.json();
+    
+    if (data.status && data.data) {
+      const currentPrice = parseFloat(data.data.ltp);
+      const previousClose = parseFloat(data.data.close);
+      const change = currentPrice - previousClose;
+      const changePercent = (change / previousClose) * 100;
+      
+      return {
+        price: currentPrice,
+        change: change,
+        changePercent: changePercent
+      };
+    }
+    
+    throw new Error('Invalid Angel One index response');
+  } catch (error) {
+    console.error('Error fetching Angel One index data:', error);
+    throw error;
+  }
+};
+
+// Fetch index data from Yahoo Finance (backup)
 const fetchYahooIndexData = async (index: string) => {
   try {
     const indexSymbols = {
@@ -269,18 +423,27 @@ const generateFallbackOptionChain = (index: string) => {
   }));
 };
 
-// Fetch live spot price for indices with multiple API fallbacks
+// Fetch live spot price for indices with Angel One as primary source
 const fetchSpotPrice = async (index: string) => {
-  // Try Yahoo Finance first
+  // Try Angel One first
+  try {
+    console.log(`Fetching ${index} data from Angel One...`);
+    const data = await fetchAngelOneIndexData(index);
+    return { ...data, source: 'Angel One SmartAPI' };
+  } catch (error) {
+    console.log('Angel One failed for index data, trying Yahoo Finance backup...');
+  }
+  
+  // Try Yahoo Finance as backup
   try {
     console.log(`Fetching ${index} data from Yahoo Finance...`);
     const data = await fetchYahooIndexData(index);
-    return { ...data, source: 'Yahoo Finance' };
+    return { ...data, source: 'Yahoo Finance (Backup)' };
   } catch (error) {
     console.log('Yahoo Finance failed for index data, using fallback...');
   }
   
-  // If Yahoo Finance fails, use fallback
+  // If all APIs fail, use fallback
   throw new Error('All index APIs failed');
 };
 
@@ -401,7 +564,7 @@ export default function StockPage() {
               <BarChart3 className="h-8 w-8 text-primary" />
               <div>
                 <h1 className="text-3xl font-heading font-bold text-foreground">Stock Market</h1>
-                <p className="text-sm text-secondary-foreground-alt">Multi-source market data from free APIs</p>
+                <p className="text-sm text-secondary-foreground-alt">Live market data powered by Angel One SmartAPI</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -427,22 +590,25 @@ export default function StockPage() {
         </div>
       </header>
 
-      {/* Data Source Alert */}
-      {apiStatus !== 'connected' && (
-        <div className="max-w-[120rem] mx-auto px-6 pt-4">
-          <Alert className="border-orange-200 bg-orange-50">
-            <AlertCircle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-orange-800">
-              <strong>Note:</strong> Currently showing recent market data with simulated variations. 
-              The app attempts to fetch live data from Yahoo Finance and Finnhub APIs. 
-              Data refreshes every 60 seconds when APIs are available.
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
+      {/* API Configuration Alert */}
+      <div className="max-w-[120rem] mx-auto px-6 pt-4">
+        <Alert className="border-blue-200 bg-blue-50">
+          <AlertCircle className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-800">
+            <strong>Angel One SmartAPI Integration:</strong> To get live data, you need to configure your Angel One credentials. 
+            Replace the demo credentials in the code with your actual Angel One API key, client code, and password. 
+            {apiStatus === 'connected' ? (
+              <span className="text-green-700 font-medium"> ✓ Currently connected to {dataSource}</span>
+            ) : (
+              <span className="text-orange-700"> Currently using fallback data.</span>
+            )}
+          </AlertDescription>
+        </Alert>
+      </div>
 
+      {/* Data Source Alert */}
       {apiStatus === 'connected' && (
-        <div className="max-w-[120rem] mx-auto px-6 pt-4">
+        <div className="max-w-[120rem] mx-auto px-6 pt-2">
           <Alert className="border-green-200 bg-green-50">
             <Wifi className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-800">
@@ -470,6 +636,11 @@ export default function StockPage() {
                   {apiStatus === 'connected' && (
                     <Badge variant="outline" className="ml-2 text-green-600 border-green-600">
                       Live from {dataSource}
+                    </Badge>
+                  )}
+                  {apiStatus !== 'connected' && (
+                    <Badge variant="outline" className="ml-2 text-orange-600 border-orange-600">
+                      Demo Data
                     </Badge>
                   )}
                 </CardTitle>
@@ -651,10 +822,13 @@ export default function StockPage() {
                 <div className="mt-4 text-xs text-secondary-foreground-alt">
                   <p>OI = Open Interest, LTP = Last Traded Price</p>
                   <p>Stock data source: {apiStatus === 'connected' ? `Live ${dataSource} API` : 'Recent closing data with simulated variations'}</p>
-                  <p>Option data: Simulated (real option data requires premium APIs)</p>
+                  <p>Option data: Simulated (real option data available with Angel One premium subscription)</p>
                   <p>Scroll horizontally to view all strike prices</p>
                   <p className="text-blue-600 mt-2">
-                    <strong>API Sources:</strong> Yahoo Finance (primary), Finnhub (backup), with automatic fallback to recent data.
+                    <strong>API Sources:</strong> Angel One SmartAPI (primary), Yahoo Finance (backup), with automatic fallback to recent data.
+                  </p>
+                  <p className="text-green-600 mt-1">
+                    <strong>Setup:</strong> Configure your Angel One credentials in ANGEL_ONE_CONFIG to get live data.
                   </p>
                 </div>
               </CardContent>
