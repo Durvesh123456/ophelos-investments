@@ -86,7 +86,7 @@ export default function ContactPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-primary py-16">
+      <section className="bg-gray-800 py-16">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
           <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
             Get in Touch
