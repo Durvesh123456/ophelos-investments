@@ -211,42 +211,42 @@ export default function AumDetailsPage() {
       </section>
 
       {/* Performance Metrics */}
-      <section className="py-16 bg-primary">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6">
-          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-12 text-center">
+          <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
             Performance Highlights
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="text-5xl font-heading font-bold text-primary-foreground mb-4">
+              <div className="text-5xl font-heading font-bold text-secondary-foreground mb-4">
                 12.5%
               </div>
-              <p className="font-paragraph text-xl text-primary-foreground/90 mb-2">
+              <p className="font-paragraph text-xl text-secondary-foreground/90 mb-2">
                 Average Annual Return
               </p>
-              <p className="font-paragraph text-sm text-primary-foreground/70">
+              <p className="font-paragraph text-sm text-secondary-foreground/70">
                 Across all fund categories over 5 years
               </p>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-heading font-bold text-primary-foreground mb-4">
+              <div className="text-5xl font-heading font-bold text-secondary-foreground mb-4">
                 95%
               </div>
-              <p className="font-paragraph text-xl text-primary-foreground/90 mb-2">
+              <p className="font-paragraph text-xl text-secondary-foreground/90 mb-2">
                 Client Retention Rate
               </p>
-              <p className="font-paragraph text-sm text-primary-foreground/70">
+              <p className="font-paragraph text-sm text-secondary-foreground/70">
                 High satisfaction and trust levels
               </p>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-heading font-bold text-primary-foreground mb-4">
+              <div className="text-5xl font-heading font-bold text-secondary-foreground mb-4">
                 4.8/5
               </div>
-              <p className="font-paragraph text-xl text-primary-foreground/90 mb-2">
+              <p className="font-paragraph text-xl text-secondary-foreground/90 mb-2">
                 Client Satisfaction Score
               </p>
-              <p className="font-paragraph text-sm text-primary-foreground/70">
+              <p className="font-paragraph text-sm text-secondary-foreground/70">
                 Based on annual client surveys
               </p>
             </div>
@@ -295,19 +295,19 @@ export default function AumDetailsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6">
+          <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-6">
             Join Our Growing Family of Investors
           </h2>
-          <p className="font-paragraph text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+          <p className="font-paragraph text-xl text-secondary-foreground/90 mb-8 max-w-2xl mx-auto">
             Be part of our success story and let us help you achieve your financial goals with our proven track record and expertise.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg">
               <Link to="/contact">Start Investing</Link>
             </Button>
-            <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg">
+            <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-black px-8 py-3 text-lg">
               <Link to="/contact">Schedule Meeting</Link>
             </Button>
           </div>
