@@ -72,10 +72,10 @@ export default function HomePage() {
               Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="bg-gradient-to-r from-white to-gray-300 hover:from-gray-300 hover:to-white text-primary-foreground px-8 py-3 text-lg border border-white/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+              <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
-              <Button variant="outline" asChild className="border-white/60 text-white hover:bg-white/10 hover:text-white px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+              <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
                 <Link to="/contact">Schedule Consultation</Link>
               </Button>
             </div>
@@ -201,7 +201,7 @@ export default function HomePage() {
             Join thousands of investors who trust Ophelos Investments for their mutual fund investments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+            <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
               <Link to="/mutual-funds">View Our Funds</Link>
             </Button>
             <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
@@ -225,7 +225,7 @@ export default function HomePage() {
               Speak directly with our investment experts for personalized guidance
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+              <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
                 <a href="tel:+917620408920">
                   <Phone className="w-5 h-5 mr-2" />
                   Call Now: +91 7620408920

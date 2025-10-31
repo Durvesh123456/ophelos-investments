@@ -418,7 +418,7 @@ export default function InvestorResourcesPage() {
               <p className="font-paragraph text-secondary-foreground/70 mb-8">
                 We're preparing comprehensive educational content for our investors. Please check back soon or contact us for personalized guidance.
               </p>
-              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white">
                 <Link to="/contact">Contact Our Advisors</Link>
               </Button>
             </div>
@@ -465,11 +465,11 @@ export default function InvestorResourcesPage() {
                       </p>
                       
                       <div className="flex space-x-3 pt-4">
-                        <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+                        <Button className="flex-1 bg-gray-600 hover:bg-gray-700 text-white">
                           Read More
                         </Button>
                         {resource.externalUrl && (
-                          <Button variant="outline" size="sm" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                          <Button variant="outline" size="sm" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700">
                             <a href={resource.externalUrl} target="_blank" rel="noopener noreferrer">
                               <ExternalLink className="w-4 h-4" />
                             </a>
@@ -512,7 +512,7 @@ export default function InvestorResourcesPage() {
                 <p className="font-paragraph text-secondary-foreground/80 text-sm mb-4">
                   Plan your investments to achieve specific financial goals.
                 </p>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button className="w-full bg-gray-600 hover:bg-gray-700 text-white">
                   Plan Now
                 </Button>
               </CardContent>
@@ -528,7 +528,7 @@ export default function InvestorResourcesPage() {
                 <p className="font-paragraph text-secondary-foreground/80 text-sm mb-4">
                   Assess your risk tolerance and investment preferences.
                 </p>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button className="w-full bg-gray-600 hover:bg-gray-700 text-white">
                   Assess Risk
                 </Button>
               </CardContent>
@@ -544,7 +544,7 @@ export default function InvestorResourcesPage() {
                 <p className="font-paragraph text-secondary-foreground/80 text-sm mb-4">
                   Understand tax implications of your mutual fund investments.
                 </p>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button className="w-full bg-gray-600 hover:bg-gray-700 text-white">
                   Calculate Tax
                 </Button>
               </CardContent>
@@ -563,10 +563,10 @@ export default function InvestorResourcesPage() {
             Armed with knowledge, take the next step towards building your wealth with our expert guidance and carefully selected mutual funds.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 py-3 text-lg">
+            <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg">
               <Link to="/contact">Explore Our Funds</Link>
             </Button>
-            <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
+            <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg">
               <Link to="/contact">Get Expert Advice</Link>
             </Button>
           </div>

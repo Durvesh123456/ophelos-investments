@@ -144,7 +144,7 @@ export default function MutualFundsPage() {
               <p className="font-paragraph text-secondary-foreground/70 mb-8">
                 We're currently updating our fund portfolio. Please check back soon or contact us for more information.
               </p>
-              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+              <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white border border-gray-400 shadow-soft-glow transition-all duration-300">
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
@@ -222,7 +222,7 @@ export default function MutualFundsPage() {
                     </div>
 
                     <div className="flex pt-4">
-                      <Button asChild className="w-full bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+                      <Button asChild className="w-full bg-gray-600 hover:bg-gray-700 text-white border border-gray-400 shadow-soft-glow transition-all duration-300">
                         <Link to="/contact">Invest Now</Link>
                       </Button>
                     </div>
@@ -249,7 +249,7 @@ export default function MutualFundsPage() {
             Our expert advisors are here to help you select the perfect mutual fund based on your financial goals and risk tolerance.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
+            <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
               <Link to="/contact">Schedule Consultation</Link>
             </Button>
             <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">

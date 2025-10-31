@@ -304,10 +304,10 @@ export default function AumDetailsPage() {
             Be part of our success story and let us help you achieve your financial goals with our proven track record and expertise.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 py-3 text-lg">
+            <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg">
               <Link to="/contact">Start Investing</Link>
             </Button>
-            <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
+            <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg">
               <Link to="/contact">Schedule Meeting</Link>
             </Button>
           </div>
