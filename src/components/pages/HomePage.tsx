@@ -17,8 +17,8 @@ export default function HomePage() {
         {/* Background Image with Futuristic Overlay */}
         <div className="absolute inset-0">
           <Image
-            src="https://static.wixstatic.com/media/7afb6a_0691f8b4c514473c8fd7e13c193c65f8~mv2.png?originWidth=1600&originHeight=896"
-            alt="Late-night view of New York City's highest building with rectangular forest area, modern cityscape with illuminated windows"
+            src="https://static.wixstatic.com/media/7afb6a_f1025b29878c48cdbeddce62f166c44d~mv2.png?originWidth=1600&originHeight=896"
+            alt="Night aerial view of New York City showing Central Park in the middle, surrounded by illuminated skyscrapers and city lights"
             className="w-full h-full object-cover object-top"
             width={1600}
           />
