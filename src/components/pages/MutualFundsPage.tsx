@@ -65,9 +65,9 @@ export default function MutualFundsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-secondary flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neon-cyan mx-auto mb-4"></div>
           <p className="font-paragraph text-secondary-foreground">Loading mutual funds...</p>
         </div>
       </div>
@@ -75,36 +75,39 @@ export default function MutualFundsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-background">
+      {/* Cyber Grid Background */}
+      <div className="fixed inset-0 bg-cyber-grid opacity-10 pointer-events-none"></div>
+      
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-secondary/90 backdrop-blur-sm shadow-soft-glow border-b border-neon-cyan/20">
         <div className="max-w-[100rem] mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="text-secondary-foreground">
+              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Home
                 </Link>
               </Button>
-              <div className="text-primary font-heading text-2xl font-bold">
+              <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
                 Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-primary font-paragraph font-semibold">
+              <Link to="/mutual-funds" className="text-neon-cyan font-paragraph font-semibold">
                 Mutual Funds
               </Link>
-              <Link to="/investor-resources" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/investor-resources" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Investor Resources
               </Link>
-              <Link to="/aum-details" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/aum-details" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 AUM Details
               </Link>
-              <Link to="/contact" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/contact" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Contact
               </Link>
             </div>
@@ -113,9 +116,14 @@ export default function MutualFundsPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-primary py-16">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
+      <section className="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-700 py-16 relative overflow-hidden">
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/10 via-transparent to-neon-purple/10 animate-pulse"></div>
+        </div>
+        
+        <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
+          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
             Our Mutual Fund Portfolio
           </h1>
           <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">
@@ -125,25 +133,25 @@ export default function MutualFundsPage() {
       </section>
 
       {/* Funds Grid */}
-      <section className="py-16">
+      <section className="py-16 bg-secondary relative">
         <div className="max-w-[100rem] mx-auto px-6">
           {funds.length === 0 ? (
             <div className="text-center py-16">
-              <TrendingUp className="w-16 h-16 text-primary mx-auto mb-6" />
+              <TrendingUp className="w-16 h-16 text-neon-cyan mx-auto mb-6 animate-subtle-glow" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground mb-4">
                 No Mutual Funds Available
               </h3>
               <p className="font-paragraph text-secondary-foreground/70 mb-8">
                 We're currently updating our fund portfolio. Please check back soon or contact us for more information.
               </p>
-              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {funds.map((fund) => (
-                <Card key={fund._id} className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <Card key={fund._id} className="bg-secondary/80 backdrop-blur-sm border border-neon-cyan/20 shadow-soft-glow hover:shadow-neon transition-all duration-300 hover:border-neon-cyan/40">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between mb-4">
                       {fund.fundLogo && (
@@ -206,7 +214,7 @@ export default function MutualFundsPage() {
                               XIRR (Since Inception):
                             </span>
                           </div>
-                          <span className="font-paragraph text-sm font-semibold text-green-600">
+                          <span className="font-paragraph text-sm font-semibold text-neon-green">
                             {formatXIRR(fund.xirr)}
                           </span>
                         </div>
@@ -214,7 +222,7 @@ export default function MutualFundsPage() {
                     </div>
 
                     <div className="flex pt-4">
-                      <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                      <Button asChild className="w-full bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                         <Link to="/contact">Invest Now</Link>
                       </Button>
                     </div>
@@ -227,19 +235,24 @@ export default function MutualFundsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6">
+      <section className="py-16 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-700 relative overflow-hidden">
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/10 via-transparent to-neon-purple/10 animate-pulse"></div>
+        </div>
+        
+        <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
+          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
             Need Help Choosing the Right Fund?
           </h2>
           <p className="font-paragraph text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
             Our expert advisors are here to help you select the perfect mutual fund based on your financial goals and risk tolerance.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 py-3 text-lg">
+            <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
               <Link to="/contact">Schedule Consultation</Link>
             </Button>
-            <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
+            <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
               <Link to="/investor-resources">Learn More</Link>
             </Button>
           </div>
@@ -247,25 +260,31 @@ export default function MutualFundsPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary-foreground text-primary-foreground py-12">
-        <div className="max-w-[100rem] mx-auto px-6">
+      <footer className="bg-dark-900 text-primary-foreground py-12 border-t border-neon-cyan/20 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-radial from-neon-purple/10 to-transparent rounded-full"></div>
+        </div>
+        
+        <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4">Ophelos Investments</h3>
+              <h3 className="font-heading text-xl font-bold mb-4 text-neon-cyan">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4">Quick Links</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-purple">Quick Links</h4>
               <ul className="space-y-2 font-paragraph">
-                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-primary-foreground">Mutual Funds</Link></li>
-                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-primary-foreground">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM Details</Link></li>
+                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Mutual Funds</Link></li>
+                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Investor Resources</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">AUM Details</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4">Services</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-green">Services</h4>
               <ul className="space-y-2 font-paragraph">
                 <li className="text-primary-foreground/80">Portfolio Management</li>
                 <li className="text-primary-foreground/80">Investment Advisory</li>
@@ -273,7 +292,7 @@ export default function MutualFundsPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-pink">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
                 <p>ARN: 285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
@@ -281,7 +300,7 @@ export default function MutualFundsPage() {
               </div>
             </div>
           </div>
-          <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center font-paragraph text-primary-foreground/60">
+          <div className="border-t border-neon-cyan/20 mt-8 pt-8 text-center font-paragraph text-primary-foreground/60">
             <p>&copy; 2024 Ophelos Investments. All rights reserved. | Mutual Fund investments are subject to market risks.</p>
           </div>
         </div>

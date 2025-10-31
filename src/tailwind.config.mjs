@@ -55,25 +55,34 @@ export default {
                 'cyber-grid': 'linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)',
             },
             animation: {
-                'pulse-neon': 'pulse-neon 2s ease-in-out infinite alternate',
+                'pulse-neon': 'pulse-neon 3s ease-in-out infinite alternate',
                 'glow': 'glow 2s ease-in-out infinite alternate',
                 'float': 'float 3s ease-in-out infinite',
-                'cyber-scan': 'cyber-scan 3s linear infinite',
+                'cyber-scan': 'cyber-scan 4s linear infinite',
+                'subtle-glow': 'subtle-glow 2s ease-in-out infinite alternate',
             },
             keyframes: {
                 'pulse-neon': {
                     '0%': { 
-                        boxShadow: '0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF',
-                        textShadow: '0 0 5px #00FFFF'
+                        boxShadow: '0 0 3px rgba(0, 255, 255, 0.3), 0 0 6px rgba(0, 255, 255, 0.2)',
+                        textShadow: '0 0 3px rgba(0, 255, 255, 0.4)'
                     },
                     '100%': { 
-                        boxShadow: '0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #00FFFF',
-                        textShadow: '0 0 10px #00FFFF'
+                        boxShadow: '0 0 6px rgba(0, 255, 255, 0.4), 0 0 12px rgba(0, 255, 255, 0.3)',
+                        textShadow: '0 0 6px rgba(0, 255, 255, 0.5)'
+                    }
+                },
+                'subtle-glow': {
+                    '0%': { 
+                        textShadow: '0 0 2px rgba(0, 255, 255, 0.3)'
+                    },
+                    '100%': { 
+                        textShadow: '0 0 4px rgba(0, 255, 255, 0.4)'
                     }
                 },
                 'glow': {
                     '0%': { filter: 'brightness(1) saturate(1)' },
-                    '100%': { filter: 'brightness(1.2) saturate(1.3)' }
+                    '100%': { filter: 'brightness(1.1) saturate(1.2)' }
                 },
                 'float': {
                     '0%, 100%': { transform: 'translateY(0px)' },
@@ -85,9 +94,10 @@ export default {
                 }
             },
             boxShadow: {
-                'neon': '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor',
-                'neon-lg': '0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor',
-                'cyber': '0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.1)',
+                'neon': '0 0 3px rgba(0, 255, 255, 0.4), 0 0 6px rgba(0, 255, 255, 0.3)',
+                'neon-lg': '0 0 6px rgba(0, 255, 255, 0.5), 0 0 12px rgba(0, 255, 255, 0.4)',
+                'cyber': '0 0 15px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.05)',
+                'soft-glow': '0 0 8px rgba(0, 255, 255, 0.2), 0 0 16px rgba(0, 255, 255, 0.1)',
             },
         },
     },

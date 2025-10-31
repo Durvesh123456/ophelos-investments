@@ -6,36 +6,39 @@ import { ArrowLeft, TrendingUp, PieChart, BarChart3, Users, Calendar, Award, Shi
 
 export default function AumDetailsPage() {
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-background">
+      {/* Cyber Grid Background */}
+      <div className="fixed inset-0 bg-cyber-grid opacity-10 pointer-events-none"></div>
+      
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-secondary/90 backdrop-blur-sm shadow-soft-glow border-b border-neon-cyan/20">
         <div className="max-w-[100rem] mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="text-secondary-foreground">
+              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Home
                 </Link>
               </Button>
-              <div className="text-primary font-heading text-2xl font-bold">
+              <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
                 Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Mutual Funds
               </Link>
-              <Link to="/investor-resources" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/investor-resources" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Investor Resources
               </Link>
-              <Link to="/aum-details" className="text-primary font-paragraph font-semibold">
+              <Link to="/aum-details" className="text-neon-cyan font-paragraph font-semibold">
                 AUM Details
               </Link>
-              <Link to="/contact" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+              <Link to="/contact" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Contact
               </Link>
             </div>
@@ -44,9 +47,14 @@ export default function AumDetailsPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-primary py-16">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
+      <section className="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-700 py-16 relative overflow-hidden">
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/10 via-transparent to-neon-purple/10 animate-pulse"></div>
+        </div>
+        
+        <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
+          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
             Assets Under Management
           </h1>
           <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">

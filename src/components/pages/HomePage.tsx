@@ -27,9 +27,9 @@ export default function HomePage() {
         </div>
 
         {/* Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-20 p-6 backdrop-blur-sm bg-dark-900/20 border-b border-neon-cyan/20">
+        <nav className="absolute top-0 left-0 right-0 z-20 p-6 backdrop-blur-sm bg-dark-900/30 border-b border-neon-cyan/10">
           <div className="max-w-[100rem] mx-auto flex justify-between items-center">
-            <div className="text-neon-cyan font-heading text-2xl font-bold animate-pulse-neon">
+            <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
               Ophelos Investments
             </div>
             <div className="hidden md:flex space-x-8">
@@ -72,10 +72,10 @@ export default function HomePage() {
               Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan shadow-neon transition-all duration-300 hover:shadow-neon-lg">
+              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
-              <Button variant="outline" asChild className="border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-primary-foreground px-8 py-3 text-lg shadow-neon transition-all duration-300 hover:shadow-neon-lg backdrop-blur-sm">
+              <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
                 <Link to="/contact">Schedule Consultation</Link>
               </Button>
             </div>
@@ -103,7 +103,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-neon-cyan to-neon-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-cyber group-hover:shadow-neon-lg transition-all duration-300 group-hover:animate-pulse-neon">
+              <div className="bg-gradient-to-br from-neon-cyan to-neon-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <TrendingUp className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-cyan transition-colors duration-300">
@@ -115,7 +115,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-neon-purple to-neon-pink w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-cyber group-hover:shadow-neon-lg transition-all duration-300 group-hover:animate-pulse-neon">
+              <div className="bg-gradient-to-br from-neon-purple to-neon-pink w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Shield className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-purple transition-colors duration-300">
@@ -127,7 +127,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-neon-green to-neon-cyan w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-cyber group-hover:shadow-neon-lg transition-all duration-300 group-hover:animate-pulse-neon">
+              <div className="bg-gradient-to-br from-neon-green to-neon-cyan w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Users className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-green transition-colors duration-300">
@@ -139,7 +139,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gradient-to-br from-neon-pink to-neon-purple w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-cyber group-hover:shadow-neon-lg transition-all duration-300 group-hover:animate-pulse-neon">
+              <div className="bg-gradient-to-br from-neon-pink to-neon-purple w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Award className="w-8 h-8 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-pink transition-colors duration-300">
@@ -201,10 +201,10 @@ export default function HomePage() {
             Join thousands of investors who trust Ophelos Investments for their mutual fund investments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan shadow-neon transition-all duration-300 hover:shadow-neon-lg">
+            <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
               <Link to="/mutual-funds">View Our Funds</Link>
             </Button>
-            <Button variant="outline" asChild className="border-neon-purple text-neon-purple hover:bg-neon-purple hover:text-primary-foreground px-8 py-3 text-lg shadow-neon transition-all duration-300 hover:shadow-neon-lg backdrop-blur-sm">
+            <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
               <Link to="/contact">Contact Us Today</Link>
             </Button>
           </div>
@@ -216,7 +216,7 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="bg-gradient-to-br from-secondary to-dark-800 rounded-lg shadow-cyber border border-neon-cyan/30 p-6 text-center backdrop-blur-sm">
             <div className="flex items-center justify-center mb-4">
-              <Phone className="w-8 h-8 text-neon-cyan mr-3 animate-pulse-neon" />
+              <Phone className="w-8 h-8 text-neon-cyan mr-3 animate-subtle-glow" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground">
                 Need Immediate Assistance?
               </h3>
@@ -225,7 +225,7 @@ export default function HomePage() {
               Speak directly with our investment experts for personalized guidance
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan shadow-neon transition-all duration-300 hover:shadow-neon-lg">
+              <Button asChild className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-primary-foreground px-8 py-3 text-lg border border-neon-cyan/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                 <a href="tel:+917620408920">
                   <Phone className="w-5 h-5 mr-2" />
                   Call Now: +91 7620408920

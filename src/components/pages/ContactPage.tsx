@@ -45,9 +45,12 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-background">
+      {/* Cyber Grid Background */}
+      <div className="fixed inset-0 bg-cyber-grid opacity-10 pointer-events-none"></div>
+      
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
+      <nav className="bg-secondary/90 backdrop-blur-sm shadow-soft-glow border-b border-neon-cyan/20">
         <div className="max-w-[100rem] mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
