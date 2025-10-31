@@ -48,7 +48,6 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       {/* Cyber Grid Background */}
       <div className="fixed inset-0 bg-cyber-grid opacity-10 pointer-events-none"></div>
-      
       {/* Navigation */}
       <nav className="bg-secondary/90 backdrop-blur-sm shadow-soft-glow border-b border-neon-cyan/20">
         <div className="max-w-[100rem] mx-auto px-6 py-4">
@@ -84,7 +83,6 @@ export default function ContactPage() {
           </div>
         </div>
       </nav>
-
       {/* Hero Section */}
       <section className="bg-gray-800 py-16">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
@@ -96,7 +94,6 @@ export default function ContactPage() {
           </p>
         </div>
       </section>
-
       {/* Contact Form & Info */}
       <section className="py-16">
         <div className="max-w-[100rem] mx-auto px-6">
@@ -170,15 +167,15 @@ export default function ContactPage() {
 
                       <div>
                         <label className="block text-black font-paragraph text-sm font-medium mb-2">
-                          Phone Number
-                        </label>
+                            Phone Number
+                          </label>
                         <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
-                        />
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph"
+                      />
                       </div>
 
                       <div>
@@ -331,7 +328,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
       {/* FAQ Section */}
       <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6">
@@ -372,7 +368,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-secondary-foreground text-primary-foreground py-12">
         <div className="max-w-[100rem] mx-auto px-6">
