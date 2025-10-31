@@ -116,10 +116,10 @@ export default function ContactPage() {
                   {isSubmitted ? (
                     <div className="text-center py-8">
                       <CheckCircle className="w-16 h-16 text-white mx-auto mb-4" />
-                      <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">
+                      <h3 className="font-heading text-xl font-bold text-black mb-2">
                         Thank You!
                       </h3>
-                      <p className="font-paragraph text-secondary-foreground/70">
+                      <p className="font-paragraph text-black/70">
                         Your message has been sent successfully. We'll contact you soon.
                       </p>
                     </div>
@@ -127,7 +127,7 @@ export default function ContactPage() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                          <label className="block text-black font-paragraph text-sm font-medium mb-2">
                             First Name *
                           </label>
                           <input
@@ -140,7 +140,7 @@ export default function ContactPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                          <label className="block text-black font-paragraph text-sm font-medium mb-2">
                             Last Name *
                           </label>
                           <input
@@ -155,7 +155,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                        <label className="block text-black font-paragraph text-sm font-medium mb-2">
                           Email Address *
                         </label>
                         <input
@@ -169,7 +169,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                        <label className="block text-black font-paragraph text-sm font-medium mb-2">
                           Phone Number
                         </label>
                         <input
@@ -182,7 +182,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                        <label className="block text-black font-paragraph text-sm font-medium mb-2">
                           Investment Amount Range
                         </label>
                         <select
@@ -200,7 +200,7 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-secondary-foreground font-paragraph text-sm font-medium mb-2">
+                        <label className="block text-black font-paragraph text-sm font-medium mb-2">
                           Message
                         </label>
                         <textarea
