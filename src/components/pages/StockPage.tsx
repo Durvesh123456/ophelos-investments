@@ -8,83 +8,180 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrendingUp, TrendingDown, Activity, BarChart3, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// NSE API endpoints for fetching real market data
-const NSE_BASE_URL = 'https://www.nseindia.com/api';
+// Multiple API endpoints for fetching real market data
+const API_ENDPOINTS = {
+  // Free APIs that don't require API keys
+  YAHOO_FINANCE: 'https://query1.finance.yahoo.com/v8/finance/chart',
+  FINNHUB_FREE: 'https://finnhub.io/api/v1',
+  ALPHA_VANTAGE: 'https://www.alphavantage.co/query',
+  // Backup NSE endpoint
+  NSE_BASE_URL: 'https://www.nseindia.com/api'
+};
 
-// Nifty 50 stock symbols for API calls
-const NIFTY_50_SYMBOLS = [
-  'RELIANCE', 'TCS', 'HDFCBANK', 'INFY', 'ICICIBANK', 'HINDUNILVR', 'ITC', 'SBIN',
-  'BHARTIARTL', 'KOTAKBANK', 'LT', 'HCLTECH', 'ASIANPAINT', 'MARUTI', 'SUNPHARMA',
-  'AXISBANK', 'BAJFINANCE', 'BAJAJFINSV', 'HDFCLIFE', 'SBILIFE', 'POWERGRID',
-  'NTPC', 'COALINDIA', 'ULTRACEMCO', 'NESTLEIND', 'WIPRO', 'TECHM', 'TITAN',
-  'DIVISLAB', 'DRREDDY', 'CIPLA', 'APOLLOHOSP', 'ADANIPORTS', 'JSWSTEEL',
-  'TATAMOTORS', 'INDUSINDBK', 'BRITANNIA', 'EICHERMOT', 'HEROMOTOCO', 'BAJAJ-AUTO',
-  'ONGC', 'GRASIM', 'HINDALCO', 'SHREECEM', 'UPL', 'BPCL', 'TATASTEEL', 'TATACONSUM', 'M&M', 'ADANIENT'
+// Popular Indian stocks with their Yahoo Finance symbols
+const INDIAN_STOCKS = [
+  { symbol: 'RELIANCE.NS', name: 'Reliance Industries', nseSymbol: 'RELIANCE' },
+  { symbol: 'TCS.NS', name: 'Tata Consultancy Services', nseSymbol: 'TCS' },
+  { symbol: 'HDFCBANK.NS', name: 'HDFC Bank', nseSymbol: 'HDFCBANK' },
+  { symbol: 'INFY.NS', name: 'Infosys', nseSymbol: 'INFY' },
+  { symbol: 'ICICIBANK.NS', name: 'ICICI Bank', nseSymbol: 'ICICIBANK' },
+  { symbol: 'HINDUNILVR.NS', name: 'Hindustan Unilever', nseSymbol: 'HINDUNILVR' },
+  { symbol: 'ITC.NS', name: 'ITC Limited', nseSymbol: 'ITC' },
+  { symbol: 'SBIN.NS', name: 'State Bank of India', nseSymbol: 'SBIN' },
+  { symbol: 'BHARTIARTL.NS', name: 'Bharti Airtel', nseSymbol: 'BHARTIARTL' },
+  { symbol: 'KOTAKBANK.NS', name: 'Kotak Mahindra Bank', nseSymbol: 'KOTAKBANK' },
+  { symbol: 'LT.NS', name: 'Larsen & Toubro', nseSymbol: 'LT' },
+  { symbol: 'HCLTECH.NS', name: 'HCL Technologies', nseSymbol: 'HCLTECH' },
+  { symbol: 'ASIANPAINT.NS', name: 'Asian Paints', nseSymbol: 'ASIANPAINT' },
+  { symbol: 'MARUTI.NS', name: 'Maruti Suzuki', nseSymbol: 'MARUTI' },
+  { symbol: 'SUNPHARMA.NS', name: 'Sun Pharmaceutical', nseSymbol: 'SUNPHARMA' }
 ];
 
-// Fetch Nifty 50 stocks data from NSE
-const fetchNifty50Data = async () => {
+// Fetch stock data from Yahoo Finance API (free, no API key required)
+const fetchYahooFinanceData = async (symbols: string[]) => {
   try {
-    // Note: This is a demonstration of how the API call would work
-    // In a real implementation, you would need a backend proxy to handle CORS
-    const response = await fetch(`${NSE_BASE_URL}/equity-stockIndices?index=NIFTY%2050`, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    const promises = symbols.map(async (symbol) => {
+      const response = await fetch(`${API_ENDPOINTS.YAHOO_FINANCE}/${symbol}?interval=1d&range=1d`, {
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data for ${symbol}`);
       }
+      
+      const data = await response.json();
+      const result = data.chart.result[0];
+      const meta = result.meta;
+      const quote = result.indicators.quote[0];
+      
+      const currentPrice = meta.regularMarketPrice || quote.close[quote.close.length - 1];
+      const previousClose = meta.previousClose;
+      const change = currentPrice - previousClose;
+      const changePercent = (change / previousClose) * 100;
+      
+      return {
+        symbol: symbol.replace('.NS', ''),
+        name: INDIAN_STOCKS.find(s => s.symbol === symbol)?.name || symbol,
+        price: currentPrice,
+        change: change,
+        changePercent: changePercent,
+        volume: meta.regularMarketVolume ? (meta.regularMarketVolume / 1000000).toFixed(1) + 'M' : 'N/A'
+      };
     });
     
-    if (!response.ok) {
-      throw new Error('Failed to fetch NSE data');
-    }
-    
-    const data = await response.json();
-    return data.data.map((stock: any) => ({
-      symbol: stock.symbol,
-      name: stock.companyName,
-      price: parseFloat(stock.lastPrice),
-      change: parseFloat(stock.change),
-      changePercent: parseFloat(stock.pChange),
-      volume: stock.totalTradedVolume ? (parseFloat(stock.totalTradedVolume) / 1000000).toFixed(1) + 'M' : 'N/A'
-    }));
+    const results = await Promise.allSettled(promises);
+    return results
+      .filter(result => result.status === 'fulfilled')
+      .map(result => (result as PromiseFulfilledResult<any>).value);
   } catch (error) {
-    console.error('Error fetching NSE data:', error);
-    // Fallback to cached/recent data simulation
-    return generateFallbackNifty50Data();
+    console.error('Error fetching Yahoo Finance data:', error);
+    throw error;
   }
 };
 
-// Fallback data based on recent NSE closing prices (when API is unavailable)
-const generateFallbackNifty50Data = () => {
-  // Recent closing prices from NSE (updated periodically)
-  const recentClosingPrices = [
-    { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2456.75 },
-    { symbol: 'TCS', name: 'Tata Consultancy Services', price: 3789.20 },
-    { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1678.90 },
-    { symbol: 'INFY', name: 'Infosys', price: 1456.30 },
-    { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 987.45 },
-    { symbol: 'HINDUNILVR', name: 'Hindustan Unilever', price: 2234.80 },
-    { symbol: 'ITC', name: 'ITC Limited', price: 456.70 },
-    { symbol: 'SBIN', name: 'State Bank of India', price: 623.15 },
-    { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 1234.50 },
-    { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank', price: 1789.25 },
-    { symbol: 'LT', name: 'Larsen & Toubro', price: 3456.80 },
-    { symbol: 'HCLTECH', name: 'HCL Technologies', price: 1567.90 },
-    { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2987.45 },
-    { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 9876.30 },
-    { symbol: 'SUNPHARMA', name: 'Sun Pharmaceutical', price: 1123.75 }
-  ];
+// Fetch data from Finnhub API (free tier available)
+const fetchFinnhubData = async (symbols: string[]) => {
+  try {
+    // Note: Finnhub requires API key for most endpoints, using demo key for basic quotes
+    const promises = symbols.map(async (symbol) => {
+      const nseSymbol = symbol.replace('.NS', '');
+      const response = await fetch(`${API_ENDPOINTS.FINNHUB_FREE}/quote?symbol=${nseSymbol}&token=demo`, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch Finnhub data for ${symbol}`);
+      }
+      
+      const data = await response.json();
+      
+      return {
+        symbol: nseSymbol,
+        name: INDIAN_STOCKS.find(s => s.symbol === symbol)?.name || nseSymbol,
+        price: data.c, // current price
+        change: data.d, // change
+        changePercent: data.dp, // change percent
+        volume: 'N/A' // Volume not available in free tier
+      };
+    });
+    
+    const results = await Promise.allSettled(promises);
+    return results
+      .filter(result => result.status === 'fulfilled')
+      .map(result => (result as PromiseFulfilledResult<any>).value);
+  } catch (error) {
+    console.error('Error fetching Finnhub data:', error);
+    throw error;
+  }
+};
 
-  return recentClosingPrices.map(stock => {
-    // Simulate small variations based on recent market patterns
+// Primary function to fetch stock data with fallback APIs
+const fetchStockData = async () => {
+  const symbols = INDIAN_STOCKS.map(stock => stock.symbol);
+  
+  // Try Yahoo Finance first (most reliable for Indian stocks)
+  try {
+    console.log('Attempting to fetch data from Yahoo Finance...');
+    const data = await fetchYahooFinanceData(symbols);
+    if (data.length > 0) {
+      return { data, source: 'Yahoo Finance' };
+    }
+  } catch (error) {
+    console.log('Yahoo Finance failed, trying Finnhub...');
+  }
+  
+  // Try Finnhub as backup
+  try {
+    console.log('Attempting to fetch data from Finnhub...');
+    const data = await fetchFinnhubData(symbols);
+    if (data.length > 0) {
+      return { data, source: 'Finnhub' };
+    }
+  } catch (error) {
+    console.log('Finnhub failed, using fallback data...');
+  }
+  
+  // If all APIs fail, use fallback data
+  throw new Error('All stock APIs failed');
+};
+
+// Fallback data based on recent stock prices (when all APIs are unavailable)
+const generateFallbackStockData = () => {
+  // Recent closing prices from various sources (updated periodically)
+  return INDIAN_STOCKS.map(stock => {
+    const basePrices = {
+      'RELIANCE': 2456.75,
+      'TCS': 3789.20,
+      'HDFCBANK': 1678.90,
+      'INFY': 1456.30,
+      'ICICIBANK': 987.45,
+      'HINDUNILVR': 2234.80,
+      'ITC': 456.70,
+      'SBIN': 623.15,
+      'BHARTIARTL': 1234.50,
+      'KOTAKBANK': 1789.25,
+      'LT': 3456.80,
+      'HCLTECH': 1567.90,
+      'ASIANPAINT': 2987.45,
+      'MARUTI': 9876.30,
+      'SUNPHARMA': 1123.75
+    };
+
+    const basePrice = basePrices[stock.nseSymbol as keyof typeof basePrices] || 1000;
     const priceVariation = (Math.random() - 0.5) * 0.02; // ±1% variation
-    const currentPrice = stock.price * (1 + priceVariation);
-    const change = currentPrice - stock.price;
-    const changePercent = (change / stock.price) * 100;
+    const currentPrice = basePrice * (1 + priceVariation);
+    const change = currentPrice - basePrice;
+    const changePercent = (change / basePrice) * 100;
     const volume = (Math.random() * 5 + 1).toFixed(1) + 'M';
     
     return {
-      ...stock,
+      symbol: stock.nseSymbol,
+      name: stock.name,
       price: currentPrice,
       change,
       changePercent,
@@ -107,12 +204,25 @@ const nseIndices = [
   { value: 'NIFTYREALTY', label: 'NIFTY REALTY' }
 ];
 
-// Fetch option chain data from NSE
-const fetchOptionChainData = async (index: string) => {
+// Fetch index data from Yahoo Finance
+const fetchYahooIndexData = async (index: string) => {
   try {
-    // Note: This is a demonstration of how the API call would work
-    // In a real implementation, you would need a backend proxy to handle CORS
-    const response = await fetch(`${NSE_BASE_URL}/option-chain-indices?symbol=${index}`, {
+    const indexSymbols = {
+      'NIFTY': '^NSEI',
+      'BANKNIFTY': '^NSEBANK',
+      'FINNIFTY': '^CNXFIN',
+      'MIDCPNIFTY': '^NSEMDCP50',
+      'NIFTYNEXT50': '^NSMIDCP',
+      'NIFTYIT': '^CNXIT',
+      'NIFTYPHARMA': '^CNXPHARMA',
+      'NIFTYAUTO': '^CNXAUTO',
+      'NIFTYMETAL': '^CNXMETAL',
+      'NIFTYREALTY': '^CNXREALTY'
+    };
+    
+    const yahooSymbol = indexSymbols[index as keyof typeof indexSymbols] || '^NSEI';
+    
+    const response = await fetch(`${API_ENDPOINTS.YAHOO_FINANCE}/${yahooSymbol}?interval=1d&range=1d`, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -120,27 +230,26 @@ const fetchOptionChainData = async (index: string) => {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to fetch option chain data');
+      throw new Error('Failed to fetch index data from Yahoo Finance');
     }
     
     const data = await response.json();
-    const optionData = data.records.data;
+    const result = data.chart.result[0];
+    const meta = result.meta;
     
-    return optionData.map((option: any) => ({
-      strike: option.strikePrice,
-      callOI: option.CE?.openInterest || 0,
-      callVolume: option.CE?.totalTradedVolume || 0,
-      callLTP: option.CE?.lastPrice?.toFixed(2) || '0.00',
-      callChange: option.CE?.change?.toFixed(2) || '0.00',
-      putOI: option.PE?.openInterest || 0,
-      putVolume: option.PE?.totalTradedVolume || 0,
-      putLTP: option.PE?.lastPrice?.toFixed(2) || '0.00',
-      putChange: option.PE?.change?.toFixed(2) || '0.00'
-    }));
+    const currentPrice = meta.regularMarketPrice;
+    const previousClose = meta.previousClose;
+    const change = currentPrice - previousClose;
+    const changePercent = (change / previousClose) * 100;
+    
+    return {
+      price: currentPrice,
+      change: change,
+      changePercent: changePercent
+    };
   } catch (error) {
-    console.error('Error fetching option chain data:', error);
-    // Fallback to simulated data
-    return generateFallbackOptionChain(index);
+    console.error('Error fetching Yahoo Finance index data:', error);
+    throw error;
   }
 };
 
@@ -160,35 +269,19 @@ const generateFallbackOptionChain = (index: string) => {
   }));
 };
 
-// Fetch live spot price for indices from NSE
+// Fetch live spot price for indices with multiple API fallbacks
 const fetchSpotPrice = async (index: string) => {
+  // Try Yahoo Finance first
   try {
-    // Note: This is a demonstration of how the API call would work
-    // In a real implementation, you would need a backend proxy to handle CORS
-    const response = await fetch(`${NSE_BASE_URL}/equity-stockIndices?index=${index}`, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch spot price');
-    }
-    
-    const data = await response.json();
-    const indexData = data.data[0]; // First item is usually the main index
-    
-    return {
-      price: parseFloat(indexData.last),
-      change: parseFloat(indexData.change),
-      changePercent: parseFloat(indexData.percentChange)
-    };
+    console.log(`Fetching ${index} data from Yahoo Finance...`);
+    const data = await fetchYahooIndexData(index);
+    return { ...data, source: 'Yahoo Finance' };
   } catch (error) {
-    console.error('Error fetching spot price:', error);
-    // Fallback to simulated data
-    return generateFallbackSpotPrice(index);
+    console.log('Yahoo Finance failed for index data, using fallback...');
   }
+  
+  // If Yahoo Finance fails, use fallback
+  throw new Error('All index APIs failed');
 };
 
 // Fallback spot price data (when API is unavailable)
@@ -223,50 +316,58 @@ const generateFallbackSpotPrice = (index: string) => {
 export default function StockPage() {
   const [selectedIndex, setSelectedIndex] = useState('NIFTY');
   const [optionChainData, setOptionChainData] = useState<any[]>([]);
-  const [nifty50Stocks, setNifty50Stocks] = useState<any[]>([]);
+  const [stocksData, setStocksData] = useState<any[]>([]);
   const [spotPrice, setSpotPrice] = useState({ price: 0, change: 0, changePercent: 0 });
   const [refreshKey, setRefreshKey] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [dataSource, setDataSource] = useState<'api' | 'fallback'>('fallback');
+  const [dataSource, setDataSource] = useState<string>('fallback');
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [apiStatus, setApiStatus] = useState<'connected' | 'fallback' | 'error'>('fallback');
 
   // Load initial data
   const loadData = async () => {
     setIsLoading(true);
     try {
-      // Try to fetch real NSE data first
-      const [stocksData, optionData, spotData] = await Promise.all([
-        fetchNifty50Data(),
-        fetchOptionChainData(selectedIndex),
-        fetchSpotPrice(selectedIndex)
-      ]);
+      // Try to fetch real stock data from multiple APIs
+      const stockResult = await fetchStockData();
+      setStocksData(stockResult.data);
+      setDataSource(stockResult.source);
+      setApiStatus('connected');
       
-      setNifty50Stocks(stocksData);
-      setOptionChainData(optionData);
-      setSpotPrice(spotData);
-      setDataSource('api');
+      // Try to fetch index data
+      try {
+        const spotResult = await fetchSpotPrice(selectedIndex);
+        setSpotPrice(spotResult);
+      } catch (error) {
+        setSpotPrice(generateFallbackSpotPrice(selectedIndex));
+      }
+      
+      // Option chain data (fallback only for now)
+      setOptionChainData(generateFallbackOptionChain(selectedIndex));
+      
       setLastUpdated(new Date());
     } catch (error) {
-      console.error('Failed to load NSE data, using fallback:', error);
-      // Use fallback data if API fails
-      setNifty50Stocks(generateFallbackNifty50Data());
+      console.error('All APIs failed, using fallback data:', error);
+      // Use fallback data if all APIs fail
+      setStocksData(generateFallbackStockData());
       setOptionChainData(generateFallbackOptionChain(selectedIndex));
       setSpotPrice(generateFallbackSpotPrice(selectedIndex));
-      setDataSource('fallback');
+      setDataSource('Fallback Data');
+      setApiStatus('fallback');
       setLastUpdated(new Date());
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Auto-refresh data every 30 seconds (more realistic for actual market data)
+  // Auto-refresh data every 60 seconds (reasonable for free APIs)
   useEffect(() => {
     loadData();
     
     const interval = setInterval(() => {
       loadData();
       setRefreshKey(prev => prev + 1);
-    }, 30000); // 30 seconds
+    }, 60000); // 60 seconds
 
     return () => clearInterval(interval);
   }, [selectedIndex]);
@@ -274,16 +375,12 @@ export default function StockPage() {
   useEffect(() => {
     const loadIndexData = async () => {
       try {
-        const [optionData, spotData] = await Promise.all([
-          fetchOptionChainData(selectedIndex),
-          fetchSpotPrice(selectedIndex)
-        ]);
-        setOptionChainData(optionData);
-        setSpotPrice(spotData);
+        const spotResult = await fetchSpotPrice(selectedIndex);
+        setSpotPrice(spotResult);
       } catch (error) {
-        setOptionChainData(generateFallbackOptionChain(selectedIndex));
         setSpotPrice(generateFallbackSpotPrice(selectedIndex));
       }
+      setOptionChainData(generateFallbackOptionChain(selectedIndex));
     };
     
     loadIndexData();
@@ -304,7 +401,7 @@ export default function StockPage() {
               <BarChart3 className="h-8 w-8 text-primary" />
               <div>
                 <h1 className="text-3xl font-heading font-bold text-foreground">Stock Market</h1>
-                <p className="text-sm text-secondary-foreground-alt">NSE market data and option chains</p>
+                <p className="text-sm text-secondary-foreground-alt">Multi-source market data from free APIs</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -314,12 +411,12 @@ export default function StockPage() {
               </Button>
               <div className="text-sm text-secondary-foreground-alt">
                 <span className="inline-flex items-center">
-                  {dataSource === 'api' ? (
+                  {apiStatus === 'connected' ? (
                     <Wifi className="w-4 h-4 text-green-500 mr-2" />
                   ) : (
                     <WifiOff className="w-4 h-4 text-orange-500 mr-2" />
                   )}
-                  {dataSource === 'api' ? 'Live NSE Data' : 'Recent Data (Offline)'}
+                  {apiStatus === 'connected' ? `Live Data (${dataSource})` : 'Recent Data (Offline)'}
                 </span>
                 <div className="text-xs text-gray-500 mt-1">
                   Updated: {lastUpdated.toLocaleTimeString()}
@@ -331,13 +428,26 @@ export default function StockPage() {
       </header>
 
       {/* Data Source Alert */}
-      {dataSource === 'fallback' && (
+      {apiStatus !== 'connected' && (
         <div className="max-w-[120rem] mx-auto px-6 pt-4">
           <Alert className="border-orange-200 bg-orange-50">
             <AlertCircle className="h-4 w-4 text-orange-600" />
             <AlertDescription className="text-orange-800">
-              <strong>Note:</strong> Currently showing recent market data. Live NSE API data requires backend proxy due to CORS restrictions. 
-              Data refreshes every 30 seconds with simulated variations based on recent closing prices.
+              <strong>Note:</strong> Currently showing recent market data with simulated variations. 
+              The app attempts to fetch live data from Yahoo Finance and Finnhub APIs. 
+              Data refreshes every 60 seconds when APIs are available.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {apiStatus === 'connected' && (
+        <div className="max-w-[120rem] mx-auto px-6 pt-4">
+          <Alert className="border-green-200 bg-green-50">
+            <Wifi className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">
+              <strong>Live Data Connected!</strong> Successfully fetching real-time market data from {dataSource}. 
+              Data updates automatically every 60 seconds.
             </AlertDescription>
           </Alert>
         </div>
@@ -346,17 +456,22 @@ export default function StockPage() {
       <div className="max-w-[120rem] mx-auto px-6 py-8">
         <Tabs defaultValue="watchlist" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 max-w-md">
-            <TabsTrigger value="watchlist">Nifty 50 Watchlist</TabsTrigger>
+            <TabsTrigger value="watchlist">Indian Stocks</TabsTrigger>
             <TabsTrigger value="options">Option Chain</TabsTrigger>
           </TabsList>
 
-          {/* Nifty 50 Watchlist Tab */}
+          {/* Indian Stocks Watchlist Tab */}
           <TabsContent value="watchlist" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <TrendingUp className="h-5 w-5 text-primary" />
-                  <span>Nifty 50 Stocks</span>
+                  <span>Popular Indian Stocks</span>
+                  {apiStatus === 'connected' && (
+                    <Badge variant="outline" className="ml-2 text-green-600 border-green-600">
+                      Live from {dataSource}
+                    </Badge>
+                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -373,7 +488,7 @@ export default function StockPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {nifty50Stocks.map((stock) => (
+                      {stocksData.map((stock) => (
                         <TableRow key={stock.symbol} className="hover:bg-secondary/50">
                           <TableCell className="font-medium">{stock.symbol}</TableCell>
                           <TableCell>{stock.name}</TableCell>
@@ -535,11 +650,11 @@ export default function StockPage() {
                 </div>
                 <div className="mt-4 text-xs text-secondary-foreground-alt">
                   <p>OI = Open Interest, LTP = Last Traded Price</p>
-                  <p>Data source: {dataSource === 'api' ? 'Live NSE API' : 'Recent NSE closing data with simulated variations'}</p>
+                  <p>Stock data source: {apiStatus === 'connected' ? `Live ${dataSource} API` : 'Recent closing data with simulated variations'}</p>
+                  <p>Option data: Simulated (real option data requires premium APIs)</p>
                   <p>Scroll horizontally to view all strike prices</p>
-                  <p className="text-orange-600 mt-2">
-                    <strong>Technical Note:</strong> Direct NSE API access from browsers is blocked by CORS. 
-                    Production apps require a backend proxy server to fetch live data.
+                  <p className="text-blue-600 mt-2">
+                    <strong>API Sources:</strong> Yahoo Finance (primary), Finnhub (backup), with automatic fallback to recent data.
                   </p>
                 </div>
               </CardContent>
