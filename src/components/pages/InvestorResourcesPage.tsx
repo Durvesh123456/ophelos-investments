@@ -310,7 +310,7 @@ export default function InvestorResourcesPage() {
                 Investor Resources
               </Link>
               <Link to="/aum-details" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
-                AUM Details
+                AUM
               </Link>
               <Link to="/contact" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
                 Contact
@@ -340,7 +340,7 @@ export default function InvestorResourcesPage() {
               Essential Investment Knowledge
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                     <BookOpen className="w-6 h-6 text-primary-foreground" />
@@ -362,7 +362,7 @@ export default function InvestorResourcesPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                     <BookOpen className="w-6 h-6 text-primary-foreground" />
@@ -384,7 +384,7 @@ export default function InvestorResourcesPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                     <BookOpen className="w-6 h-6 text-primary-foreground" />
@@ -429,7 +429,7 @@ export default function InvestorResourcesPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {resources.map((resource) => (
-                  <Card key={resource._id} className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <Card key={resource._id} className="bg-black shadow-lg border border-white/20 hover:shadow-xl transition-shadow duration-300">
                     {resource.mainImage && (
                       <div className="aspect-video overflow-hidden rounded-t-lg">
                         <Image
@@ -486,7 +486,7 @@ export default function InvestorResourcesPage() {
       </section>
 
       {/* SIP Calculator Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6">
           <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
             SIP Calculator
@@ -502,7 +502,7 @@ export default function InvestorResourcesPage() {
             Other Investment Tools
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Goal Planner
@@ -518,7 +518,7 @@ export default function InvestorResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Risk Profiler
@@ -534,7 +534,7 @@ export default function InvestorResourcesPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
                   Tax Calculator
@@ -588,7 +588,7 @@ export default function InvestorResourcesPage() {
               <ul className="space-y-2 font-paragraph">
                 <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-primary-foreground">Mutual Funds</Link></li>
                 <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-primary-foreground">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM Details</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM</Link></li>
               </ul>
             </div>
             <div>

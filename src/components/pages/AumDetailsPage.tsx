@@ -36,7 +36,7 @@ export default function AumDetailsPage() {
                 Investor Resources
               </Link>
               <Link to="/aum-details" className="text-neon-cyan font-paragraph font-semibold">
-                AUM Details
+                AUM
               </Link>
               <Link to="/contact" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
                 Contact
@@ -101,7 +101,7 @@ export default function AumDetailsPage() {
 
           {/* AUM Breakdown */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="w-8 h-8 text-primary-foreground" />
@@ -116,7 +116,7 @@ export default function AumDetailsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="w-8 h-8 text-primary-foreground" />
@@ -131,7 +131,7 @@ export default function AumDetailsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <PieChart className="w-8 h-8 text-primary-foreground" />
@@ -146,7 +146,7 @@ export default function AumDetailsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white shadow-lg text-center">
+            <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <BarChart3 className="w-8 h-8 text-primary-foreground" />
@@ -165,7 +165,7 @@ export default function AumDetailsPage() {
       </section>
 
       {/* Growth Timeline */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6">
           <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
             AUM Growth Journey
@@ -257,7 +257,7 @@ export default function AumDetailsPage() {
       {/* Regulatory Information */}
       <section className="py-16">
         <div className="max-w-[100rem] mx-auto px-6">
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-black border border-white/20 rounded-lg shadow-lg p-8">
             <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-8 text-center">
               Regulatory Compliance & Transparency
             </h2>
@@ -329,7 +329,7 @@ export default function AumDetailsPage() {
               <ul className="space-y-2 font-paragraph">
                 <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-primary-foreground">Mutual Funds</Link></li>
                 <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-primary-foreground">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM Details</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM</Link></li>
               </ul>
             </div>
             <div>

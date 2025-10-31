@@ -75,7 +75,7 @@ export default function ContactPage() {
                 Investor Resources
               </Link>
               <Link to="/aum-details" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
-                AUM Details
+                AUM
               </Link>
               <Link to="/contact" className="text-primary font-paragraph font-semibold">
                 Contact
@@ -103,7 +103,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div>
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                     Schedule Your Consultation
@@ -225,7 +225,7 @@ export default function ContactPage() {
 
             {/* Contact Information */}
             <div className="space-y-8">
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                     Contact Information
@@ -292,7 +292,7 @@ export default function ContactPage() {
               </Card>
 
               {/* Map Placeholder */}
-              <Card className="bg-white shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardContent className="p-0">
                   <div className="aspect-video bg-black rounded-lg overflow-hidden">
                     <Image
@@ -333,7 +333,7 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-black">
         <div className="max-w-[100rem] mx-auto px-6">
           <h2 className="font-heading text-3xl font-bold text-secondary-foreground mb-12 text-center">
             Frequently Asked Questions
@@ -388,7 +388,7 @@ export default function ContactPage() {
               <ul className="space-y-2 font-paragraph">
                 <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-primary-foreground">Mutual Funds</Link></li>
                 <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-primary-foreground">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM Details</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM</Link></li>
               </ul>
             </div>
             <div>
