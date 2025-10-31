@@ -51,7 +51,7 @@ function SIPCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Card className="bg-white shadow-lg">
+      <Card className="bg-black shadow-lg">
         <CardHeader>
           <div className="flex items-center space-x-3 mb-4">
             <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
@@ -202,7 +202,7 @@ function SIPCalculator() {
                         {((results.totalInvestment / results.totalValue) * 100).toFixed(1)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-black rounded-full h-2">
                       <div 
                         className="bg-primary h-2 rounded-full" 
                         style={{ width: `${(results.totalInvestment / results.totalValue) * 100}%` }}
@@ -216,9 +216,9 @@ function SIPCalculator() {
                         {((results.estimatedReturns / results.totalValue) * 100).toFixed(1)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-black rounded-full h-2">
                       <div 
-                        className="bg-green-500 h-2 rounded-full" 
+                        className="bg-white h-2 rounded-full" 
                         style={{ width: `${(results.estimatedReturns / results.totalValue) * 100}%` }}
                       ></div>
                     </div>
@@ -226,8 +226,8 @@ function SIPCalculator() {
                 </div>
               </div>
 
-              <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                <p className="font-paragraph text-sm text-yellow-800">
+              <div className="bg-black border border-white p-4 rounded-lg">
+                <p className="font-paragraph text-sm text-white">
                   <strong>Note:</strong> This calculator provides estimates based on the inputs provided. 
                   Actual returns may vary depending on market conditions. Mutual fund investments are subject to market risks.
                 </p>

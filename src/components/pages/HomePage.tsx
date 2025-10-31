@@ -75,7 +75,7 @@ export default function HomePage() {
               <Button asChild className="bg-gradient-to-r from-white to-gray-300 hover:from-gray-300 hover:to-white text-primary-foreground px-8 py-3 text-lg border border-white/50 shadow-soft-glow transition-all duration-300 hover:shadow-neon">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
-              <Button variant="outline" asChild className="border-gray-300/60 text-gray-300 hover:bg-gray-300/10 hover:text-gray-300 px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+              <Button variant="outline" asChild className="border-white/60 text-white hover:bg-white/10 hover:text-white px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
                 <Link to="/contact">Schedule Consultation</Link>
               </Button>
             </div>

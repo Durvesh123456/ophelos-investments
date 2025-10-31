@@ -30,13 +30,13 @@ export default function MutualFundsPage() {
   const getRiskColor = (riskLevel?: string) => {
     switch (riskLevel?.toLowerCase()) {
       case 'low':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-black text-white';
       case 'moderate':
-        return 'bg-gray-200 text-gray-900';
+        return 'bg-black text-white';
       case 'high':
-        return 'bg-gray-300 text-black';
+        return 'bg-black text-white';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-black text-white';
     }
   };
 

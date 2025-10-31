@@ -294,7 +294,7 @@ export default function ContactPage() {
               {/* Map Placeholder */}
               <Card className="bg-white shadow-lg">
                 <CardContent className="p-0">
-                  <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                  <div className="aspect-video bg-black rounded-lg overflow-hidden">
                     <Image
                       src="https://static.wixstatic.com/media/7afb6a_64e2018dcccc43479ee214cb7166b824~mv2.png?originWidth=576&originHeight=320"
                       alt="Ophelos Investments office location map showing Bandra Kurla Complex, Mumbai"

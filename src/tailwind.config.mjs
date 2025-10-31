@@ -28,7 +28,7 @@ export default {
                 background: "#000000",
                 secondary: "#1A1A1A",
                 "secondary-foreground": "#FFFFFF",
-                "primary-foreground": "#000000",
+                "primary-foreground": "#FFFFFF",
                 primary: "#FFFFFF",
                 contentblockbackground: "#000000",
                 buttonborder: "#FFFFFF",
