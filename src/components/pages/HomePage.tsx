@@ -32,6 +32,9 @@ export default function HomePage() {
               <Link to="/mutual-funds" className="text-white hover:text-primary-foreground transition-colors font-paragraph">
                 Mutual Funds
               </Link>
+              <Link to="/stock" className="text-white hover:text-primary-foreground transition-colors font-paragraph">
+                Stock Market
+              </Link>
               <Link to="/investor-resources" className="text-white hover:text-primary-foreground transition-colors font-paragraph">
                 Investor Resources
               </Link>
@@ -62,6 +65,9 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
+              </Button>
+              <Button asChild className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-3 text-lg">
+                <Link to="/stock">Live Stock Market</Link>
               </Button>
               <Button variant="outline" asChild className="border-white text-white hover:bg-white hover:text-secondary-foreground px-8 py-3 text-lg">
                 <Link to="/contact">Schedule Consultation</Link>
@@ -177,6 +183,9 @@ export default function HomePage() {
             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
               <Link to="/mutual-funds">View Our Funds</Link>
             </Button>
+            <Button asChild className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-3 text-lg">
+              <Link to="/stock">Stock Market</Link>
+            </Button>
             <Button variant="outline" asChild className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-lg">
               <Link to="/contact">Contact Us Today</Link>
             </Button>
@@ -226,6 +235,7 @@ export default function HomePage() {
               <h4 className="font-heading text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 font-paragraph">
                 <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-primary-foreground">Mutual Funds</Link></li>
+                <li><Link to="/stock" className="text-primary-foreground/80 hover:text-primary-foreground">Stock Market</Link></li>
                 <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-primary-foreground">Investor Resources</Link></li>
                 <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-primary-foreground">AUM Details</Link></li>
               </ul>

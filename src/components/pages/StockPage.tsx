@@ -7,24 +7,38 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TrendingUp, TrendingDown, Activity, BarChart3 } from 'lucide-react';
 
-// Mock data for Nifty 50 stocks
-const nifty50Stocks = [
-  { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2456.75, change: 23.45, changePercent: 0.96, volume: '2.3M' },
-  { symbol: 'TCS', name: 'Tata Consultancy Services', price: 3789.20, change: -12.30, changePercent: -0.32, volume: '1.8M' },
-  { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1678.90, change: 15.60, changePercent: 0.94, volume: '3.1M' },
-  { symbol: 'INFY', name: 'Infosys', price: 1456.30, change: 8.75, changePercent: 0.61, volume: '2.7M' },
-  { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 987.45, change: -5.20, changePercent: -0.52, volume: '4.2M' },
-  { symbol: 'HINDUNILVR', name: 'Hindustan Unilever', price: 2234.80, change: 18.90, changePercent: 0.85, volume: '1.5M' },
-  { symbol: 'ITC', name: 'ITC Limited', price: 456.70, change: 3.25, changePercent: 0.72, volume: '5.8M' },
-  { symbol: 'SBIN', name: 'State Bank of India', price: 623.15, change: -8.45, changePercent: -1.34, volume: '6.2M' },
-  { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 1234.50, change: 12.30, changePercent: 1.01, volume: '2.9M' },
-  { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank', price: 1789.25, change: 7.85, changePercent: 0.44, volume: '1.9M' },
-  { symbol: 'LT', name: 'Larsen & Toubro', price: 3456.80, change: 25.40, changePercent: 0.74, volume: '1.2M' },
-  { symbol: 'HCLTECH', name: 'HCL Technologies', price: 1567.90, change: -4.60, changePercent: -0.29, volume: '2.1M' },
-  { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2987.45, change: 34.20, changePercent: 1.16, volume: '0.8M' },
-  { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 9876.30, change: -45.80, changePercent: -0.46, volume: '0.6M' },
-  { symbol: 'SUNPHARMA', name: 'Sun Pharmaceutical', price: 1123.75, change: 9.85, changePercent: 0.88, volume: '2.4M' }
-];
+// Mock data for Nifty 50 stocks - with live price simulation
+const generateNifty50Stocks = () => [
+  { symbol: 'RELIANCE', name: 'Reliance Industries', basePrice: 2456.75 },
+  { symbol: 'TCS', name: 'Tata Consultancy Services', basePrice: 3789.20 },
+  { symbol: 'HDFCBANK', name: 'HDFC Bank', basePrice: 1678.90 },
+  { symbol: 'INFY', name: 'Infosys', basePrice: 1456.30 },
+  { symbol: 'ICICIBANK', name: 'ICICI Bank', basePrice: 987.45 },
+  { symbol: 'HINDUNILVR', name: 'Hindustan Unilever', basePrice: 2234.80 },
+  { symbol: 'ITC', name: 'ITC Limited', basePrice: 456.70 },
+  { symbol: 'SBIN', name: 'State Bank of India', basePrice: 623.15 },
+  { symbol: 'BHARTIARTL', name: 'Bharti Airtel', basePrice: 1234.50 },
+  { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank', basePrice: 1789.25 },
+  { symbol: 'LT', name: 'Larsen & Toubro', basePrice: 3456.80 },
+  { symbol: 'HCLTECH', name: 'HCL Technologies', basePrice: 1567.90 },
+  { symbol: 'ASIANPAINT', name: 'Asian Paints', basePrice: 2987.45 },
+  { symbol: 'MARUTI', name: 'Maruti Suzuki', basePrice: 9876.30 },
+  { symbol: 'SUNPHARMA', name: 'Sun Pharmaceutical', basePrice: 1123.75 }
+].map(stock => {
+  const priceVariation = (Math.random() - 0.5) * 0.05; // ±2.5% variation
+  const currentPrice = stock.basePrice * (1 + priceVariation);
+  const change = currentPrice - stock.basePrice;
+  const changePercent = (change / stock.basePrice) * 100;
+  const volume = (Math.random() * 5 + 1).toFixed(1) + 'M';
+  
+  return {
+    ...stock,
+    price: currentPrice,
+    change,
+    changePercent,
+    volume
+  };
+});
 
 // NSE indices for option chain
 const nseIndices = [
@@ -59,7 +73,19 @@ const generateOptionChain = (index: string) => {
 export default function StockPage() {
   const [selectedIndex, setSelectedIndex] = useState('NIFTY');
   const [optionChainData, setOptionChainData] = useState(generateOptionChain('NIFTY'));
+  const [nifty50Stocks, setNifty50Stocks] = useState(generateNifty50Stocks());
   const [refreshKey, setRefreshKey] = useState(0);
+
+  // Auto-refresh data every 5 seconds to simulate live updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOptionChainData(generateOptionChain(selectedIndex));
+      setNifty50Stocks(generateNifty50Stocks());
+      setRefreshKey(prev => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [selectedIndex]);
 
   useEffect(() => {
     setOptionChainData(generateOptionChain(selectedIndex));
@@ -67,6 +93,7 @@ export default function StockPage() {
 
   const handleRefresh = () => {
     setOptionChainData(generateOptionChain(selectedIndex));
+    setNifty50Stocks(generateNifty50Stocks());
     setRefreshKey(prev => prev + 1);
   };
 
@@ -83,10 +110,18 @@ export default function StockPage() {
                 <p className="text-sm text-secondary-foreground-alt">Live market data and option chains</p>
               </div>
             </div>
-            <Button onClick={handleRefresh} variant="outline" className="flex items-center space-x-2">
-              <Activity className="h-4 w-4" />
-              <span>Refresh Data</span>
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button onClick={handleRefresh} variant="outline" className="flex items-center space-x-2">
+                <Activity className="h-4 w-4" />
+                <span>Refresh Data</span>
+              </Button>
+              <div className="text-sm text-secondary-foreground-alt">
+                <span className="inline-flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                  Live Updates Every 5s
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </header>
