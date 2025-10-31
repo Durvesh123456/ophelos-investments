@@ -64,11 +64,9 @@ export default {
             keyframes: {
                 'pulse-neon': {
                     '0%': { 
-                        boxShadow: '0 0 3px rgba(255, 255, 255, 0.3), 0 0 6px rgba(255, 255, 255, 0.2)',
                         textShadow: '0 0 3px rgba(255, 255, 255, 0.4)'
                     },
                     '100%': { 
-                        boxShadow: '0 0 6px rgba(255, 255, 255, 0.4), 0 0 12px rgba(255, 255, 255, 0.3)',
                         textShadow: '0 0 6px rgba(255, 255, 255, 0.5)'
                     }
                 },
