@@ -321,12 +321,24 @@ export default function InvestorResourcesPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-primary py-16">
-        <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
+      <section className="relative bg-black py-16 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://static.wixstatic.com/media/7afb6a_e698a40e647f4beca073d8a7a92a2875~mv2.png?originWidth=1600&originHeight=576"
+            alt="London cityscape with impressive skyscrapers and modern buildings"
+            className="w-full h-full object-cover opacity-40"
+            width={1600}
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative max-w-[100rem] mx-auto px-6 text-center">
+          <h1 className="font-heading text-5xl font-bold text-white mb-6">
             Investor Education & Resources
           </h1>
-          <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">
+          <p className="font-paragraph text-xl text-white/90 max-w-3xl mx-auto">
             Empower your investment decisions with our comprehensive collection of educational resources, market insights, and financial planning guides.
           </p>
         </div>
