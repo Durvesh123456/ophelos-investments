@@ -7,6 +7,7 @@ import MutualFundsPage from '@/components/pages/MutualFundsPage';
 import InvestorResourcesPage from '@/components/pages/InvestorResourcesPage';
 import AumDetailsPage from '@/components/pages/AumDetailsPage';
 import ContactPage from '@/components/pages/ContactPage';
+import StockMarketPage from '@/components/pages/StockMarketPage';
 
 
 // Layout component that includes ScrollToTop
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <ContactPage />,
+      },
+      {
+        path: "stock-market",
+        element: <StockMarketPage />,
       },
 
       {
