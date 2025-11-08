@@ -84,12 +84,6 @@ export default function HomePage() {
       </section>
       {/* Features Section */}
       <section className="py-20 bg-secondary relative overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 border border-neon-cyan/30 rotate-45 animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 border border-neon-purple/30 rotate-12 animate-float" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 border border-neon-pink/30 rotate-45 animate-float" style={{animationDelay: '2s'}}></div>
-        </div>
         
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
