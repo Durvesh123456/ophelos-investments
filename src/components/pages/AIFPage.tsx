@@ -68,6 +68,64 @@ export default function AIFPage() {
               Coming Soon - Alternative investment strategies for sophisticated investors seeking higher returns through non-traditional approaches.
             </p>
             
+            {/* AIF Definition Section */}
+            <div className="bg-dark-800/30 border border-white/20 rounded-2xl p-8 backdrop-blur-sm mb-12 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-heading font-bold text-white mb-6 text-center">
+                What are Alternative Investment Funds (AIFs)?
+              </h2>
+              <div className="space-y-6 text-left">
+                <p className="text-foreground font-paragraph leading-relaxed">
+                  Alternative Investment Funds (AIFs) are privately pooled investment vehicles that collect funds from sophisticated investors, both Indian and foreign, for investing in accordance with a defined investment policy for the benefit of its investors.
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-white font-heading font-semibold mb-3">Key Characteristics:</h3>
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Regulated by SEBI under AIF Regulations 2012
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Minimum investment of ₹1 crore per investor
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Maximum of 1000 investors per fund
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Professional fund management
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-heading font-semibold mb-3">Investment Categories:</h3>
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Category I:</strong> Venture capital, infrastructure funds
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Category II:</strong> Private equity, debt funds
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Category III:</strong> Hedge funds, PIPE funds
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <p className="text-foreground font-paragraph leading-relaxed">
+                  AIFs provide access to alternative asset classes and investment strategies that are typically not available through traditional mutual funds, offering potential for higher returns and portfolio diversification.
+                </p>
+              </div>
+            </div>
+            
             <div className="space-y-4">
               <p className="text-foreground font-paragraph">
                 This section is currently under development.

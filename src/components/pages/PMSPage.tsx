@@ -68,6 +68,90 @@ export default function PMSPage() {
               Coming Soon - Customized investment solutions and portfolio management services for high net worth individuals.
             </p>
             
+            {/* PMS Definition Section */}
+            <div className="bg-dark-800/30 border border-white/20 rounded-2xl p-8 backdrop-blur-sm mb-12 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-heading font-bold text-white mb-6 text-center">
+                What is Portfolio Management Services (PMS)?
+              </h2>
+              <div className="space-y-6 text-left">
+                <p className="text-foreground font-paragraph leading-relaxed">
+                  Portfolio Management Services (PMS) is a professional service where qualified portfolio managers make investment decisions and execute trades on behalf of clients to help them achieve their financial goals. It offers personalized investment strategies tailored to individual risk profiles and investment objectives.
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-white font-heading font-semibold mb-3">Key Features:</h3>
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Minimum investment of ₹50 lakhs
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Customized portfolio construction
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Direct ownership of securities
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Regular portfolio monitoring and rebalancing
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-heading font-semibold mb-3">Service Types:</h3>
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Discretionary:</strong> Full investment authority to manager
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Non-Discretionary:</strong> Client approval required for trades
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        <strong>Advisory:</strong> Investment advice and recommendations
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div className="border-t border-white/10 pt-4">
+                  <h3 className="text-white font-heading font-semibold mb-3">Benefits:</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Professional expertise and research
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Personalized investment strategies
+                      </li>
+                    </ul>
+                    <ul className="space-y-2 text-foreground font-paragraph">
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Transparency in holdings and performance
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 mt-2"></div>
+                        Tax efficiency and flexibility
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <p className="text-foreground font-paragraph leading-relaxed">
+                  PMS is regulated by SEBI and is ideal for high net worth individuals seeking professional portfolio management with greater control and customization compared to mutual funds.
+                </p>
+              </div>
+            </div>
+            
             <div className="space-y-4">
               <p className="text-foreground font-paragraph">
                 This section is currently under development.
