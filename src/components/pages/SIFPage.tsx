@@ -61,11 +61,11 @@ export default function SIFPage() {
             </div>
             
             <h1 className="text-6xl font-heading font-bold text-white mb-6 animate-pulse-neon">
-              Social Impact Funds
+              Specialized Investment Funds
             </h1>
             
             <p className="text-xl text-foreground max-w-3xl mx-auto font-paragraph leading-relaxed mb-12">
-              Coming Soon - Investment solutions focused on generating positive social and environmental impact alongside financial returns.
+              Coming Soon - Specialized Investment Funds designed for sophisticated investors seeking targeted investment strategies in specific sectors or themes.
             </p>
             
             <div className="space-y-4">
@@ -73,7 +73,7 @@ export default function SIFPage() {
                 This section is currently under development.
               </p>
               <p className="text-foreground font-paragraph">
-                Please check back soon for more information about our Social Impact Fund offerings.
+                Please check back soon for more information about our Specialized Investment Fund offerings.
               </p>
             </div>
             

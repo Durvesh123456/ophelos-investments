@@ -15,10 +15,10 @@ export default function FundsPage() {
     },
     {
       title: 'SIF',
-      description: 'Social Impact Funds focused on generating positive social and environmental impact alongside financial returns.',
+      description: 'Specialized Investment Funds designed for sophisticated investors seeking targeted investment strategies in specific sectors or themes.',
       icon: Building,
       path: '/funds/sif',
-      features: ['Social Impact', 'ESG Focused', 'Sustainable Returns', 'Community Development']
+      features: ['Specialized Strategies', 'Sector Focused', 'Targeted Returns', 'Professional Management']
     },
     {
       title: 'AIF',
