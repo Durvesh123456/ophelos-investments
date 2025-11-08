@@ -4,6 +4,8 @@ import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { BaseCrudService } from '@/integrations';
+import { Consultations } from '@/entities';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -24,24 +26,47 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
     
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        investmentAmount: '',
-        message: '',
-      });
-    }, 3000);
+    try {
+      // Create consultation record in database
+      const consultationData: Consultations = {
+        _id: crypto.randomUUID(),
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        investmentAmount: formData.investmentAmount === '' ? undefined : parseFloat(formData.investmentAmount.split('-')[0].replace('₹', '').replace(' Lakh', '00000').replace(' Crore', '0000000').replace('+', '')),
+        message: formData.message,
+        submissionDate: new Date(),
+      };
+
+      await BaseCrudService.create('consultations', consultationData);
+      
+      // TODO: Send SMS notification to 7620408920
+      // This would require a backend service or SMS API integration
+      console.log('Form submitted:', formData);
+      console.log('SMS notification should be sent to: 7620408920');
+      
+      setIsSubmitted(true);
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          investmentAmount: '',
+          message: '',
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your form. Please try again.');
+    }
   };
 
   return (
@@ -86,6 +111,13 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="bg-gray-800 py-16">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
+          <div className="flex justify-center mb-6">
+            <Link to="/responses">
+              <Button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3">
+                View Responses
+              </Button>
+            </Link>
+          </div>
           <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
             Get in Touch
           </h1>

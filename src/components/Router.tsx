@@ -12,6 +12,7 @@ import InvestorResourcesPage from '@/components/pages/InvestorResourcesPage';
 import AumDetailsPage from '@/components/pages/AumDetailsPage';
 import ContactPage from '@/components/pages/ContactPage';
 import StockMarketPage from '@/components/pages/StockMarketPage';
+import ResponsesPage from '@/components/pages/ResponsesPage';
 
 
 // Layout component that includes ScrollToTop
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "stock-market",
         element: <StockMarketPage />,
+      },
+      {
+        path: "responses",
+        element: <ResponsesPage />,
       },
 
       {
