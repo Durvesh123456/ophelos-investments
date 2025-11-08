@@ -4,6 +4,31 @@
  */
 
 /**
+ * Collection ID: consultations
+ * Interface for Consultations
+ */
+export interface Consultations {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  firstName?: string;
+  /** @wixFieldType text */
+  lastName?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType text */
+  phone?: string;
+  /** @wixFieldType number */
+  investmentAmount?: number;
+  /** @wixFieldType text */
+  message?: string;
+  /** @wixFieldType datetime */
+  submissionDate?: Date | string;
+}
+
+
+/**
  * Collection ID: investorresources
  * Interface for InvestorResources
  */
