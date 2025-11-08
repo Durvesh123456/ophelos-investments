@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Eye, EyeOff, Download } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ArrowLeft, Eye, EyeOff, Download, Settings, Trash2 } from 'lucide-react';
 import { BaseCrudService } from '@/integrations';
 import { Consultations } from '@/entities';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 
 export default function ResponsesPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,6 +18,29 @@ export default function ResponsesPage() {
   const [consultations, setConsultations] = useState<Consultations[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [deletionDays, setDeletionDays] = useState<number>(7);
+  const [customDays, setCustomDays] = useState<string>('7');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [deletingOld, setDeletingOld] = useState(false);
+
+  // Load deletion days setting from localStorage on component mount
+  useEffect(() => {
+    const savedDeletionDays = localStorage.getItem('responseDeletionDays');
+    if (savedDeletionDays) {
+      const days = parseInt(savedDeletionDays, 10);
+      if (!isNaN(days) && days > 0) {
+        setDeletionDays(days);
+        setCustomDays(days.toString());
+      }
+    }
+  }, []);
+
+  // Auto-delete old responses when consultations are loaded
+  useEffect(() => {
+    if (consultations.length > 0 && isAuthenticated) {
+      deleteOldResponses();
+    }
+  }, [consultations, deletionDays, isAuthenticated]);
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +50,66 @@ export default function ResponsesPage() {
       loadConsultations();
     } else {
       setError('Incorrect password. Please try again.');
+    }
+  };
+
+  const deleteOldResponses = async () => {
+    if (deletingOld) return; // Prevent multiple simultaneous deletions
+    
+    setDeletingOld(true);
+    try {
+      const currentDate = new Date();
+      const responsesToDelete: string[] = [];
+      
+      consultations.forEach(consultation => {
+        const submissionDate = new Date(consultation.submissionDate || consultation._createdDate || 0);
+        const daysDifference = differenceInDays(currentDate, submissionDate);
+        
+        if (daysDifference >= deletionDays) {
+          responsesToDelete.push(consultation._id);
+        }
+      });
+
+      if (responsesToDelete.length > 0) {
+        // Delete old responses
+        for (const id of responsesToDelete) {
+          await BaseCrudService.delete('consultations', id);
+        }
+        
+        // Reload consultations to reflect deletions
+        await loadConsultations();
+        
+        console.log(`Automatically deleted ${responsesToDelete.length} responses older than ${deletionDays} days`);
+      }
+    } catch (error) {
+      console.error('Error deleting old responses:', error);
+    } finally {
+      setDeletingOld(false);
+    }
+  };
+
+  const handleDeletionSettingsSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const days = parseInt(customDays, 10);
+    
+    if (isNaN(days) || days <= 0) {
+      alert('Please enter a valid number of days (greater than 0)');
+      return;
+    }
+    
+    setDeletionDays(days);
+    localStorage.setItem('responseDeletionDays', days.toString());
+    setIsSettingsOpen(false);
+    
+    // Trigger immediate deletion check with new settings
+    if (consultations.length > 0) {
+      deleteOldResponses();
+    }
+  };
+
+  const manualDeleteOldResponses = async () => {
+    if (window.confirm(`Are you sure you want to delete all responses older than ${deletionDays} days? This action cannot be undone.`)) {
+      await deleteOldResponses();
     }
   };
 
@@ -164,6 +250,71 @@ export default function ResponsesPage() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="text-secondary-foreground border-secondary-foreground hover:bg-secondary-foreground hover:text-black"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Auto-Delete Settings
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-black border border-white/20">
+                  <DialogHeader>
+                    <DialogTitle className="text-secondary-foreground font-heading">
+                      Auto-Delete Settings
+                    </DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleDeletionSettingsSubmit} className="space-y-4">
+                    <div>
+                      <Label htmlFor="deletionDays" className="text-secondary-foreground font-paragraph">
+                        Delete responses older than (days):
+                      </Label>
+                      <Input
+                        id="deletionDays"
+                        type="number"
+                        min="1"
+                        value={customDays}
+                        onChange={(e) => setCustomDays(e.target.value)}
+                        className="mt-1 bg-black border-white/20 text-secondary-foreground"
+                        placeholder="Enter number of days"
+                        required
+                      />
+                      <p className="text-sm text-secondary-foreground/70 mt-1 font-paragraph">
+                        Current setting: {deletionDays} days. Responses are automatically deleted when the page loads.
+                      </p>
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setIsSettingsOpen(false)}
+                        className="text-secondary-foreground"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="bg-gray-600 hover:bg-gray-700 text-white"
+                      >
+                        Save Settings
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+              
+              <Button
+                onClick={manualDeleteOldResponses}
+                variant="outline"
+                className="text-red-400 border-red-400 hover:bg-red-400 hover:text-black"
+                disabled={deletingOld}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {deletingOld ? 'Deleting...' : `Delete Old (${deletionDays}+ days)`}
+              </Button>
+              
               <Button
                 onClick={exportToCSV}
                 variant="outline"
