@@ -38,19 +38,19 @@ export default function HomePage() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link to="/mutual-funds" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
-                Mutual Funds
+                Funds
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link to="/investor-resources" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
-                Investor Resources
+                Investor
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link to="/aum-details" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
-                AUM Details
+                AUM
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link to="/contact" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
-                Contact
+                About
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
