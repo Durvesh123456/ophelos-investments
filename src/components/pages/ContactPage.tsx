@@ -113,10 +113,10 @@ export default function ContactPage() {
                   {isSubmitted ? (
                     <div className="text-center py-8">
                       <CheckCircle className="w-16 h-16 text-white mx-auto mb-4" />
-                      <h3 className="font-heading text-xl font-bold text-black mb-2">
+                      <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-2">
                         Thank You!
                       </h3>
-                      <p className="font-paragraph text-black/70">
+                      <p className="font-paragraph text-secondary-foreground/70">
                         Your message has been sent successfully. We'll contact you soon.
                       </p>
                     </div>
@@ -274,7 +274,7 @@ export default function ContactPage() {
 
                   <div className="flex items-start space-x-4">
                     <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6 text-primary-foreground" />
+                      <Clock className="w-6 h-6 text-black" />
                     </div>
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Business Hours</h3>
@@ -303,23 +303,23 @@ export default function ContactPage() {
               </Card>
 
               {/* Regulatory Info */}
-              <Card className="bg-primary shadow-lg">
+              <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
-                  <CardTitle className="font-heading text-xl font-bold text-primary-foreground">
+                  <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                     Regulatory Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <p className="font-paragraph text-primary-foreground/90">
+                  <p className="font-paragraph text-secondary-foreground/90">
                     <strong>ARN Number:</strong> ARN-285360
                   </p>
-                  <p className="font-paragraph text-primary-foreground/90">
+                  <p className="font-paragraph text-secondary-foreground/90">
                     <strong>SEBI Registration:</strong> INA000012345
                   </p>
-                  <p className="font-paragraph text-primary-foreground/90">
+                  <p className="font-paragraph text-secondary-foreground/90">
                     <strong>CIN:</strong> U65999MH2020PTC123456
                   </p>
-                  <p className="font-paragraph text-sm text-primary-foreground/70 mt-4">
+                  <p className="font-paragraph text-sm text-secondary-foreground/70 mt-4">
                     Ophelos Investments is a SEBI registered investment advisor and AMFI registered mutual fund distributor.
                   </p>
                 </CardContent>
