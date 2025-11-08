@@ -111,13 +111,6 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="bg-gray-800 py-16">
         <div className="max-w-[100rem] mx-auto px-6 text-center">
-          <div className="flex justify-center mb-6">
-            <Link to="/responses">
-              <Button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3">
-                View Responses
-              </Button>
-            </Link>
-          </div>
           <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
             Get in Touch
           </h1>
@@ -385,6 +378,14 @@ export default function ContactPage() {
                 You'll receive monthly statements and quarterly portfolio reviews. We also provide annual tax statements.
               </p>
             </div>
+          </div>
+          {/* View Responses Button */}
+          <div className="text-center mt-12">
+            <Link to="/responses">
+              <Button className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 text-lg">
+                View Responses
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
