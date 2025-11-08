@@ -3,7 +3,11 @@ import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-rou
 import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
+import FundsPage from '@/components/pages/FundsPage';
 import MutualFundsPage from '@/components/pages/MutualFundsPage';
+import SIFPage from '@/components/pages/SIFPage';
+import AIFPage from '@/components/pages/AIFPage';
+import PMSPage from '@/components/pages/PMSPage';
 import InvestorResourcesPage from '@/components/pages/InvestorResourcesPage';
 import AumDetailsPage from '@/components/pages/AumDetailsPage';
 import ContactPage from '@/components/pages/ContactPage';
@@ -31,8 +35,28 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "mutual-funds",
+        path: "funds",
+        element: <FundsPage />,
+      },
+      {
+        path: "funds/mutual-fund",
         element: <MutualFundsPage />,
+      },
+      {
+        path: "funds/sif",
+        element: <SIFPage />,
+      },
+      {
+        path: "funds/aif",
+        element: <AIFPage />,
+      },
+      {
+        path: "funds/pms",
+        element: <PMSPage />,
+      },
+      {
+        path: "mutual-funds",
+        element: <Navigate to="/funds/mutual-fund" replace />,
       },
       {
         path: "investor-resources",

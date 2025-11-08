@@ -29,17 +29,17 @@ export default function AumDetailsPage() {
               <Link to="/" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                Mutual Funds
+              <Link to="/funds" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
+                Funds
               </Link>
               <Link to="/investor-resources" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                Investor Resources
+                Investor
               </Link>
               <Link to="/aum-details" className="text-white font-paragraph font-semibold">
                 AUM
               </Link>
               <Link to="/contact" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                Contact
+                About
               </Link>
             </div>
           </div>

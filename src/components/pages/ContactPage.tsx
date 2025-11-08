@@ -67,17 +67,17 @@ export default function ContactPage() {
               <Link to="/" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
-                Mutual Funds
+              <Link to="/funds" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
+                Funds
               </Link>
               <Link to="/investor-resources" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
-                Investor Resources
+                Investor
               </Link>
               <Link to="/aum-details" className="text-secondary-foreground hover:text-primary transition-colors font-paragraph">
                 AUM
               </Link>
               <Link to="/contact" className="text-primary font-paragraph font-semibold">
-                Contact
+                About
               </Link>
             </div>
           </div>

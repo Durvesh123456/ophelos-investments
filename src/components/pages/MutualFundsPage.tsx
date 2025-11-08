@@ -85,9 +85,9 @@ export default function MutualFundsPage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Button variant="ghost" asChild className="text-secondary-foreground hover:text-white transition-colors duration-300">
-                <Link to="/">
+                <Link to="/funds">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Home
+                  Back to Funds
                 </Link>
               </Button>
               <div className="text-white font-heading text-2xl font-bold">
@@ -98,17 +98,17 @@ export default function MutualFundsPage() {
               <Link to="/" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-white font-paragraph font-semibold">
-                Mutual Funds
+              <Link to="/funds" className="text-white font-paragraph font-semibold">
+                Funds
               </Link>
               <Link to="/investor-resources" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                Investor Resources
+                Investor
               </Link>
               <Link to="/aum-details" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                AUM Details
+                AUM
               </Link>
               <Link to="/contact" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
-                Contact
+                About
               </Link>
             </div>
           </div>
