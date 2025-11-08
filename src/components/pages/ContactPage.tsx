@@ -311,7 +311,7 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <p className="font-paragraph text-primary-foreground/90">
-                    <strong>ARN Number:</strong> 12345-AMFI-67890
+                    <strong>ARN Number:</strong> ARN-285360
                   </p>
                   <p className="font-paragraph text-primary-foreground/90">
                     <strong>SEBI Registration:</strong> INA000012345
@@ -397,7 +397,7 @@ export default function ContactPage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
-                <p>ARN: 285360</p>
+                <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>
               </div>

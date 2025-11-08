@@ -294,7 +294,7 @@ export default function MutualFundsPage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4 text-white">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
-                <p>ARN: 285360</p>
+                <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>
               </div>
