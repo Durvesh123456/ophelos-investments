@@ -105,7 +105,7 @@ export default function ContactPage() {
                   <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                     Schedule Your Consultation
                   </CardTitle>
-                  <p className="font-paragraph text-secondary-foreground/70">
+                  <p className="font-paragraph text-secondary-foreground">
                     Fill out the form below and our team will get back to you within 24 hours.
                   </p>
                 </CardHeader>
