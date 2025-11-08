@@ -293,8 +293,8 @@ export default function ContactPage() {
                 <CardContent className="p-0">
                   <div className="aspect-video bg-black rounded-lg overflow-hidden">
                     <Image
-                      src="https://static.wixstatic.com/media/7afb6a_64e2018dcccc43479ee214cb7166b824~mv2.png?originWidth=576&originHeight=320"
-                      alt="Ophelos Investments office location map showing Bandra Kurla Complex, Mumbai"
+                      src="https://static.wixstatic.com/media/7afb6a_1934767cf79c41e6995a5c13a2e5ae71~mv2.png?originWidth=576&originHeight=320"
+                      alt="Modern black and white office location map showing financial district"
                       className="w-full h-full object-cover"
                       width={600}
                     />
