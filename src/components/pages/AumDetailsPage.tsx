@@ -91,8 +91,8 @@ export default function AumDetailsPage() {
             </div>
             <div className="relative">
               <Image
-                src="https://static.wixstatic.com/media/7afb6a_1196639935a3475ca5f0ec2bf5c114e5~mv2.png?originWidth=576&originHeight=384"
-                alt="AUM growth chart showing steady increase in assets under management over the years"
+                src="https://static.wixstatic.com/media/7afb6a_d9d965d664c7462b988272958a99385b~mv2.png?originWidth=1152&originHeight=768"
+                alt="Sophisticated black and white financial chart showing elegant upward growth trends in assets under management"
                 className="w-full h-auto rounded-lg shadow-lg"
                 width={600}
               />
