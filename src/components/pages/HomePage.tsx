@@ -29,29 +29,29 @@ export default function HomePage() {
         {/* Navigation */}
         <nav className="absolute top-0 left-0 right-0 z-20 p-6 backdrop-blur-sm bg-dark-900/30 border-b border-white/10">
           <div className="max-w-[100rem] mx-auto flex justify-between items-center">
-            <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
+            <div className="text-white font-heading text-2xl font-bold">
               Ophelos Investments
             </div>
             <div className="hidden md:flex space-x-8">
-              <Link to="/" className="text-foreground hover:text-neon-cyan transition-all duration-300 font-paragraph relative group">
+              <Link to="/" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
                 Home
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link to="/mutual-funds" className="text-foreground hover:text-neon-cyan transition-all duration-300 font-paragraph relative group">
+              <Link to="/mutual-funds" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
                 Mutual Funds
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link to="/investor-resources" className="text-foreground hover:text-neon-cyan transition-all duration-300 font-paragraph relative group">
+              <Link to="/investor-resources" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
                 Investor Resources
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link to="/aum-details" className="text-foreground hover:text-neon-cyan transition-all duration-300 font-paragraph relative group">
+              <Link to="/aum-details" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
                 AUM Details
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link to="/contact" className="text-foreground hover:text-neon-cyan transition-all duration-300 font-paragraph relative group">
+              <Link to="/contact" className="text-foreground hover:text-white transition-all duration-300 font-paragraph relative group">
                 Contact
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
           </div>
@@ -60,10 +60,10 @@ export default function HomePage() {
         {/* Hero Content */}
         <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
           <div className="text-foreground max-w-4xl mx-auto">
-            <p className="text-lg font-paragraph mb-4 tracking-wide text-white animate-float">
+            <p className="text-lg font-paragraph mb-4 tracking-wide text-white">
               BUILDING YOUR FINANCIAL FUTURE
             </p>
-            <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent animate-glow">
+            <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
               Expert Mutual Fund
               <br />
               Investment Solutions
@@ -93,7 +93,7 @@ export default function HomePage() {
         
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6 bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
+            <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6">
               Why Choose Ophelos Investments
             </h2>
             <p className="font-paragraph text-xl text-secondary-foreground/80 max-w-3xl mx-auto">
@@ -106,7 +106,7 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-neon-cyan to-neon-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <TrendingUp className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-cyan transition-colors duration-300">
+              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Proven Performance
               </h3>
               <p className="font-paragraph text-secondary-foreground/70">
@@ -118,7 +118,7 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-neon-purple to-neon-pink w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Shield className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-purple transition-colors duration-300">
+              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Risk Management
               </h3>
               <p className="font-paragraph text-secondary-foreground/70">
@@ -130,7 +130,7 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-neon-green to-neon-cyan w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Users className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-green transition-colors duration-300">
+              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Expert Guidance
               </h3>
               <p className="font-paragraph text-secondary-foreground/70">
@@ -142,7 +142,7 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-neon-pink to-neon-purple w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
                 <Award className="w-8 h-8 text-primary-foreground" />
               </div>
-              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-neon-pink transition-colors duration-300">
+              <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Award Winning
               </h3>
               <p className="font-paragraph text-secondary-foreground/70">
@@ -162,7 +162,7 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div className="group">
-              <div className="text-5xl font-heading font-bold text-neon-cyan mb-4 animate-pulse-neon group-hover:scale-110 transition-transform duration-300">
+              <div className="text-5xl font-heading font-bold text-white mb-4 group-hover:scale-110 transition-transform duration-300">
                 ₹40 Lakh+
               </div>
               <p className="font-paragraph text-xl text-primary-foreground/90">
@@ -170,7 +170,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="group">
-              <div className="text-5xl font-heading font-bold text-neon-purple mb-4 animate-pulse-neon group-hover:scale-110 transition-transform duration-300" style={{animationDelay: '0.5s'}}>
+              <div className="text-5xl font-heading font-bold text-white mb-4 group-hover:scale-110 transition-transform duration-300" style={{animationDelay: '0.5s'}}>
                 15,000+
               </div>
               <p className="font-paragraph text-xl text-primary-foreground/90">
@@ -178,7 +178,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="group">
-              <div className="text-5xl font-heading font-bold text-neon-pink mb-4 animate-pulse-neon group-hover:scale-110 transition-transform duration-300" style={{animationDelay: '1s'}}>
+              <div className="text-5xl font-heading font-bold text-white mb-4 group-hover:scale-110 transition-transform duration-300" style={{animationDelay: '1s'}}>
                 25+ Years
               </div>
               <p className="font-paragraph text-xl text-primary-foreground/90">
@@ -194,7 +194,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-cyber-grid opacity-30"></div>
         
         <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
-          <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
+          <h2 className="font-heading text-4xl font-bold text-secondary-foreground mb-6">
             Ready to Start Your Investment Journey?
           </h2>
           <p className="font-paragraph text-xl text-secondary-foreground/80 mb-8 max-w-2xl mx-auto">
@@ -204,7 +204,7 @@ export default function HomePage() {
             <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
               <Link to="/mutual-funds">View Our Funds</Link>
             </Button>
-            <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+            <Button variant="outline" asChild className="border-white/60 text-white hover:bg-white/10 hover:text-white px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
               <Link to="/contact">Contact Us Today</Link>
             </Button>
           </div>
@@ -216,7 +216,7 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6">
           <div className="bg-gradient-to-br from-secondary to-dark-800 rounded-lg shadow-cyber border border-neon-cyan/30 p-6 text-center backdrop-blur-sm">
             <div className="flex items-center justify-center mb-4">
-              <Phone className="w-8 h-8 text-neon-cyan mr-3 animate-subtle-glow" />
+              <Phone className="w-8 h-8 text-white mr-3" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground">
                 Need Immediate Assistance?
               </h3>
@@ -250,21 +250,21 @@ export default function HomePage() {
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4 text-neon-cyan">Ophelos Investments</h3>
+              <h3 className="font-heading text-xl font-bold mb-4 text-white">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-purple">Quick Links</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Quick Links</h4>
               <ul className="space-y-2 font-paragraph">
-                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Mutual Funds</Link></li>
-                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">AUM Details</Link></li>
+                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Mutual Funds</Link></li>
+                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Investor Resources</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">AUM Details</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-green">Services</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Services</h4>
               <ul className="space-y-2 font-paragraph">
                 <li className="text-primary-foreground/80">Portfolio Management</li>
                 <li className="text-primary-foreground/80">Investment Advisory</li>
@@ -272,7 +272,7 @@ export default function HomePage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-pink">Contact Info</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
                 <p>ARN: 285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>

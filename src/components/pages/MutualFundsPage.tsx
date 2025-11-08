@@ -67,7 +67,7 @@ export default function MutualFundsPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neon-cyan mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p className="font-paragraph text-secondary-foreground">Loading mutual funds...</p>
         </div>
       </div>
@@ -84,30 +84,30 @@ export default function MutualFundsPage() {
         <div className="max-w-[100rem] mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300">
+              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-white transition-colors duration-300">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Home
                 </Link>
               </Button>
-              <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
+              <div className="text-white font-heading text-2xl font-bold">
                 Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-neon-cyan font-paragraph font-semibold">
+              <Link to="/mutual-funds" className="text-white font-paragraph font-semibold">
                 Mutual Funds
               </Link>
-              <Link to="/investor-resources" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/investor-resources" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Investor Resources
               </Link>
-              <Link to="/aum-details" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/aum-details" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 AUM Details
               </Link>
-              <Link to="/contact" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/contact" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Contact
               </Link>
             </div>
@@ -123,7 +123,7 @@ export default function MutualFundsPage() {
         </div>
         
         <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
-          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
+          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
             Our Mutual Fund Portfolio
           </h1>
           <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">
@@ -137,7 +137,7 @@ export default function MutualFundsPage() {
         <div className="max-w-[100rem] mx-auto px-6">
           {funds.length === 0 ? (
             <div className="text-center py-16">
-              <TrendingUp className="w-16 h-16 text-neon-cyan mx-auto mb-6 animate-subtle-glow" />
+              <TrendingUp className="w-16 h-16 text-white mx-auto mb-6" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground mb-4">
                 No Mutual Funds Available
               </h3>
@@ -242,7 +242,7 @@ export default function MutualFundsPage() {
         </div>
         
         <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
-          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
+          <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-6">
             Need Help Choosing the Right Fund?
           </h2>
           <p className="font-paragraph text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
@@ -252,7 +252,7 @@ export default function MutualFundsPage() {
             <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
               <Link to="/contact">Schedule Consultation</Link>
             </Button>
-            <Button variant="outline" asChild className="border-neon-purple/60 text-neon-purple hover:bg-neon-purple/10 hover:text-neon-purple px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+            <Button variant="outline" asChild className="border-white/60 text-white hover:bg-white/10 hover:text-white px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
               <Link to="/investor-resources">Learn More</Link>
             </Button>
           </div>
@@ -270,21 +270,21 @@ export default function MutualFundsPage() {
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-heading text-xl font-bold mb-4 text-neon-cyan">Ophelos Investments</h3>
+              <h3 className="font-heading text-xl font-bold mb-4 text-white">Ophelos Investments</h3>
               <p className="font-paragraph text-primary-foreground/80">
                 Your trusted partner in mutual fund investments and wealth creation.
               </p>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-purple">Quick Links</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Quick Links</h4>
               <ul className="space-y-2 font-paragraph">
-                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Mutual Funds</Link></li>
-                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">Investor Resources</Link></li>
-                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-neon-cyan transition-colors duration-300">AUM Details</Link></li>
+                <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Mutual Funds</Link></li>
+                <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Investor Resources</Link></li>
+                <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">AUM Details</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-green">Services</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Services</h4>
               <ul className="space-y-2 font-paragraph">
                 <li className="text-primary-foreground/80">Portfolio Management</li>
                 <li className="text-primary-foreground/80">Investment Advisory</li>
@@ -292,7 +292,7 @@ export default function MutualFundsPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-heading text-lg font-semibold mb-4 text-neon-pink">Contact Info</h4>
+              <h4 className="font-heading text-lg font-semibold mb-4 text-white">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
                 <p>ARN: 285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>

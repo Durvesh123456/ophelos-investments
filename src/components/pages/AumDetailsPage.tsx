@@ -15,7 +15,7 @@ export default function AumDetailsPage() {
         <div className="max-w-[100rem] mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300">
+              <Button variant="ghost" asChild className="text-secondary-foreground hover:text-white transition-colors duration-300">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Home
