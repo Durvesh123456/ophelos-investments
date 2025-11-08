@@ -75,7 +75,7 @@ export default function HomePage() {
               <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
                 <Link to="/mutual-funds">Explore Our Funds</Link>
               </Button>
-              <Button variant="outline" asChild className="border-gray-400 text-gray-600 hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
+              <Button variant="outline" asChild className="border-gray-400 text-white hover:bg-gray-100 hover:text-gray-700 px-8 py-3 text-lg shadow-soft-glow transition-all duration-300 hover:shadow-neon backdrop-blur-sm">
                 <Link to="/contact">Schedule Consultation</Link>
               </Button>
             </div>
@@ -104,7 +104,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center group">
               <div className="bg-gradient-to-br from-neon-cyan to-neon-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
-                <TrendingUp className="w-8 h-8 text-primary-foreground" />
+                <TrendingUp className="w-8 h-8 text-black" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Proven Performance
@@ -116,7 +116,7 @@ export default function HomePage() {
 
             <div className="text-center group">
               <div className="bg-gradient-to-br from-neon-purple to-neon-pink w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
-                <Shield className="w-8 h-8 text-primary-foreground" />
+                <Shield className="w-8 h-8 text-black" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Risk Management
@@ -128,7 +128,7 @@ export default function HomePage() {
 
             <div className="text-center group">
               <div className="bg-gradient-to-br from-neon-green to-neon-cyan w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
-                <Users className="w-8 h-8 text-primary-foreground" />
+                <Users className="w-8 h-8 text-black" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Expert Guidance
@@ -140,7 +140,7 @@ export default function HomePage() {
 
             <div className="text-center group">
               <div className="bg-gradient-to-br from-neon-pink to-neon-purple w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft-glow group-hover:shadow-neon transition-all duration-300">
-                <Award className="w-8 h-8 text-primary-foreground" />
+                <Award className="w-8 h-8 text-black" />
               </div>
               <h3 className="font-heading text-xl font-bold text-secondary-foreground mb-4 group-hover:text-white transition-colors duration-300">
                 Award Winning

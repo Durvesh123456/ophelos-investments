@@ -231,7 +231,7 @@ export default function ContactPage() {
                 <CardContent className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-primary-foreground" />
+                      <MapPin className="w-6 h-6 text-black" />
                     </div>
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Office Address</h3>
@@ -246,7 +246,7 @@ export default function ContactPage() {
 
                   <div className="flex items-start space-x-4">
                     <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-primary-foreground" />
+                      <Phone className="w-6 h-6 text-black" />
                     </div>
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Phone Numbers</h3>
@@ -260,7 +260,7 @@ export default function ContactPage() {
 
                   <div className="flex items-start space-x-4">
                     <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-6 h-6 text-primary-foreground" />
+                      <Mail className="w-6 h-6 text-black" />
                     </div>
                     <div>
                       <h3 className="font-paragraph font-semibold text-secondary-foreground mb-1">Email Addresses</h3>

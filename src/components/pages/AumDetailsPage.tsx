@@ -21,24 +21,24 @@ export default function AumDetailsPage() {
                   Back to Home
                 </Link>
               </Button>
-              <div className="text-neon-cyan font-heading text-2xl font-bold animate-subtle-glow">
+              <div className="text-white font-heading text-2xl font-bold">
                 Ophelos Investments
               </div>
             </div>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Home
               </Link>
-              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/mutual-funds" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Mutual Funds
               </Link>
-              <Link to="/investor-resources" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/investor-resources" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Investor Resources
               </Link>
-              <Link to="/aum-details" className="text-neon-cyan font-paragraph font-semibold">
+              <Link to="/aum-details" className="text-white font-paragraph font-semibold">
                 AUM
               </Link>
-              <Link to="/contact" className="text-secondary-foreground hover:text-neon-cyan transition-colors duration-300 font-paragraph">
+              <Link to="/contact" className="text-secondary-foreground hover:text-white transition-colors duration-300 font-paragraph">
                 Contact
               </Link>
             </div>
@@ -54,7 +54,7 @@ export default function AumDetailsPage() {
         </div>
         
         <div className="max-w-[100rem] mx-auto px-6 text-center relative z-10">
-          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
+          <h1 className="font-heading text-5xl font-bold text-primary-foreground mb-6">
             Assets Under Management
           </h1>
           <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">
@@ -104,7 +104,7 @@ export default function AumDetailsPage() {
             <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-primary-foreground" />
+                  <TrendingUp className="w-8 h-8 text-black" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                   ₹24 Lakh
@@ -119,7 +119,7 @@ export default function AumDetailsPage() {
             <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-8 h-8 text-primary-foreground" />
+                  <Shield className="w-8 h-8 text-black" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                   ₹12 Lakh
@@ -134,7 +134,7 @@ export default function AumDetailsPage() {
             <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <PieChart className="w-8 h-8 text-primary-foreground" />
+                  <PieChart className="w-8 h-8 text-black" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                   ₹3.2 Lakh
@@ -149,7 +149,7 @@ export default function AumDetailsPage() {
             <Card className="bg-black shadow-lg border border-white/20 text-center">
               <CardHeader>
                 <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="w-8 h-8 text-primary-foreground" />
+                  <BarChart3 className="w-8 h-8 text-black" />
                 </div>
                 <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
                   ₹80,000

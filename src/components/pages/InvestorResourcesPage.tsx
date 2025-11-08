@@ -55,7 +55,7 @@ function SIPCalculator() {
         <CardHeader>
           <div className="flex items-center space-x-3 mb-4">
             <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-primary-foreground" />
+              <Calculator className="w-6 h-6 text-black" />
             </div>
             <div>
               <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
@@ -355,7 +355,7 @@ export default function InvestorResourcesPage() {
               <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="w-6 h-6 text-primary-foreground" />
+                    <BookOpen className="w-6 h-6 text-black" />
                   </div>
                   <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                     Mutual Fund Basics
@@ -377,7 +377,7 @@ export default function InvestorResourcesPage() {
               <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="w-6 h-6 text-primary-foreground" />
+                    <BookOpen className="w-6 h-6 text-black" />
                   </div>
                   <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                     Portfolio Diversification
@@ -399,7 +399,7 @@ export default function InvestorResourcesPage() {
               <Card className="bg-black shadow-lg border border-white/20">
                 <CardHeader>
                   <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="w-6 h-6 text-primary-foreground" />
+                    <BookOpen className="w-6 h-6 text-black" />
                   </div>
                   <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                     Financial Planning
