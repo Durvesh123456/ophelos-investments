@@ -16,28 +16,52 @@ export default function MutualFundsPage() {
   
   // Filter states
   const [selectedAMC, setSelectedAMC] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const [selectedFundType, setSelectedFundType] = useState<string>(''); // Active Fund or Passive Fund
+  const [selectedCategory, setSelectedCategory] = useState<string>(''); // For Active: Equity/Debt/Hybrid, For Passive: Index categories
   
   // Available options for filters
   const [amcOptions, setAmcOptions] = useState<string[]>([]);
+  const [fundTypeOptions] = useState<string[]>(['Active Fund', 'Passive Fund']);
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
-  const [subcategoryOptions, setSubcategoryOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchFunds = async () => {
       try {
         const { items } = await BaseCrudService.getAll<MutualFunds>('mutualfunds');
-        setFunds(items);
-        setFilteredFunds(items);
+        
+        // Transform the data to match new categorization
+        const transformedItems = items.map(fund => {
+          // Convert Index Fund to Passive Fund
+          if (fund.category === 'Index Fund') {
+            return {
+              ...fund,
+              category: 'Passive Fund',
+              // Keep existing subcategory for index funds (like Nifty 50, Sensex, etc.)
+            };
+          }
+          
+          // For non-index funds, categorize as Active Fund
+          if (fund.category && fund.category !== 'Index Fund') {
+            return {
+              ...fund,
+              category: 'Active Fund',
+              // Map existing categories to subcategories for active funds
+              subcategory: fund.category === 'Equity' ? 'Equity' : 
+                          fund.category === 'Debt' ? 'Debt' : 
+                          fund.category === 'Hybrid' ? 'Hybrid' : 
+                          fund.subcategory || fund.category
+            };
+          }
+          
+          return fund;
+        });
+        
+        setFunds(transformedItems);
+        setFilteredFunds(transformedItems);
         
         // Extract unique AMCs
-        const uniqueAMCs = [...new Set(items.map(fund => fund.amc).filter(Boolean))];
+        const uniqueAMCs = [...new Set(transformedItems.map(fund => fund.amc).filter(Boolean))];
         setAmcOptions(uniqueAMCs);
-        
-        // Extract unique categories
-        const uniqueCategories = [...new Set(items.map(fund => fund.category).filter(Boolean))];
-        setCategoryOptions(uniqueCategories);
         
       } catch (error) {
         console.error('Error fetching mutual funds:', error);
@@ -57,34 +81,45 @@ export default function MutualFundsPage() {
       filtered = filtered.filter(fund => fund.amc === selectedAMC);
     }
 
-    if (selectedCategory) {
-      filtered = filtered.filter(fund => fund.category === selectedCategory);
+    if (selectedFundType) {
+      filtered = filtered.filter(fund => fund.category === selectedFundType);
     }
 
-    if (selectedSubcategory) {
-      filtered = filtered.filter(fund => fund.subcategory === selectedSubcategory);
+    if (selectedCategory) {
+      filtered = filtered.filter(fund => fund.subcategory === selectedCategory);
     }
 
     setFilteredFunds(filtered);
-  }, [funds, selectedAMC, selectedCategory, selectedSubcategory]);
+  }, [funds, selectedAMC, selectedFundType, selectedCategory]);
 
-  // Update subcategory options based on selected category
+  // Update category options based on selected fund type
   useEffect(() => {
-    if (selectedCategory) {
-      const categoryFunds = funds.filter(fund => fund.category === selectedCategory);
-      const uniqueSubcategories = [...new Set(categoryFunds.map(fund => fund.subcategory).filter(Boolean))];
-      setSubcategoryOptions(uniqueSubcategories);
+    if (selectedFundType) {
+      const fundTypeFunds = funds.filter(fund => fund.category === selectedFundType);
+      
+      if (selectedFundType === 'Active Fund') {
+        // For Active Funds, show Equity, Debt, Hybrid as categories
+        const activeCategories = ['Equity', 'Debt', 'Hybrid'];
+        const availableCategories = activeCategories.filter(cat => 
+          fundTypeFunds.some(fund => fund.subcategory === cat)
+        );
+        setCategoryOptions(availableCategories);
+      } else if (selectedFundType === 'Passive Fund') {
+        // For Passive Funds (Index Funds), show their subcategories
+        const uniqueSubcategories = [...new Set(fundTypeFunds.map(fund => fund.subcategory).filter(Boolean))];
+        setCategoryOptions(uniqueSubcategories);
+      }
     } else {
-      setSubcategoryOptions([]);
+      setCategoryOptions([]);
     }
-    setSelectedSubcategory(''); // Reset subcategory when category changes
-  }, [selectedCategory, funds]);
+    setSelectedCategory(''); // Reset category when fund type changes
+  }, [selectedFundType, funds]);
 
   // Reset filters
   const resetFilters = () => {
     setSelectedAMC('');
+    setSelectedFundType('');
     setSelectedCategory('');
-    setSelectedSubcategory('');
   };
 
   const getRiskColor = (riskLevel?: string) => {
@@ -228,14 +263,52 @@ export default function MutualFundsPage() {
               </Select>
             </div>
 
+            {/* Fund Type Filter */}
+            <div className="space-y-2">
+              <label className="font-paragraph text-sm font-medium text-white">
+                Fund Type
+              </label>
+              <Select value={selectedFundType} onValueChange={setSelectedFundType}>
+                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white">
+                  <SelectValue placeholder="Select Fund Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {fundTypeOptions.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Category Filter */}
             <div className="space-y-2">
               <label className="font-paragraph text-sm font-medium text-white">
-                Fund Category
+                {selectedFundType === 'Active Fund' ? 'Asset Class' : 
+                 selectedFundType === 'Passive Fund' ? 'Index Category' : 'Category'}
+                {selectedFundType === 'Active Fund' && (
+                  <span className="text-xs text-white/60 ml-1">(Equity/Debt/Hybrid)</span>
+                )}
+                {selectedFundType === 'Passive Fund' && (
+                  <span className="text-xs text-white/60 ml-1">(Index Type)</span>
+                )}
               </label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white">
-                  <SelectValue placeholder="Select Category" />
+              <Select 
+                value={selectedCategory} 
+                onValueChange={setSelectedCategory}
+                disabled={!selectedFundType || categoryOptions.length === 0}
+              >
+                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white disabled:opacity-50">
+                  <SelectValue placeholder={
+                    !selectedFundType 
+                      ? "Select fund type first" 
+                      : categoryOptions.length === 0 
+                        ? "No categories" 
+                        : selectedFundType === 'Active Fund' 
+                          ? "Select Asset Class"
+                          : "Select Index Category"
+                  } />
                 </SelectTrigger>
                 <SelectContent>
                   {categoryOptions.map((category) => (
@@ -246,42 +319,10 @@ export default function MutualFundsPage() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Subcategory Filter */}
-            <div className="space-y-2">
-              <label className="font-paragraph text-sm font-medium text-white">
-                Subcategory
-                {selectedCategory === 'Equity' && (
-                  <span className="text-xs text-white/60 ml-1">(Cap Size)</span>
-                )}
-              </label>
-              <Select 
-                value={selectedSubcategory} 
-                onValueChange={setSelectedSubcategory}
-                disabled={!selectedCategory || subcategoryOptions.length === 0}
-              >
-                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white disabled:opacity-50">
-                  <SelectValue placeholder={
-                    !selectedCategory 
-                      ? "Select category first" 
-                      : subcategoryOptions.length === 0 
-                        ? "No subcategories" 
-                        : "Select Subcategory"
-                  } />
-                </SelectTrigger>
-                <SelectContent>
-                  {subcategoryOptions.map((subcategory) => (
-                    <SelectItem key={subcategory} value={subcategory}>
-                      {subcategory}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           </div>
 
           {/* Active Filters Display */}
-          {(selectedAMC || selectedCategory || selectedSubcategory) && (
+          {(selectedAMC || selectedFundType || selectedCategory) && (
             <div className="mt-4 flex flex-wrap gap-2">
               <span className="font-paragraph text-sm text-white/70">Active filters:</span>
               {selectedAMC && (
@@ -289,14 +330,14 @@ export default function MutualFundsPage() {
                   AMC: {selectedAMC}
                 </Badge>
               )}
-              {selectedCategory && (
+              {selectedFundType && (
                 <Badge variant="outline" className="border-white/60 text-white">
-                  Category: {selectedCategory}
+                  Type: {selectedFundType}
                 </Badge>
               )}
-              {selectedSubcategory && (
+              {selectedCategory && (
                 <Badge variant="outline" className="border-white/60 text-white">
-                  Subcategory: {selectedSubcategory}
+                  {selectedFundType === 'Active Fund' ? 'Asset Class' : 'Index'}: {selectedCategory}
                 </Badge>
               )}
             </div>
@@ -312,7 +353,7 @@ export default function MutualFundsPage() {
             <h3 className="font-heading text-2xl font-bold text-white mb-2">
               {filteredFunds.length === 0 ? 'No Funds Found' : `${filteredFunds.length} Fund${filteredFunds.length !== 1 ? 's' : ''} Found`}
             </h3>
-            {(selectedAMC || selectedCategory || selectedSubcategory) && (
+            {(selectedAMC || selectedFundType || selectedCategory) && (
               <p className="font-paragraph text-white/70">
                 Showing results for your selected criteria
               </p>
@@ -323,19 +364,19 @@ export default function MutualFundsPage() {
             <div className="text-center py-16">
               <TrendingUp className="w-16 h-16 text-white mx-auto mb-6" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground mb-4">
-                {(selectedAMC || selectedCategory || selectedSubcategory) 
+                {(selectedAMC || selectedFundType || selectedCategory) 
                   ? 'No Funds Match Your Criteria' 
                   : 'No Mutual Funds Available'
                 }
               </h3>
               <p className="font-paragraph text-secondary-foreground/70 mb-8">
-                {(selectedAMC || selectedCategory || selectedSubcategory)
+                {(selectedAMC || selectedFundType || selectedCategory)
                   ? 'Try adjusting your filters to see more options, or contact us for personalized recommendations.'
                   : 'We\'re currently updating our fund portfolio. Please check back soon or contact us for more information.'
                 }
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {(selectedAMC || selectedCategory || selectedSubcategory) && (
+                {(selectedAMC || selectedFundType || selectedCategory) && (
                   <Button 
                     onClick={resetFilters}
                     variant="outline" 
