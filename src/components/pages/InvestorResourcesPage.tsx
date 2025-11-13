@@ -18,6 +18,13 @@ function SIPCalculator() {
     estimatedReturns: 0,
     totalValue: 0
   });
+  const [history, setHistory] = useState<Array<{
+    monthlyInvestment: number;
+    expectedReturn: number;
+    timePeriod: number;
+    totalValue: number;
+    timestamp: Date;
+  }>>([]);
 
   const calculateSIP = () => {
     const monthlyRate = expectedReturn / 100 / 12;
@@ -30,10 +37,30 @@ function SIPCalculator() {
     
     const estimatedReturns = futureValue - totalInvestment;
 
-    setResults({
+    const newResults = {
       totalInvestment,
       estimatedReturns,
       totalValue: futureValue
+    };
+
+    setResults(newResults);
+
+    // Add to history (keep last 10)
+    const newHistoryEntry = {
+      monthlyInvestment,
+      expectedReturn,
+      timePeriod,
+      totalValue: futureValue,
+      timestamp: new Date()
+    };
+
+    setHistory(prev => {
+      const updated = [newHistoryEntry, ...prev.filter(item => 
+        !(item.monthlyInvestment === monthlyInvestment && 
+          item.expectedReturn === expectedReturn && 
+          item.timePeriod === timePeriod)
+      )];
+      return updated.slice(0, 10);
     });
   };
 
@@ -51,192 +78,234 @@ function SIPCalculator() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card className="bg-black shadow-lg">
-        <CardHeader>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                SIP Calculator
+    <div className="max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        {/* Calculator - Takes 3 columns */}
+        <div className="xl:col-span-3">
+          <Card className="bg-black shadow-lg">
+            <CardHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-black" />
+                </div>
+                <div>
+                  <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                    SIP Calculator
+                  </CardTitle>
+                  <p className="font-paragraph text-secondary-foreground/70">
+                    Calculate potential returns from your Systematic Investment Plan
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* ... keep existing code (Input Section and Results Section) */}
+                {/* Input Section */}
+                <div className="space-y-6">
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Monthly Investment Amount
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
+                      <input
+                        type="number"
+                        value={monthlyInvestment}
+                        onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                        className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="500"
+                        step="500"
+                      />
+                    </div>
+                    <input
+                      type="range"
+                      min="500"
+                      max="100000"
+                      step="500"
+                      value={monthlyInvestment}
+                      onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>₹500</span>
+                      <span>₹1,00,000</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Expected Annual Return (%)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={expectedReturn}
+                        onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="1"
+                        max="30"
+                        step="0.5"
+                      />
+                      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="30"
+                      step="0.5"
+                      value={expectedReturn}
+                      onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>1%</span>
+                      <span>30%</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Investment Period (Years)
+                    </label>
+                    <input
+                      type="number"
+                      value={timePeriod}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
+                      className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                      min="1"
+                      max="40"
+                    />
+                    <input
+                      type="range"
+                      min="1"
+                      max="40"
+                      value={timePeriod}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>1 Year</span>
+                      <span>40 Years</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Results Section */}
+                <div className="space-y-6">
+                  <div className="bg-secondary p-6 rounded-lg">
+                    <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
+                      Investment Summary
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="font-paragraph text-secondary-foreground/70">Total Investment:</span>
+                        <span className="font-paragraph font-semibold text-secondary-foreground">
+                          {formatCurrency(results.totalInvestment)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-paragraph text-secondary-foreground/70">Estimated Returns:</span>
+                        <span className="font-paragraph font-semibold text-white">
+                          {formatCurrency(results.estimatedReturns)}
+                        </span>
+                      </div>
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between items-center">
+                          <span className="font-paragraph font-semibold text-secondary-foreground">Total Value:</span>
+                          <span className="font-heading text-xl font-bold text-primary">
+                            {formatCurrency(results.totalValue)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Representation */}
+                  <div className="bg-secondary p-6 rounded-lg">
+                    <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
+                      Investment Breakdown
+                    </h3>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="font-paragraph text-secondary-foreground/70">Principal Amount</span>
+                          <span className="font-paragraph text-secondary-foreground">
+                            {((results.totalInvestment / results.totalValue) * 100).toFixed(1)}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-black rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full" 
+                            style={{ width: `${(results.totalInvestment / results.totalValue) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="font-paragraph text-secondary-foreground/70">Returns</span>
+                          <span className="font-paragraph text-secondary-foreground">
+                            {((results.estimatedReturns / results.totalValue) * 100).toFixed(1)}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-black rounded-full h-2">
+                          <div 
+                            className="bg-white h-2 rounded-full" 
+                            style={{ width: `${(results.estimatedReturns / results.totalValue) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-black border border-white p-4 rounded-lg">
+                    <p className="font-paragraph text-sm text-white">
+                      <strong>Note:</strong> This calculator provides estimates based on the inputs provided. 
+                      Actual returns may vary depending on market conditions. Mutual fund investments are subject to market risks.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* History Sidebar - Takes 1 column */}
+        <div className="xl:col-span-1">
+          <Card className="bg-black shadow-lg border border-white/20 h-fit">
+            <CardHeader>
+              <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
+                Calculation History
               </CardTitle>
-              <p className="font-paragraph text-secondary-foreground/70">
-                Calculate potential returns from your Systematic Investment Plan
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Input Section */}
-            <div className="space-y-6">
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Monthly Investment Amount
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
-                  <input
-                    type="number"
-                    value={monthlyInvestment}
-                    onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
-                    className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                    min="500"
-                    step="500"
-                  />
-                </div>
-                <input
-                  type="range"
-                  min="500"
-                  max="100000"
-                  step="500"
-                  value={monthlyInvestment}
-                  onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>₹500</span>
-                  <span>₹1,00,000</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Expected Annual Return (%)
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={expectedReturn}
-                    onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                    className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                    min="1"
-                    max="30"
-                    step="0.5"
-                  />
-                  <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="30"
-                  step="0.5"
-                  value={expectedReturn}
-                  onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>1%</span>
-                  <span>30%</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Investment Period (Years)
-                </label>
-                <input
-                  type="number"
-                  value={timePeriod}
-                  onChange={(e) => setTimePeriod(Number(e.target.value))}
-                  className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                  min="1"
-                  max="40"
-                />
-                <input
-                  type="range"
-                  min="1"
-                  max="40"
-                  value={timePeriod}
-                  onChange={(e) => setTimePeriod(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>1 Year</span>
-                  <span>40 Years</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Results Section */}
-            <div className="space-y-6">
-              <div className="bg-secondary p-6 rounded-lg">
-                <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
-                  Investment Summary
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-secondary-foreground/70">Total Investment:</span>
-                    <span className="font-paragraph font-semibold text-secondary-foreground">
-                      {formatCurrency(results.totalInvestment)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-secondary-foreground/70">Estimated Returns:</span>
-                    <span className="font-paragraph font-semibold text-white">
-                      {formatCurrency(results.estimatedReturns)}
-                    </span>
-                  </div>
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-paragraph font-semibold text-secondary-foreground">Total Value:</span>
-                      <span className="font-heading text-xl font-bold text-primary">
-                        {formatCurrency(results.totalValue)}
-                      </span>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {history.length === 0 ? (
+                  <p className="font-paragraph text-sm text-secondary-foreground/60 text-center py-4">
+                    No calculations yet
+                  </p>
+                ) : (
+                  history.map((entry, index) => (
+                    <div key={index} className="bg-secondary p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-secondary-foreground/60 mb-2">
+                        {entry.timestamp.toLocaleTimeString()}
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="font-paragraph text-secondary-foreground/80">
+                          ₹{entry.monthlyInvestment.toLocaleString()} × {entry.timePeriod}y @ {entry.expectedReturn}%
+                        </div>
+                        <div className="font-paragraph font-semibold text-primary">
+                          = {formatCurrency(entry.totalValue)}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  ))
+                )}
               </div>
-
-              {/* Visual Representation */}
-              <div className="bg-secondary p-6 rounded-lg">
-                <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
-                  Investment Breakdown
-                </h3>
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="font-paragraph text-secondary-foreground/70">Principal Amount</span>
-                      <span className="font-paragraph text-secondary-foreground">
-                        {((results.totalInvestment / results.totalValue) * 100).toFixed(1)}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-black rounded-full h-2">
-                      <div 
-                        className="bg-primary h-2 rounded-full" 
-                        style={{ width: `${(results.totalInvestment / results.totalValue) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="font-paragraph text-secondary-foreground/70">Returns</span>
-                      <span className="font-paragraph text-secondary-foreground">
-                        {((results.estimatedReturns / results.totalValue) * 100).toFixed(1)}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-black rounded-full h-2">
-                      <div 
-                        className="bg-white h-2 rounded-full" 
-                        style={{ width: `${(results.estimatedReturns / results.totalValue) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-black border border-white p-4 rounded-lg">
-                <p className="font-paragraph text-sm text-white">
-                  <strong>Note:</strong> This calculator provides estimates based on the inputs provided. 
-                  Actual returns may vary depending on market conditions. Mutual fund investments are subject to market risks.
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -251,6 +320,13 @@ function SWPCalculator() {
     remainingAmount: 0,
     monthsLasted: 0
   });
+  const [history, setHistory] = useState<Array<{
+    totalInvestment: number;
+    monthlyWithdrawal: number;
+    expectedReturn: number;
+    monthsLasted: number;
+    timestamp: Date;
+  }>>([]);
 
   const calculateSWP = () => {
     const monthlyRate = expectedReturn / 100 / 12;
@@ -264,10 +340,30 @@ function SWPCalculator() {
       months++;
     }
 
-    setResults({
+    const newResults = {
       totalWithdrawals: totalWithdrawn,
       remainingAmount: Math.max(0, balance),
       monthsLasted: months
+    };
+
+    setResults(newResults);
+
+    // Add to history (keep last 10)
+    const newHistoryEntry = {
+      totalInvestment,
+      monthlyWithdrawal,
+      expectedReturn,
+      monthsLasted: months,
+      timestamp: new Date()
+    };
+
+    setHistory(prev => {
+      const updated = [newHistoryEntry, ...prev.filter(item => 
+        !(item.totalInvestment === totalInvestment && 
+          item.monthlyWithdrawal === monthlyWithdrawal && 
+          item.expectedReturn === expectedReturn)
+      )];
+      return updated.slice(0, 10);
     });
   };
 
@@ -285,159 +381,201 @@ function SWPCalculator() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card className="bg-black shadow-lg">
-        <CardHeader>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                SWP Calculator
-              </CardTitle>
-              <p className="font-paragraph text-secondary-foreground/70">
-                Calculate how long your investment will last with Systematic Withdrawal Plan
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Input Section */}
-            <div className="space-y-6">
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Total Investment Amount
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
-                  <input
-                    type="number"
-                    value={totalInvestment}
-                    onChange={(e) => setTotalInvestment(Number(e.target.value))}
-                    className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                    min="100000"
-                    step="50000"
-                  />
+    <div className="max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        {/* Calculator - Takes 3 columns */}
+        <div className="xl:col-span-3">
+          <Card className="bg-black shadow-lg">
+            <CardHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-black" />
                 </div>
-                <input
-                  type="range"
-                  min="100000"
-                  max="10000000"
-                  step="50000"
-                  value={totalInvestment}
-                  onChange={(e) => setTotalInvestment(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>₹1,00,000</span>
-                  <span>₹1,00,00,000</span>
+                <div>
+                  <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                    SWP Calculator
+                  </CardTitle>
+                  <p className="font-paragraph text-secondary-foreground/70">
+                    Calculate how long your investment will last with Systematic Withdrawal Plan
+                  </p>
                 </div>
               </div>
-
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Monthly Withdrawal Amount
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
-                  <input
-                    type="number"
-                    value={monthlyWithdrawal}
-                    onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
-                    className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                    min="1000"
-                    step="1000"
-                  />
-                </div>
-                <input
-                  type="range"
-                  min="1000"
-                  max="100000"
-                  step="1000"
-                  value={monthlyWithdrawal}
-                  onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>₹1,000</span>
-                  <span>₹1,00,000</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
-                  Expected Annual Return (%)
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={expectedReturn}
-                    onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                    className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
-                    min="1"
-                    max="30"
-                    step="0.5"
-                  />
-                  <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="30"
-                  step="0.5"
-                  value={expectedReturn}
-                  onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                  className="w-full mt-2 accent-primary"
-                />
-                <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
-                  <span>1%</span>
-                  <span>30%</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Results Section */}
-            <div className="space-y-6">
-              <div className="bg-secondary p-6 rounded-lg">
-                <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
-                  Withdrawal Summary
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-secondary-foreground/70">Duration:</span>
-                    <span className="font-paragraph font-semibold text-secondary-foreground">
-                      {Math.floor(results.monthsLasted / 12)} years {results.monthsLasted % 12} months
-                    </span>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* ... keep existing code (Input Section and Results Section) */}
+                {/* Input Section */}
+                <div className="space-y-6">
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Total Investment Amount
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
+                      <input
+                        type="number"
+                        value={totalInvestment}
+                        onChange={(e) => setTotalInvestment(Number(e.target.value))}
+                        className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="100000"
+                        step="50000"
+                      />
+                    </div>
+                    <input
+                      type="range"
+                      min="100000"
+                      max="10000000"
+                      step="50000"
+                      value={totalInvestment}
+                      onChange={(e) => setTotalInvestment(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>₹1,00,000</span>
+                      <span>₹1,00,00,000</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-secondary-foreground/70">Total Withdrawals:</span>
-                    <span className="font-paragraph font-semibold text-white">
-                      {formatCurrency(results.totalWithdrawals)}
-                    </span>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Monthly Withdrawal Amount
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80">₹</span>
+                      <input
+                        type="number"
+                        value={monthlyWithdrawal}
+                        onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
+                        className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="1000"
+                        step="1000"
+                      />
+                    </div>
+                    <input
+                      type="range"
+                      min="1000"
+                      max="100000"
+                      step="1000"
+                      value={monthlyWithdrawal}
+                      onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>₹1,000</span>
+                      <span>₹1,00,000</span>
+                    </div>
                   </div>
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center">
-                      <span className="font-paragraph font-semibold text-secondary-foreground">Remaining Amount:</span>
-                      <span className="font-heading text-xl font-bold text-primary">
-                        {formatCurrency(results.remainingAmount)}
-                      </span>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Expected Annual Return (%)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={expectedReturn}
+                        onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="1"
+                        max="30"
+                        step="0.5"
+                      />
+                      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="30"
+                      step="0.5"
+                      value={expectedReturn}
+                      onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>1%</span>
+                      <span>30%</span>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-black border border-white p-4 rounded-lg">
-                <p className="font-paragraph text-sm text-white">
-                  <strong>Note:</strong> This calculator assumes a constant withdrawal amount and return rate. 
-                  Actual performance may vary based on market conditions. Consider inflation impact on withdrawal needs.
-                </p>
+                {/* Results Section */}
+                <div className="space-y-6">
+                  <div className="bg-secondary p-6 rounded-lg">
+                    <h3 className="font-heading text-lg font-bold text-secondary-foreground mb-4">
+                      Withdrawal Summary
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="font-paragraph text-secondary-foreground/70">Duration:</span>
+                        <span className="font-paragraph font-semibold text-secondary-foreground">
+                          {Math.floor(results.monthsLasted / 12)} years {results.monthsLasted % 12} months
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-paragraph text-secondary-foreground/70">Total Withdrawals:</span>
+                        <span className="font-paragraph font-semibold text-white">
+                          {formatCurrency(results.totalWithdrawals)}
+                        </span>
+                      </div>
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between items-center">
+                          <span className="font-paragraph font-semibold text-secondary-foreground">Remaining Amount:</span>
+                          <span className="font-heading text-xl font-bold text-primary">
+                            {formatCurrency(results.remainingAmount)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-black border border-white p-4 rounded-lg">
+                    <p className="font-paragraph text-sm text-white">
+                      <strong>Note:</strong> This calculator assumes a constant withdrawal amount and return rate. 
+                      Actual performance may vary based on market conditions. Consider inflation impact on withdrawal needs.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* History Sidebar - Takes 1 column */}
+        <div className="xl:col-span-1">
+          <Card className="bg-black shadow-lg border border-white/20 h-fit">
+            <CardHeader>
+              <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
+                Calculation History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {history.length === 0 ? (
+                  <p className="font-paragraph text-sm text-secondary-foreground/60 text-center py-4">
+                    No calculations yet
+                  </p>
+                ) : (
+                  history.map((entry, index) => (
+                    <div key={index} className="bg-secondary p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-secondary-foreground/60 mb-2">
+                        {entry.timestamp.toLocaleTimeString()}
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="font-paragraph text-secondary-foreground/80">
+                          ₹{entry.totalInvestment.toLocaleString()} → ₹{entry.monthlyWithdrawal.toLocaleString()}/mo @ {entry.expectedReturn}%
+                        </div>
+                        <div className="font-paragraph font-semibold text-primary">
+                          = {Math.floor(entry.monthsLasted / 12)}y {entry.monthsLasted % 12}m
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -445,30 +583,41 @@ function SWPCalculator() {
 // Normal Calculator Component
 function NormalCalculator() {
   const [display, setDisplay] = useState<string>('0');
+  const [formula, setFormula] = useState<string>('');
   const [previousValue, setPreviousValue] = useState<number | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
+  const [history, setHistory] = useState<Array<{
+    formula: string;
+    result: string;
+    timestamp: Date;
+  }>>([]);
 
   const inputNumber = (num: string) => {
     if (waitingForOperand) {
       setDisplay(num);
+      setFormula(prev => prev + num);
       setWaitingForOperand(false);
     } else {
       setDisplay(display === '0' ? num : display + num);
+      setFormula(prev => prev === '' ? num : prev + num);
     }
   };
 
   const inputDecimal = () => {
     if (waitingForOperand) {
       setDisplay('0.');
+      setFormula(prev => prev + '0.');
       setWaitingForOperand(false);
     } else if (display.indexOf('.') === -1) {
       setDisplay(display + '.');
+      setFormula(prev => prev + '.');
     }
   };
 
   const clear = () => {
     setDisplay('0');
+    setFormula('');
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(false);
@@ -489,6 +638,9 @@ function NormalCalculator() {
 
     setWaitingForOperand(true);
     setOperation(nextOperation);
+    
+    const operatorSymbol = nextOperation === '*' ? '×' : nextOperation === '/' ? '÷' : nextOperation;
+    setFormula(prev => prev + ' ' + operatorSymbol + ' ');
   };
 
   const calculate = (firstValue: number, secondValue: number, operation: string): number => {
@@ -513,152 +665,213 @@ function NormalCalculator() {
 
     if (previousValue !== null && operation) {
       const newValue = calculate(previousValue, inputValue, operation);
+      const finalFormula = formula + ' = ' + newValue;
+      
       setDisplay(String(newValue));
+      
+      // Add to history (keep last 10)
+      const newHistoryEntry = {
+        formula: finalFormula,
+        result: String(newValue),
+        timestamp: new Date()
+      };
+
+      setHistory(prev => {
+        const updated = [newHistoryEntry, ...prev];
+        return updated.slice(0, 10);
+      });
+
       setPreviousValue(null);
       setOperation(null);
       setWaitingForOperand(true);
+      setFormula('');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <Card className="bg-black shadow-lg">
-        <CardHeader>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                Normal Calculator
-              </CardTitle>
-              <p className="font-paragraph text-secondary-foreground/70">
-                Basic arithmetic calculator for everyday calculations
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {/* Display */}
-            <div className="bg-dark-700 p-4 rounded-lg">
-              <div className="text-right text-2xl font-mono text-white overflow-hidden">
-                {display}
+    <div className="max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calculator - Takes 2 columns */}
+        <div className="lg:col-span-2">
+          <Card className="bg-black shadow-lg">
+            <CardHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-black" />
+                </div>
+                <div>
+                  <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                    Normal Calculator
+                  </CardTitle>
+                  <p className="font-paragraph text-secondary-foreground/70">
+                    Basic arithmetic calculator for everyday calculations
+                  </p>
+                </div>
               </div>
-            </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {/* Formula Display */}
+                <div className="bg-dark-700 p-3 rounded-lg">
+                  <div className="text-right text-sm font-mono text-gray-400 min-h-[20px]">
+                    {formula || 'Enter calculation...'}
+                  </div>
+                </div>
 
-            {/* Buttons */}
-            <div className="grid grid-cols-4 gap-3">
-              <Button
-                onClick={clear}
-                className="bg-red-600 hover:bg-red-700 text-white col-span-2"
-              >
-                Clear
-              </Button>
-              <Button
-                onClick={() => performOperation('/')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                <Divide className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => performOperation('*')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                <X className="w-4 h-4" />
-              </Button>
+                {/* Result Display */}
+                <div className="bg-dark-700 p-4 rounded-lg">
+                  <div className="text-right text-2xl font-mono text-white overflow-hidden">
+                    {display}
+                  </div>
+                </div>
 
-              <Button
-                onClick={() => inputNumber('7')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                7
-              </Button>
-              <Button
-                onClick={() => inputNumber('8')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                8
-              </Button>
-              <Button
-                onClick={() => inputNumber('9')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                9
-              </Button>
-              <Button
-                onClick={() => performOperation('-')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                <Minus className="w-4 h-4" />
-              </Button>
+                {/* Buttons */}
+                <div className="grid grid-cols-4 gap-3">
+                  <Button
+                    onClick={clear}
+                    className="bg-red-600 hover:bg-red-700 text-white col-span-2"
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('/')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <Divide className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('*')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('4')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                4
-              </Button>
-              <Button
-                onClick={() => inputNumber('5')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                5
-              </Button>
-              <Button
-                onClick={() => inputNumber('6')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                6
-              </Button>
-              <Button
-                onClick={() => performOperation('+')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
+                  <Button
+                    onClick={() => inputNumber('7')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    7
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('8')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    8
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('9')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    9
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('-')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('1')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                1
-              </Button>
-              <Button
-                onClick={() => inputNumber('2')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                2
-              </Button>
-              <Button
-                onClick={() => inputNumber('3')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                3
-              </Button>
-              <Button
-                onClick={handleEquals}
-                className="bg-primary hover:bg-primary/90 text-black row-span-2"
-              >
-                =
-              </Button>
+                  <Button
+                    onClick={() => inputNumber('4')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    4
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('5')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    5
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('6')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    6
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('0')}
-                className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
-              >
-                0
-              </Button>
-              <Button
-                onClick={inputDecimal}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                .
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+                  <Button
+                    onClick={() => inputNumber('1')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    1
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('2')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    2
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('3')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    3
+                  </Button>
+                  <Button
+                    onClick={handleEquals}
+                    className="bg-primary hover:bg-primary/90 text-black row-span-2"
+                  >
+                    =
+                  </Button>
+
+                  <Button
+                    onClick={() => inputNumber('0')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
+                  >
+                    0
+                  </Button>
+                  <Button
+                    onClick={inputDecimal}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    .
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* History Sidebar - Takes 1 column */}
+        <div className="lg:col-span-1">
+          <Card className="bg-black shadow-lg border border-white/20 h-fit">
+            <CardHeader>
+              <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
+                Calculation History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {history.length === 0 ? (
+                  <p className="font-paragraph text-sm text-secondary-foreground/60 text-center py-4">
+                    No calculations yet
+                  </p>
+                ) : (
+                  history.map((entry, index) => (
+                    <div key={index} className="bg-secondary p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-secondary-foreground/60 mb-2">
+                        {entry.timestamp.toLocaleTimeString()}
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="font-paragraph font-mono text-secondary-foreground/80 break-all">
+                          {entry.formula}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -674,6 +887,12 @@ function BAIIPlusCalculator() {
     FV: 0
   });
   const [currentVariable, setCurrentVariable] = useState<string>('');
+  const [history, setHistory] = useState<Array<{
+    operation: string;
+    variables: { [key: string]: number };
+    result: string;
+    timestamp: Date;
+  }>>([]);
 
   const inputNumber = (num: string) => {
     setDisplay(display === '0' ? num : display + num);
@@ -743,246 +962,303 @@ function BAIIPlusCalculator() {
 
       setDisplay(result.toFixed(2));
       setMemory(prev => ({ ...prev, [solve]: result }));
+
+      // Add to history (keep last 10)
+      const newHistoryEntry = {
+        operation: `Computed ${solve}`,
+        variables: { ...memory, [solve]: result },
+        result: result.toFixed(2),
+        timestamp: new Date()
+      };
+
+      setHistory(prev => {
+        const updated = [newHistoryEntry, ...prev];
+        return updated.slice(0, 10);
+      });
     } catch (error) {
       setDisplay('Error');
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto">
-      <Card className="bg-black shadow-lg">
-        <CardHeader>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
-              <Calculator className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
-                BA II Plus Calculator
-              </CardTitle>
-              <p className="font-paragraph text-secondary-foreground/70">
-                Texas Instruments BA II Plus Financial Calculator
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {/* Display */}
-            <div className="bg-dark-700 p-4 rounded-lg">
-              <div className="text-right text-xl font-mono text-white">
-                {display}
+    <div className="max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calculator - Takes 2 columns */}
+        <div className="lg:col-span-2">
+          <Card className="bg-black shadow-lg">
+            <CardHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-black" />
+                </div>
+                <div>
+                  <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                    BA II Plus Calculator
+                  </CardTitle>
+                  <p className="font-paragraph text-secondary-foreground/70">
+                    Texas Instruments BA II Plus Financial Calculator
+                  </p>
+                </div>
               </div>
-              {currentVariable && (
-                <div className="text-right text-sm text-gray-400">
-                  {currentVariable}
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {/* Display */}
+                <div className="bg-dark-700 p-4 rounded-lg">
+                  <div className="text-right text-xl font-mono text-white">
+                    {display}
+                  </div>
+                  {currentVariable && (
+                    <div className="text-right text-sm text-gray-400">
+                      {currentVariable}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            {/* Memory Display */}
-            <div className="grid grid-cols-5 gap-2 text-xs">
-              {Object.entries(memory).map(([key, value]) => (
-                <div key={key} className="bg-dark-700 p-2 rounded text-center text-white">
-                  <div className="font-semibold">{key}</div>
-                  <div className="text-gray-400">{value.toFixed(2)}</div>
+                {/* Memory Display */}
+                <div className="grid grid-cols-5 gap-2 text-xs">
+                  {Object.entries(memory).map(([key, value]) => (
+                    <div key={key} className="bg-dark-700 p-2 rounded text-center text-white">
+                      <div className="font-semibold">{key}</div>
+                      <div className="text-gray-400">{value.toFixed(2)}</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            {/* TVM Buttons */}
-            <div className="grid grid-cols-5 gap-2">
-              <Button
-                onClick={() => storeValue('N')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-              >
-                N
-              </Button>
-              <Button
-                onClick={() => storeValue('I')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-              >
-                I/Y
-              </Button>
-              <Button
-                onClick={() => storeValue('PV')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-              >
-                PV
-              </Button>
-              <Button
-                onClick={() => storeValue('PMT')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-              >
-                PMT
-              </Button>
-              <Button
-                onClick={() => storeValue('FV')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-              >
-                FV
-              </Button>
-            </div>
+                {/* TVM Buttons */}
+                <div className="grid grid-cols-5 gap-2">
+                  <Button
+                    onClick={() => storeValue('N')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    N
+                  </Button>
+                  <Button
+                    onClick={() => storeValue('I')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    I/Y
+                  </Button>
+                  <Button
+                    onClick={() => storeValue('PV')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    PV
+                  </Button>
+                  <Button
+                    onClick={() => storeValue('PMT')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    PMT
+                  </Button>
+                  <Button
+                    onClick={() => storeValue('FV')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    FV
+                  </Button>
+                </div>
 
-            {/* Compute Buttons */}
-            <div className="grid grid-cols-5 gap-2">
-              <Button
-                onClick={() => computeTVM('N')}
-                className="bg-green-600 hover:bg-green-700 text-white text-xs"
-              >
-                CPT N
-              </Button>
-              <Button
-                onClick={() => computeTVM('I')}
-                className="bg-green-600 hover:bg-green-700 text-white text-xs"
-              >
-                CPT I/Y
-              </Button>
-              <Button
-                onClick={() => computeTVM('PV')}
-                className="bg-green-600 hover:bg-green-700 text-white text-xs"
-              >
-                CPT PV
-              </Button>
-              <Button
-                onClick={() => computeTVM('PMT')}
-                className="bg-green-600 hover:bg-green-700 text-white text-xs"
-              >
-                CPT PMT
-              </Button>
-              <Button
-                onClick={() => computeTVM('FV')}
-                className="bg-green-600 hover:bg-green-700 text-white text-xs"
-              >
-                CPT FV
-              </Button>
-            </div>
+                {/* Compute Buttons */}
+                <div className="grid grid-cols-5 gap-2">
+                  <Button
+                    onClick={() => computeTVM('N')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    CPT N
+                  </Button>
+                  <Button
+                    onClick={() => computeTVM('I')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    CPT I/Y
+                  </Button>
+                  <Button
+                    onClick={() => computeTVM('PV')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    CPT PV
+                  </Button>
+                  <Button
+                    onClick={() => computeTVM('PMT')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    CPT PMT
+                  </Button>
+                  <Button
+                    onClick={() => computeTVM('FV')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    CPT FV
+                  </Button>
+                </div>
 
-            {/* Number Pad */}
-            <div className="grid grid-cols-4 gap-2">
-              <Button
-                onClick={clearAll}
-                className="bg-red-600 hover:bg-red-700 text-white col-span-2"
-              >
-                CLR TVM
-              </Button>
-              <Button
-                onClick={clear}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                CE
-              </Button>
-              <Button
-                onClick={() => inputNumber('+')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                +/-
-              </Button>
+                {/* Number Pad */}
+                <div className="grid grid-cols-4 gap-2">
+                  <Button
+                    onClick={clearAll}
+                    className="bg-red-600 hover:bg-red-700 text-white col-span-2"
+                  >
+                    CLR TVM
+                  </Button>
+                  <Button
+                    onClick={clear}
+                    className="bg-red-600 hover:bg-red-700 text-white"
+                  >
+                    CE
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    +/-
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('7')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                7
-              </Button>
-              <Button
-                onClick={() => inputNumber('8')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                8
-              </Button>
-              <Button
-                onClick={() => inputNumber('9')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                9
-              </Button>
-              <Button
-                onClick={() => inputNumber('/')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                ÷
-              </Button>
+                  <Button
+                    onClick={() => inputNumber('7')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    7
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('8')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    8
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('9')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    9
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('/')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ÷
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('4')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                4
-              </Button>
-              <Button
-                onClick={() => inputNumber('5')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                5
-              </Button>
-              <Button
-                onClick={() => inputNumber('6')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                6
-              </Button>
-              <Button
-                onClick={() => inputNumber('*')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                ×
-              </Button>
+                  <Button
+                    onClick={() => inputNumber('4')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    4
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('5')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    5
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('6')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    6
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('*')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ×
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('1')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                1
-              </Button>
-              <Button
-                onClick={() => inputNumber('2')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                2
-              </Button>
-              <Button
-                onClick={() => inputNumber('3')}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                3
-              </Button>
-              <Button
-                onClick={() => inputNumber('-')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                -
-              </Button>
+                  <Button
+                    onClick={() => inputNumber('1')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    1
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('2')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    2
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('3')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    3
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('-')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    -
+                  </Button>
 
-              <Button
-                onClick={() => inputNumber('0')}
-                className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
-              >
-                0
-              </Button>
-              <Button
-                onClick={inputDecimal}
-                className="bg-dark-700 hover:bg-dark-600 text-white"
-              >
-                .
-              </Button>
-              <Button
-                onClick={() => inputNumber('+')}
-                className="bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                +
-              </Button>
-            </div>
+                  <Button
+                    onClick={() => inputNumber('0')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
+                  >
+                    0
+                  </Button>
+                  <Button
+                    onClick={inputDecimal}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    .
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    +
+                  </Button>
+                </div>
 
-            <div className="bg-black border border-white p-4 rounded-lg">
-              <p className="font-paragraph text-sm text-white">
-                <strong>TVM Variables:</strong> N = Number of periods, I/Y = Interest rate per year, 
-                PV = Present Value, PMT = Payment, FV = Future Value
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+                <div className="bg-black border border-white p-4 rounded-lg">
+                  <p className="font-paragraph text-sm text-white">
+                    <strong>TVM Variables:</strong> N = Number of periods, I/Y = Interest rate per year, 
+                    PV = Present Value, PMT = Payment, FV = Future Value
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* History Sidebar - Takes 1 column */}
+        <div className="lg:col-span-1">
+          <Card className="bg-black shadow-lg border border-white/20 h-fit">
+            <CardHeader>
+              <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
+                Calculation History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {history.length === 0 ? (
+                  <p className="font-paragraph text-sm text-secondary-foreground/60 text-center py-4">
+                    No calculations yet
+                  </p>
+                ) : (
+                  history.map((entry, index) => (
+                    <div key={index} className="bg-secondary p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-secondary-foreground/60 mb-2">
+                        {entry.timestamp.toLocaleTimeString()}
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="font-paragraph font-semibold text-primary">
+                          {entry.operation}
+                        </div>
+                        <div className="font-paragraph text-secondary-foreground/80">
+                          Result: {entry.result}
+                        </div>
+                        <div className="text-xs text-secondary-foreground/60">
+                          N:{entry.variables.N.toFixed(1)} I:{entry.variables.I.toFixed(1)}% PV:{entry.variables.PV.toFixed(0)} PMT:{entry.variables.PMT.toFixed(0)} FV:{entry.variables.FV.toFixed(0)}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
