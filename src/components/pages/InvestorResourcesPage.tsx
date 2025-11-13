@@ -371,6 +371,7 @@ function SWPCalculator() {
   const [expectedReturn, setExpectedReturn] = useState<number>(12);
   const [timePeriod, setTimePeriod] = useState<number>(20);
   const [annualStepUp, setAnnualStepUp] = useState<number>(0);
+  const [compoundingFrequency, setCompoundingFrequency] = useState<'monthly' | 'annual'>('monthly');
   const [results, setResults] = useState({
     totalWithdrawals: 0,
     remainingAmount: 0,
@@ -382,26 +383,49 @@ function SWPCalculator() {
     expectedReturn: number;
     timePeriod: number;
     annualStepUp: number;
+    compoundingFrequency: 'monthly' | 'annual';
     monthsLasted: number;
     timestamp: Date;
   }>>([]);
 
   const calculateSWP = () => {
-    const monthlyRate = expectedReturn / 100 / 12;
     let balance = totalInvestment;
     let months = 0;
     let totalWithdrawn = 0;
     let currentWithdrawal = monthlyWithdrawal;
     const maxMonths = timePeriod * 12;
 
-    while (balance > currentWithdrawal && months < maxMonths) {
-      balance = balance * (1 + monthlyRate) - currentWithdrawal;
-      totalWithdrawn += currentWithdrawal;
-      months++;
+    if (compoundingFrequency === 'monthly') {
+      // Monthly compounding
+      const monthlyRate = expectedReturn / 100 / 12;
+      
+      while (balance > currentWithdrawal && months < maxMonths) {
+        balance = balance * (1 + monthlyRate) - currentWithdrawal;
+        totalWithdrawn += currentWithdrawal;
+        months++;
 
-      // Apply annual step-up every 12 months
-      if (months % 12 === 0 && annualStepUp > 0) {
-        currentWithdrawal = currentWithdrawal * (1 + annualStepUp / 100);
+        // Apply annual step-up every 12 months
+        if (months % 12 === 0 && annualStepUp > 0) {
+          currentWithdrawal = currentWithdrawal * (1 + annualStepUp / 100);
+        }
+      }
+    } else {
+      // Annual compounding
+      const annualRate = expectedReturn / 100;
+      
+      while (balance > currentWithdrawal && months < maxMonths) {
+        // Withdraw monthly
+        balance -= currentWithdrawal;
+        totalWithdrawn += currentWithdrawal;
+        months++;
+
+        // Apply annual compounding and step-up at year end
+        if (months % 12 === 0) {
+          balance = balance * (1 + annualRate);
+          if (annualStepUp > 0) {
+            currentWithdrawal = currentWithdrawal * (1 + annualStepUp / 100);
+          }
+        }
       }
     }
 
@@ -420,6 +444,7 @@ function SWPCalculator() {
       expectedReturn,
       timePeriod,
       annualStepUp,
+      compoundingFrequency,
       monthsLasted: months,
       timestamp: new Date()
     };
@@ -430,7 +455,8 @@ function SWPCalculator() {
           item.monthlyWithdrawal === monthlyWithdrawal && 
           item.expectedReturn === expectedReturn &&
           item.timePeriod === timePeriod &&
-          item.annualStepUp === annualStepUp)
+          item.annualStepUp === annualStepUp &&
+          item.compoundingFrequency === compoundingFrequency)
       )];
       return updated.slice(0, 10);
     });
@@ -438,7 +464,7 @@ function SWPCalculator() {
 
   useEffect(() => {
     calculateSWP();
-  }, [totalInvestment, monthlyWithdrawal, expectedReturn, timePeriod, annualStepUp]);
+  }, [totalInvestment, monthlyWithdrawal, expectedReturn, timePeriod, annualStepUp, compoundingFrequency]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -625,6 +651,41 @@ function SWPCalculator() {
                       Increase withdrawal amount annually by this percentage
                     </p>
                   </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Compounding Frequency
+                    </label>
+                    <div className="flex space-x-2">
+                      <Button
+                        type="button"
+                        variant={compoundingFrequency === 'monthly' ? 'default' : 'outline'}
+                        onClick={() => setCompoundingFrequency('monthly')}
+                        className={`flex-1 ${
+                          compoundingFrequency === 'monthly'
+                            ? 'bg-white text-black hover:bg-white/90'
+                            : 'bg-transparent border-white text-white hover:bg-white/10'
+                        }`}
+                      >
+                        Monthly
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={compoundingFrequency === 'annual' ? 'default' : 'outline'}
+                        onClick={() => setCompoundingFrequency('annual')}
+                        className={`flex-1 ${
+                          compoundingFrequency === 'annual'
+                            ? 'bg-white text-black hover:bg-white/90'
+                            : 'bg-transparent border-white text-white hover:bg-white/10'
+                        }`}
+                      >
+                        Annual
+                      </Button>
+                    </div>
+                    <p className="text-xs text-secondary-foreground/60 mt-1">
+                      How often returns are compounded on your investment
+                    </p>
+                  </div>
                 </div>
 
                 {/* Results Section */}
@@ -694,6 +755,9 @@ function SWPCalculator() {
                           ₹{entry.totalInvestment.toLocaleString()} → ₹{entry.monthlyWithdrawal.toLocaleString()}/mo @ {entry.expectedReturn}%
                           {entry.timePeriod && ` (${entry.timePeriod}y)`}
                           {entry.annualStepUp > 0 && ` (+${entry.annualStepUp}% step-up)`}
+                          <span className="text-xs text-secondary-foreground/60 ml-2">
+                            ({entry.compoundingFrequency || 'monthly'})
+                          </span>
                         </div>
                         <div className="font-paragraph font-semibold text-primary">
                           = {Math.floor(entry.monthsLasted / 12)}y {entry.monthsLasted % 12}m
