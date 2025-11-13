@@ -13,6 +13,7 @@ function SIPCalculator() {
   const [monthlyInvestment, setMonthlyInvestment] = useState<number>(5000);
   const [expectedReturn, setExpectedReturn] = useState<number>(12);
   const [timePeriod, setTimePeriod] = useState<number>(10);
+  const [annualStepUp, setAnnualStepUp] = useState<number>(0);
   const [results, setResults] = useState({
     totalInvestment: 0,
     estimatedReturns: 0,
@@ -22,6 +23,7 @@ function SIPCalculator() {
     monthlyInvestment: number;
     expectedReturn: number;
     timePeriod: number;
+    annualStepUp: number;
     totalValue: number;
     timestamp: Date;
   }>>([]);
@@ -29,11 +31,26 @@ function SIPCalculator() {
   const calculateSIP = () => {
     const monthlyRate = expectedReturn / 100 / 12;
     const totalMonths = timePeriod * 12;
-    const totalInvestment = monthlyInvestment * totalMonths;
     
-    // SIP Future Value formula: P * [((1 + r)^n - 1) / r] * (1 + r)
-    const futureValue = monthlyInvestment * 
-      (((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate));
+    let totalInvestment = 0;
+    let futureValue = 0;
+    let currentMonthlyInvestment = monthlyInvestment;
+
+    // Calculate with annual step-up
+    for (let year = 0; year < timePeriod; year++) {
+      const monthsInThisYear = Math.min(12, totalMonths - (year * 12));
+      
+      for (let month = 0; month < monthsInThisYear; month++) {
+        const monthsRemaining = totalMonths - (year * 12 + month);
+        totalInvestment += currentMonthlyInvestment;
+        futureValue += currentMonthlyInvestment * Math.pow(1 + monthlyRate, monthsRemaining - 1);
+      }
+      
+      // Apply step-up for next year
+      if (year < timePeriod - 1) {
+        currentMonthlyInvestment = currentMonthlyInvestment * (1 + annualStepUp / 100);
+      }
+    }
     
     const estimatedReturns = futureValue - totalInvestment;
 
@@ -50,6 +67,7 @@ function SIPCalculator() {
       monthlyInvestment,
       expectedReturn,
       timePeriod,
+      annualStepUp,
       totalValue: futureValue,
       timestamp: new Date()
     };
@@ -58,7 +76,8 @@ function SIPCalculator() {
       const updated = [newHistoryEntry, ...prev.filter(item => 
         !(item.monthlyInvestment === monthlyInvestment && 
           item.expectedReturn === expectedReturn && 
-          item.timePeriod === timePeriod)
+          item.timePeriod === timePeriod &&
+          item.annualStepUp === annualStepUp)
       )];
       return updated.slice(0, 10);
     });
@@ -66,7 +85,7 @@ function SIPCalculator() {
 
   useEffect(() => {
     calculateSIP();
-  }, [monthlyInvestment, expectedReturn, timePeriod]);
+  }, [monthlyInvestment, expectedReturn, timePeriod, annualStepUp]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -189,6 +208,40 @@ function SIPCalculator() {
                       <span>40 Years</span>
                     </div>
                   </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Annual Step-up (%)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={annualStepUp}
+                        onChange={(e) => setAnnualStepUp(Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="0"
+                        max="20"
+                        step="0.5"
+                      />
+                      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="20"
+                      step="0.5"
+                      value={annualStepUp}
+                      onChange={(e) => setAnnualStepUp(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>0%</span>
+                      <span>20%</span>
+                    </div>
+                    <p className="text-xs text-secondary-foreground/60 mt-1">
+                      Increase investment amount annually by this percentage
+                    </p>
+                  </div>
                 </div>
 
                 {/* Results Section */}
@@ -293,6 +346,7 @@ function SIPCalculator() {
                       <div className="space-y-1 text-sm">
                         <div className="font-paragraph text-secondary-foreground/80">
                           ₹{entry.monthlyInvestment.toLocaleString()} × {entry.timePeriod}y @ {entry.expectedReturn}%
+                          {entry.annualStepUp > 0 && ` (+${entry.annualStepUp}% step-up)`}
                         </div>
                         <div className="font-paragraph font-semibold text-primary">
                           = {formatCurrency(entry.totalValue)}
@@ -315,6 +369,8 @@ function SWPCalculator() {
   const [totalInvestment, setTotalInvestment] = useState<number>(1000000);
   const [monthlyWithdrawal, setMonthlyWithdrawal] = useState<number>(8000);
   const [expectedReturn, setExpectedReturn] = useState<number>(12);
+  const [timePeriod, setTimePeriod] = useState<number>(20);
+  const [annualStepUp, setAnnualStepUp] = useState<number>(0);
   const [results, setResults] = useState({
     totalWithdrawals: 0,
     remainingAmount: 0,
@@ -324,6 +380,8 @@ function SWPCalculator() {
     totalInvestment: number;
     monthlyWithdrawal: number;
     expectedReturn: number;
+    timePeriod: number;
+    annualStepUp: number;
     monthsLasted: number;
     timestamp: Date;
   }>>([]);
@@ -333,11 +391,18 @@ function SWPCalculator() {
     let balance = totalInvestment;
     let months = 0;
     let totalWithdrawn = 0;
+    let currentWithdrawal = monthlyWithdrawal;
+    const maxMonths = timePeriod * 12;
 
-    while (balance > monthlyWithdrawal && months < 600) { // Max 50 years
-      balance = balance * (1 + monthlyRate) - monthlyWithdrawal;
-      totalWithdrawn += monthlyWithdrawal;
+    while (balance > currentWithdrawal && months < maxMonths) {
+      balance = balance * (1 + monthlyRate) - currentWithdrawal;
+      totalWithdrawn += currentWithdrawal;
       months++;
+
+      // Apply annual step-up every 12 months
+      if (months % 12 === 0 && annualStepUp > 0) {
+        currentWithdrawal = currentWithdrawal * (1 + annualStepUp / 100);
+      }
     }
 
     const newResults = {
@@ -353,6 +418,8 @@ function SWPCalculator() {
       totalInvestment,
       monthlyWithdrawal,
       expectedReturn,
+      timePeriod,
+      annualStepUp,
       monthsLasted: months,
       timestamp: new Date()
     };
@@ -361,7 +428,9 @@ function SWPCalculator() {
       const updated = [newHistoryEntry, ...prev.filter(item => 
         !(item.totalInvestment === totalInvestment && 
           item.monthlyWithdrawal === monthlyWithdrawal && 
-          item.expectedReturn === expectedReturn)
+          item.expectedReturn === expectedReturn &&
+          item.timePeriod === timePeriod &&
+          item.annualStepUp === annualStepUp)
       )];
       return updated.slice(0, 10);
     });
@@ -369,7 +438,7 @@ function SWPCalculator() {
 
   useEffect(() => {
     calculateSWP();
-  }, [totalInvestment, monthlyWithdrawal, expectedReturn]);
+  }, [totalInvestment, monthlyWithdrawal, expectedReturn, timePeriod, annualStepUp]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -496,6 +565,66 @@ function SWPCalculator() {
                       <span>30%</span>
                     </div>
                   </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Withdrawal Period (Years)
+                    </label>
+                    <input
+                      type="number"
+                      value={timePeriod}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
+                      className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                      min="1"
+                      max="50"
+                    />
+                    <input
+                      type="range"
+                      min="1"
+                      max="50"
+                      value={timePeriod}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>1 Year</span>
+                      <span>50 Years</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-paragraph text-sm font-medium text-secondary-foreground mb-2">
+                      Annual Step-up (%)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={annualStepUp}
+                        onChange={(e) => setAnnualStepUp(Number(e.target.value))}
+                        className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
+                        min="0"
+                        max="20"
+                        step="0.5"
+                      />
+                      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/80">%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="20"
+                      step="0.5"
+                      value={annualStepUp}
+                      onChange={(e) => setAnnualStepUp(Number(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
+                      <span>0%</span>
+                      <span>20%</span>
+                    </div>
+                    <p className="text-xs text-secondary-foreground/60 mt-1">
+                      Increase withdrawal amount annually by this percentage
+                    </p>
+                  </div>
                 </div>
 
                 {/* Results Section */}
@@ -563,6 +692,8 @@ function SWPCalculator() {
                       <div className="space-y-1 text-sm">
                         <div className="font-paragraph text-secondary-foreground/80">
                           ₹{entry.totalInvestment.toLocaleString()} → ₹{entry.monthlyWithdrawal.toLocaleString()}/mo @ {entry.expectedReturn}%
+                          {entry.timePeriod && ` (${entry.timePeriod}y)`}
+                          {entry.annualStepUp > 0 && ` (+${entry.annualStepUp}% step-up)`}
                         </div>
                         <div className="font-paragraph font-semibold text-primary">
                           = {Math.floor(entry.monthsLasted / 12)}y {entry.monthsLasted % 12}m
