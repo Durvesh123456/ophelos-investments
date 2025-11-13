@@ -64,6 +64,8 @@ export interface MutualFunds {
   /** @wixFieldType number */
   xirr?: number;
   /** @wixFieldType text */
+  managementType?: string;
+  /** @wixFieldType text */
   subcategory?: string;
   /** @wixFieldType text */
   category?: string;
