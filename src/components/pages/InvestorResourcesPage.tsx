@@ -1837,20 +1837,8 @@ function CasioMJ12DCalculator() {
                   </div>
                 </div>
 
-                {/* Function Buttons Row 1 */}
-                <div className="grid grid-cols-6 gap-2">
-                  <Button
-                    onClick={clearAll}
-                    className="bg-red-600 hover:bg-red-700 text-white text-xs"
-                  >
-                    AC
-                  </Button>
-                  <Button
-                    onClick={clear}
-                    className="bg-red-600 hover:bg-red-700 text-white text-xs"
-                  >
-                    C
-                  </Button>
+                {/* Function Buttons Row 1 - Memory Functions */}
+                <div className="grid grid-cols-5 gap-2">
                   <Button
                     onClick={memoryClear}
                     className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
@@ -1875,10 +1863,16 @@ function CasioMJ12DCalculator() {
                   >
                     M-
                   </Button>
+                  <Button
+                    onClick={memoryStore}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    MS
+                  </Button>
                 </div>
 
-                {/* Function Buttons Row 2 */}
-                <div className="grid grid-cols-6 gap-2">
+                {/* Function Buttons Row 2 - Tax and GT Functions */}
+                <div className="grid grid-cols-5 gap-2">
                   <Button
                     onClick={() => setTaxRate(parseFloat(display))}
                     className="bg-green-600 hover:bg-green-700 text-white text-xs"
@@ -1898,38 +1892,27 @@ function CasioMJ12DCalculator() {
                     TAX
                   </Button>
                   <Button
-                    onClick={addToGrandTotal}
-                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
-                  >
-                    GT+
-                  </Button>
-                  <Button
-                    onClick={subtractFromGrandTotal}
-                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
-                  >
-                    GT-
-                  </Button>
-                  <Button
                     onClick={() => setDisplay(String(grandTotal))}
                     className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
                   >
                     GT
                   </Button>
+                  <Button
+                    onClick={clearAll}
+                    className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                  >
+                    AC
+                  </Button>
                 </div>
 
-                {/* Main Calculator Grid */}
-                <div className="grid grid-cols-4 gap-2">
+                {/* Main Calculator Grid - 5 columns to match physical layout */}
+                <div className="grid grid-cols-5 gap-2">
+                  {/* Row 1: Clear, +/-, %, ÷, × */}
                   <Button
-                    onClick={squareRoot}
-                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                    onClick={clear}
+                    className="bg-red-600 hover:bg-red-700 text-white"
                   >
-                    √
-                  </Button>
-                  <Button
-                    onClick={calculatePercentage}
-                    className="bg-gray-600 hover:bg-gray-700 text-white"
-                  >
-                    %
+                    C
                   </Button>
                   <Button
                     onClick={changeSign}
@@ -1938,12 +1921,25 @@ function CasioMJ12DCalculator() {
                     +/-
                   </Button>
                   <Button
+                    onClick={calculatePercentage}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    %
+                  </Button>
+                  <Button
                     onClick={() => performOperation('/')}
                     className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
                     ÷
                   </Button>
+                  <Button
+                    onClick={() => performOperation('*')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ×
+                  </Button>
 
+                  {/* Row 2: 7, 8, 9, -, GT+ */}
                   <Button
                     onClick={() => inputNumber('7')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -1963,12 +1959,19 @@ function CasioMJ12DCalculator() {
                     9
                   </Button>
                   <Button
-                    onClick={() => performOperation('*')}
+                    onClick={() => performOperation('-')}
                     className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
-                    ×
+                    -
+                  </Button>
+                  <Button
+                    onClick={addToGrandTotal}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT+
                   </Button>
 
+                  {/* Row 3: 4, 5, 6, +, GT- */}
                   <Button
                     onClick={() => inputNumber('4')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -1988,12 +1991,19 @@ function CasioMJ12DCalculator() {
                     6
                   </Button>
                   <Button
-                    onClick={() => performOperation('-')}
-                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                    onClick={() => performOperation('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white row-span-2"
                   >
-                    -
+                    +
+                  </Button>
+                  <Button
+                    onClick={subtractFromGrandTotal}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT-
                   </Button>
 
+                  {/* Row 4: 1, 2, 3, (+ continues), √ */}
                   <Button
                     onClick={() => inputNumber('1')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -2012,13 +2022,15 @@ function CasioMJ12DCalculator() {
                   >
                     3
                   </Button>
+                  {/* Plus button continues from above */}
                   <Button
-                    onClick={() => performOperation('+')}
-                    className="bg-gray-600 hover:bg-gray-700 text-white row-span-2"
+                    onClick={squareRoot}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
-                    +
+                    √
                   </Button>
 
+                  {/* Row 5: 0 (spans 2), ., =, (empty) */}
                   <Button
                     onClick={() => inputNumber('0')}
                     className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
@@ -2037,6 +2049,8 @@ function CasioMJ12DCalculator() {
                   >
                     =
                   </Button>
+                  {/* Empty space to maintain grid */}
+                  <div></div>
                 </div>
 
                 <div className="bg-black border border-white p-4 rounded-lg">
