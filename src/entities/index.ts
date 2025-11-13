@@ -64,6 +64,12 @@ export interface MutualFunds {
   /** @wixFieldType number */
   xirr?: number;
   /** @wixFieldType text */
+  subcategory?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType text */
+  amc?: string;
+  /** @wixFieldType text */
   fundName?: string;
   /** @wixFieldType text */
   fundDescription?: string;
@@ -81,10 +87,4 @@ export interface MutualFunds {
   fundLogo?: string;
   /** @wixFieldType url */
   factSheetUrl?: string;
-  /** @wixFieldType text */
-  amc?: string;
-  /** @wixFieldType text */
-  category?: string;
-  /** @wixFieldType text */
-  subcategory?: string;
 }
