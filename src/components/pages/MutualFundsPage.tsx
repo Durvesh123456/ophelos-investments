@@ -6,17 +6,39 @@ import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, ExternalLink, Calendar, User, TrendingUp, BarChart3 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, ExternalLink, Calendar, User, TrendingUp, BarChart3, Filter } from 'lucide-react';
 
 export default function MutualFundsPage() {
   const [funds, setFunds] = useState<MutualFunds[]>([]);
+  const [filteredFunds, setFilteredFunds] = useState<MutualFunds[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filter states
+  const [selectedAMC, setSelectedAMC] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  
+  // Available options for filters
+  const [amcOptions, setAmcOptions] = useState<string[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchFunds = async () => {
       try {
         const { items } = await BaseCrudService.getAll<MutualFunds>('mutualfunds');
         setFunds(items);
+        setFilteredFunds(items);
+        
+        // Extract unique AMCs
+        const uniqueAMCs = [...new Set(items.map(fund => fund.amc).filter(Boolean))];
+        setAmcOptions(uniqueAMCs);
+        
+        // Extract unique categories
+        const uniqueCategories = [...new Set(items.map(fund => fund.category).filter(Boolean))];
+        setCategoryOptions(uniqueCategories);
+        
       } catch (error) {
         console.error('Error fetching mutual funds:', error);
       } finally {
@@ -26,6 +48,44 @@ export default function MutualFundsPage() {
 
     fetchFunds();
   }, []);
+
+  // Filter effect
+  useEffect(() => {
+    let filtered = funds;
+
+    if (selectedAMC) {
+      filtered = filtered.filter(fund => fund.amc === selectedAMC);
+    }
+
+    if (selectedCategory) {
+      filtered = filtered.filter(fund => fund.category === selectedCategory);
+    }
+
+    if (selectedSubcategory) {
+      filtered = filtered.filter(fund => fund.subcategory === selectedSubcategory);
+    }
+
+    setFilteredFunds(filtered);
+  }, [funds, selectedAMC, selectedCategory, selectedSubcategory]);
+
+  // Update subcategory options based on selected category
+  useEffect(() => {
+    if (selectedCategory) {
+      const categoryFunds = funds.filter(fund => fund.category === selectedCategory);
+      const uniqueSubcategories = [...new Set(categoryFunds.map(fund => fund.subcategory).filter(Boolean))];
+      setSubcategoryOptions(uniqueSubcategories);
+    } else {
+      setSubcategoryOptions([]);
+    }
+    setSelectedSubcategory(''); // Reset subcategory when category changes
+  }, [selectedCategory, funds]);
+
+  // Reset filters
+  const resetFilters = () => {
+    setSelectedAMC('');
+    setSelectedCategory('');
+    setSelectedSubcategory('');
+  };
 
   const getRiskColor = (riskLevel?: string) => {
     switch (riskLevel?.toLowerCase()) {
@@ -132,25 +192,166 @@ export default function MutualFundsPage() {
         </div>
       </section>
 
+      {/* Filter Section */}
+      <section className="py-8 bg-secondary/50 border-b border-neon-cyan/20">
+        <div className="max-w-[100rem] mx-auto px-6">
+          <div className="flex items-center gap-4 mb-6">
+            <Filter className="w-5 h-5 text-white" />
+            <h2 className="font-heading text-xl font-bold text-white">Filter Funds</h2>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={resetFilters}
+              className="ml-auto border-white/60 text-white hover:bg-white/10 hover:text-white"
+            >
+              Reset Filters
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* AMC Filter */}
+            <div className="space-y-2">
+              <label className="font-paragraph text-sm font-medium text-white">
+                Asset Management Company (AMC)
+              </label>
+              <Select value={selectedAMC} onValueChange={setSelectedAMC}>
+                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white">
+                  <SelectValue placeholder="Select AMC" />
+                </SelectTrigger>
+                <SelectContent>
+                  {amcOptions.map((amc) => (
+                    <SelectItem key={amc} value={amc}>
+                      {amc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Category Filter */}
+            <div className="space-y-2">
+              <label className="font-paragraph text-sm font-medium text-white">
+                Fund Category
+              </label>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white">
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categoryOptions.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Subcategory Filter */}
+            <div className="space-y-2">
+              <label className="font-paragraph text-sm font-medium text-white">
+                Subcategory
+                {selectedCategory === 'Equity' && (
+                  <span className="text-xs text-white/60 ml-1">(Cap Size)</span>
+                )}
+              </label>
+              <Select 
+                value={selectedSubcategory} 
+                onValueChange={setSelectedSubcategory}
+                disabled={!selectedCategory || subcategoryOptions.length === 0}
+              >
+                <SelectTrigger className="bg-secondary/80 border-neon-cyan/20 text-white disabled:opacity-50">
+                  <SelectValue placeholder={
+                    !selectedCategory 
+                      ? "Select category first" 
+                      : subcategoryOptions.length === 0 
+                        ? "No subcategories" 
+                        : "Select Subcategory"
+                  } />
+                </SelectTrigger>
+                <SelectContent>
+                  {subcategoryOptions.map((subcategory) => (
+                    <SelectItem key={subcategory} value={subcategory}>
+                      {subcategory}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Active Filters Display */}
+          {(selectedAMC || selectedCategory || selectedSubcategory) && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="font-paragraph text-sm text-white/70">Active filters:</span>
+              {selectedAMC && (
+                <Badge variant="outline" className="border-white/60 text-white">
+                  AMC: {selectedAMC}
+                </Badge>
+              )}
+              {selectedCategory && (
+                <Badge variant="outline" className="border-white/60 text-white">
+                  Category: {selectedCategory}
+                </Badge>
+              )}
+              {selectedSubcategory && (
+                <Badge variant="outline" className="border-white/60 text-white">
+                  Subcategory: {selectedSubcategory}
+                </Badge>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Funds Grid */}
       <section className="py-16 bg-secondary relative">
         <div className="max-w-[100rem] mx-auto px-6">
-          {funds.length === 0 ? (
+          {/* Results Summary */}
+          <div className="mb-8">
+            <h3 className="font-heading text-2xl font-bold text-white mb-2">
+              {filteredFunds.length === 0 ? 'No Funds Found' : `${filteredFunds.length} Fund${filteredFunds.length !== 1 ? 's' : ''} Found`}
+            </h3>
+            {(selectedAMC || selectedCategory || selectedSubcategory) && (
+              <p className="font-paragraph text-white/70">
+                Showing results for your selected criteria
+              </p>
+            )}
+          </div>
+
+          {filteredFunds.length === 0 ? (
             <div className="text-center py-16">
               <TrendingUp className="w-16 h-16 text-white mx-auto mb-6" />
               <h3 className="font-heading text-2xl font-bold text-secondary-foreground mb-4">
-                No Mutual Funds Available
+                {(selectedAMC || selectedCategory || selectedSubcategory) 
+                  ? 'No Funds Match Your Criteria' 
+                  : 'No Mutual Funds Available'
+                }
               </h3>
               <p className="font-paragraph text-secondary-foreground/70 mb-8">
-                We're currently updating our fund portfolio. Please check back soon or contact us for more information.
+                {(selectedAMC || selectedCategory || selectedSubcategory)
+                  ? 'Try adjusting your filters to see more options, or contact us for personalized recommendations.'
+                  : 'We\'re currently updating our fund portfolio. Please check back soon or contact us for more information.'
+                }
               </p>
-              <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white border border-gray-400 shadow-soft-glow transition-all duration-300">
-                <Link to="/contact">Contact Us</Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {(selectedAMC || selectedCategory || selectedSubcategory) && (
+                  <Button 
+                    onClick={resetFilters}
+                    variant="outline" 
+                    className="border-white/60 text-white hover:bg-white/10 hover:text-white"
+                  >
+                    Clear Filters
+                  </Button>
+                )}
+                <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white border border-gray-400 shadow-soft-glow transition-all duration-300">
+                  <Link to="/contact">Contact Us</Link>
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {funds.map((fund) => (
+              {filteredFunds.map((fund) => (
                 <Card key={fund._id} className="bg-secondary/80 backdrop-blur-sm border border-neon-cyan/20 shadow-soft-glow hover:shadow-neon transition-all duration-300 hover:border-neon-cyan/40">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between mb-4">
@@ -169,9 +370,28 @@ export default function MutualFundsPage() {
                     <CardTitle className="font-heading text-xl font-bold text-secondary-foreground">
                       {fund.fundName || 'Fund Name'}
                     </CardTitle>
-                    <p className="font-paragraph text-sm text-secondary-foreground/70">
-                      {fund.fundType || 'Fund Type'}
-                    </p>
+                    <div className="space-y-1">
+                      {fund.amc && (
+                        <p className="font-paragraph text-sm text-white font-semibold">
+                          {fund.amc}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-2">
+                        {fund.category && (
+                          <Badge variant="outline" className="border-white/40 text-white/80 text-xs">
+                            {fund.category}
+                          </Badge>
+                        )}
+                        {fund.subcategory && (
+                          <Badge variant="outline" className="border-white/40 text-white/80 text-xs">
+                            {fund.subcategory}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="font-paragraph text-sm text-secondary-foreground/70">
+                        {fund.fundType || 'Fund Type'}
+                      </p>
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="font-paragraph text-secondary-foreground/80 text-sm leading-relaxed">
