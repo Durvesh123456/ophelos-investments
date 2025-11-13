@@ -1791,6 +1791,21 @@ function CasioMJ12DCalculator() {
     setDisplay(String(-value));
   };
 
+  const displayToggle = () => {
+    // Toggle display format or show memory/GT values
+    console.log('Display toggle');
+  };
+
+  const playFunction = () => {
+    // Play/repeat last operation
+    console.log('Play function');
+  };
+
+  const markupFunction = () => {
+    // Markup calculation function
+    console.log('Markup function');
+  };
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1879,6 +1894,44 @@ function CasioMJ12DCalculator() {
 
                 {/* Main Calculator Grid - 6 columns to match requested layout */}
                 <div className="grid grid-cols-6 gap-2">
+                  {/* New Row 0: DISP, play symbol, +/-, √, MU, GT */}
+                  <Button
+                    onClick={displayToggle}
+                    className="bg-orange-600 hover:bg-orange-700 text-white text-xs"
+                  >
+                    DISP
+                  </Button>
+                  <Button
+                    onClick={playFunction}
+                    className="bg-orange-600 hover:bg-orange-700 text-white text-xs"
+                  >
+                    ▶
+                  </Button>
+                  <Button
+                    onClick={changeSign}
+                    className="bg-gray-600 hover:bg-gray-700 text-white text-xs"
+                  >
+                    +/-
+                  </Button>
+                  <Button
+                    onClick={squareRoot}
+                    className="bg-gray-600 hover:bg-gray-700 text-white text-xs"
+                  >
+                    √
+                  </Button>
+                  <Button
+                    onClick={markupFunction}
+                    className="bg-orange-600 hover:bg-orange-700 text-white text-xs"
+                  >
+                    MU
+                  </Button>
+                  <Button
+                    onClick={() => setDisplay(String(grandTotal))}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT
+                  </Button>
+
                   {/* Row 1: 7, 8, 9, %, C, AC */}
                   <Button
                     onClick={() => inputNumber('7')}
