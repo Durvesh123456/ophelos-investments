@@ -6,7 +6,7 @@ import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, ExternalLink, Calendar, User, BookOpen, Calculator, Minus, Plus, Divide, X } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Calendar, User, BookOpen, Calculator, Minus, Plus, Divide, X, Percent, RotateCcw, Delete } from 'lucide-react';
 
 // SIP Calculator Component
 function SIPCalculator() {
@@ -782,6 +782,8 @@ function NormalCalculator() {
   const [previousValue, setPreviousValue] = useState<number | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
+  const [memory, setMemory] = useState<number>(0);
+  const [openBrackets, setOpenBrackets] = useState<number>(0);
   const [history, setHistory] = useState<Array<{
     formula: string;
     result: string;
@@ -810,12 +812,86 @@ function NormalCalculator() {
     }
   };
 
+  const inputBracket = (bracket: string) => {
+    if (bracket === '(') {
+      setOpenBrackets(prev => prev + 1);
+      setFormula(prev => prev + '(');
+      setDisplay('0');
+      setWaitingForOperand(true);
+    } else if (bracket === ')' && openBrackets > 0) {
+      setOpenBrackets(prev => prev - 1);
+      setFormula(prev => prev + ')');
+      setWaitingForOperand(true);
+    }
+  };
+
+  const inputFunction = (func: string) => {
+    const currentValue = parseFloat(display);
+    let result: number;
+    
+    switch (func) {
+      case 'sqrt':
+        result = Math.sqrt(currentValue);
+        break;
+      case 'square':
+        result = currentValue * currentValue;
+        break;
+      case 'percent':
+        result = currentValue / 100;
+        break;
+      case 'reciprocal':
+        result = 1 / currentValue;
+        break;
+      case 'negate':
+        result = -currentValue;
+        break;
+      default:
+        return;
+    }
+    
+    setDisplay(String(result));
+    setFormula(prev => prev.replace(/[\d.]+$/, String(result)));
+  };
+
+  const memoryStore = () => {
+    setMemory(parseFloat(display));
+  };
+
+  const memoryRecall = () => {
+    setDisplay(String(memory));
+    setFormula(prev => prev + String(memory));
+  };
+
+  const memoryClear = () => {
+    setMemory(0);
+  };
+
+  const memoryAdd = () => {
+    setMemory(prev => prev + parseFloat(display));
+  };
+
+  const memorySubtract = () => {
+    setMemory(prev => prev - parseFloat(display));
+  };
+
+  const backspace = () => {
+    if (display.length > 1) {
+      const newDisplay = display.slice(0, -1);
+      setDisplay(newDisplay);
+      setFormula(prev => prev.slice(0, -1));
+    } else {
+      setDisplay('0');
+      setFormula(prev => prev.slice(0, -1));
+    }
+  };
+
   const clear = () => {
     setDisplay('0');
     setFormula('');
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(false);
+    setOpenBrackets(0);
   };
 
   const performOperation = (nextOperation: string) => {
@@ -848,6 +924,8 @@ function NormalCalculator() {
         return firstValue * secondValue;
       case '/':
         return firstValue / secondValue;
+      case '^':
+        return Math.pow(firstValue, secondValue);
       case '=':
         return secondValue;
       default:
@@ -855,19 +933,38 @@ function NormalCalculator() {
     }
   };
 
-  const handleEquals = () => {
-    const inputValue = parseFloat(display);
-
-    if (previousValue !== null && operation) {
-      const newValue = calculate(previousValue, inputValue, operation);
-      const finalFormula = formula + ' = ' + newValue;
+  const evaluateExpression = (expression: string): number => {
+    try {
+      // Replace display symbols with JavaScript operators
+      const jsExpression = expression
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/\^/g, '**');
       
-      setDisplay(String(newValue));
+      // Use Function constructor for safe evaluation
+      return Function('"use strict"; return (' + jsExpression + ')')();
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const handleEquals = () => {
+    try {
+      // Close any remaining open brackets
+      let finalFormula = formula;
+      for (let i = 0; i < openBrackets; i++) {
+        finalFormula += ')';
+      }
+      
+      const result = evaluateExpression(finalFormula);
+      const displayResult = String(result);
+      
+      setDisplay(displayResult);
       
       // Add to history (keep last 10)
       const newHistoryEntry = {
-        formula: finalFormula,
-        result: String(newValue),
+        formula: finalFormula + ' = ' + displayResult,
+        result: displayResult,
         timestamp: new Date()
       };
 
@@ -880,6 +977,11 @@ function NormalCalculator() {
       setOperation(null);
       setWaitingForOperand(true);
       setFormula('');
+      setOpenBrackets(0);
+    } catch (error) {
+      setDisplay('Error');
+      setFormula('');
+      setOpenBrackets(0);
     }
   };
 
@@ -921,12 +1023,31 @@ function NormalCalculator() {
                 </div>
 
                 {/* Buttons */}
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-5 gap-3">
+                  {/* First Row - Clear, Brackets, Power, Division */}
                   <Button
                     onClick={clear}
-                    className="bg-red-600 hover:bg-red-700 text-white col-span-2"
+                    className="bg-red-600 hover:bg-red-700 text-white"
                   >
                     Clear
+                  </Button>
+                  <Button
+                    onClick={() => inputBracket('(')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    (
+                  </Button>
+                  <Button
+                    onClick={() => inputBracket(')')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    )
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('^')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    x^y
                   </Button>
                   <Button
                     onClick={() => performOperation('/')}
@@ -934,13 +1055,8 @@ function NormalCalculator() {
                   >
                     <Divide className="w-4 h-4" />
                   </Button>
-                  <Button
-                    onClick={() => performOperation('*')}
-                    className="bg-gray-600 hover:bg-gray-700 text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
 
+                  {/* Second Row - Numbers 7,8,9 and Multiply */}
                   <Button
                     onClick={() => inputNumber('7')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -960,12 +1076,19 @@ function NormalCalculator() {
                     9
                   </Button>
                   <Button
-                    onClick={() => performOperation('-')}
+                    onClick={() => inputFunction('sqrt')}
                     className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
-                    <Minus className="w-4 h-4" />
+                    √x
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('*')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <X className="w-4 h-4" />
                   </Button>
 
+                  {/* Third Row - Numbers 4,5,6 and Minus */}
                   <Button
                     onClick={() => inputNumber('4')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -985,12 +1108,19 @@ function NormalCalculator() {
                     6
                   </Button>
                   <Button
-                    onClick={() => performOperation('+')}
+                    onClick={() => inputFunction('square')}
                     className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
-                    <Plus className="w-4 h-4" />
+                    x²
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('-')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    <Minus className="w-4 h-4" />
                   </Button>
 
+                  {/* Fourth Row - Numbers 1,2,3 and Plus */}
                   <Button
                     onClick={() => inputNumber('1')}
                     className="bg-dark-700 hover:bg-dark-600 text-white"
@@ -1010,12 +1140,19 @@ function NormalCalculator() {
                     3
                   </Button>
                   <Button
-                    onClick={handleEquals}
-                    className="bg-primary hover:bg-primary/90 text-black row-span-2"
+                    onClick={() => inputFunction('reciprocal')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
                   >
-                    =
+                    1/x
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white row-span-2"
+                  >
+                    <Plus className="w-4 h-4" />
                   </Button>
 
+                  {/* Fifth Row - 0, Decimal, Backspace, Equals */}
                   <Button
                     onClick={() => inputNumber('0')}
                     className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
@@ -1027,6 +1164,18 @@ function NormalCalculator() {
                     className="bg-dark-700 hover:bg-dark-600 text-white"
                   >
                     .
+                  </Button>
+                  <Button
+                    onClick={backspace}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ⌫
+                  </Button>
+                  <Button
+                    onClick={handleEquals}
+                    className="bg-primary hover:bg-primary/90 text-black"
+                  >
+                    =
                   </Button>
                 </div>
               </div>
@@ -1458,6 +1607,486 @@ function BAIIPlusCalculator() {
   );
 }
 
+// Casio MJ-12D Calculator Component
+function CasioMJ12DCalculator() {
+  const [display, setDisplay] = useState<string>('0');
+  const [memory, setMemory] = useState<number>(0);
+  const [previousValue, setPreviousValue] = useState<number | null>(null);
+  const [operation, setOperation] = useState<string | null>(null);
+  const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
+  const [grandTotal, setGrandTotal] = useState<number>(0);
+  const [taxRate, setTaxRate] = useState<number>(0);
+  const [history, setHistory] = useState<Array<{
+    operation: string;
+    result: string;
+    timestamp: Date;
+  }>>([]);
+
+  const inputNumber = (num: string) => {
+    if (waitingForOperand) {
+      setDisplay(num);
+      setWaitingForOperand(false);
+    } else {
+      setDisplay(display === '0' ? num : display + num);
+    }
+  };
+
+  const inputDecimal = () => {
+    if (waitingForOperand) {
+      setDisplay('0.');
+      setWaitingForOperand(false);
+    } else if (display.indexOf('.') === -1) {
+      setDisplay(display + '.');
+    }
+  };
+
+  const clear = () => {
+    setDisplay('0');
+    setPreviousValue(null);
+    setOperation(null);
+    setWaitingForOperand(false);
+  };
+
+  const clearAll = () => {
+    setDisplay('0');
+    setMemory(0);
+    setPreviousValue(null);
+    setOperation(null);
+    setWaitingForOperand(false);
+    setGrandTotal(0);
+    setTaxRate(0);
+  };
+
+  const memoryStore = () => {
+    setMemory(parseFloat(display));
+  };
+
+  const memoryRecall = () => {
+    setDisplay(String(memory));
+    setWaitingForOperand(true);
+  };
+
+  const memoryClear = () => {
+    setMemory(0);
+  };
+
+  const memoryAdd = () => {
+    setMemory(prev => prev + parseFloat(display));
+  };
+
+  const memorySubtract = () => {
+    setMemory(prev => prev - parseFloat(display));
+  };
+
+  const addToGrandTotal = () => {
+    const value = parseFloat(display);
+    setGrandTotal(prev => prev + value);
+    setDisplay('0');
+    setWaitingForOperand(false);
+  };
+
+  const subtractFromGrandTotal = () => {
+    const value = parseFloat(display);
+    setGrandTotal(prev => prev - value);
+    setDisplay('0');
+    setWaitingForOperand(false);
+  };
+
+  const calculateTax = () => {
+    const value = parseFloat(display);
+    const tax = (value * taxRate) / 100;
+    setDisplay(String(tax));
+    setWaitingForOperand(true);
+  };
+
+  const calculatePercentage = () => {
+    if (previousValue !== null) {
+      const value = parseFloat(display);
+      const percentage = (previousValue * value) / 100;
+      setDisplay(String(percentage));
+      setWaitingForOperand(true);
+    }
+  };
+
+  const performOperation = (nextOperation: string) => {
+    const inputValue = parseFloat(display);
+
+    if (previousValue === null) {
+      setPreviousValue(inputValue);
+    } else if (operation) {
+      const currentValue = previousValue || 0;
+      const newValue = calculate(currentValue, inputValue, operation);
+
+      setDisplay(String(newValue));
+      setPreviousValue(newValue);
+
+      // Add to history
+      const newHistoryEntry = {
+        operation: `${currentValue} ${operation} ${inputValue} = ${newValue}`,
+        result: String(newValue),
+        timestamp: new Date()
+      };
+
+      setHistory(prev => {
+        const updated = [newHistoryEntry, ...prev];
+        return updated.slice(0, 10);
+      });
+    }
+
+    setWaitingForOperand(true);
+    setOperation(nextOperation);
+  };
+
+  const calculate = (firstValue: number, secondValue: number, operation: string): number => {
+    switch (operation) {
+      case '+':
+        return firstValue + secondValue;
+      case '-':
+        return firstValue - secondValue;
+      case '*':
+        return firstValue * secondValue;
+      case '/':
+        return firstValue / secondValue;
+      case '=':
+        return secondValue;
+      default:
+        return secondValue;
+    }
+  };
+
+  const handleEquals = () => {
+    const inputValue = parseFloat(display);
+
+    if (previousValue !== null && operation) {
+      const newValue = calculate(previousValue, inputValue, operation);
+      setDisplay(String(newValue));
+
+      // Add to history
+      const newHistoryEntry = {
+        operation: `${previousValue} ${operation} ${inputValue} = ${newValue}`,
+        result: String(newValue),
+        timestamp: new Date()
+      };
+
+      setHistory(prev => {
+        const updated = [newHistoryEntry, ...prev];
+        return updated.slice(0, 10);
+      });
+
+      setPreviousValue(null);
+      setOperation(null);
+      setWaitingForOperand(true);
+    }
+  };
+
+  const squareRoot = () => {
+    const value = parseFloat(display);
+    const result = Math.sqrt(value);
+    setDisplay(String(result));
+    setWaitingForOperand(true);
+  };
+
+  const changeSign = () => {
+    const value = parseFloat(display);
+    setDisplay(String(-value));
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calculator - Takes 2 columns */}
+        <div className="lg:col-span-2">
+          <Card className="bg-black shadow-lg">
+            <CardHeader>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-black" />
+                </div>
+                <div>
+                  <CardTitle className="font-heading text-2xl font-bold text-secondary-foreground">
+                    Casio MJ-12D Calculator
+                  </CardTitle>
+                  <p className="font-paragraph text-secondary-foreground/70">
+                    Professional desktop calculator with tax and memory functions
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {/* Display */}
+                <div className="bg-dark-700 p-4 rounded-lg">
+                  <div className="text-right text-2xl font-mono text-white overflow-hidden">
+                    {display}
+                  </div>
+                </div>
+
+                {/* Status Display */}
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="bg-dark-700 p-2 rounded text-center text-white">
+                    <div className="font-semibold">Memory</div>
+                    <div className="text-gray-400">{memory.toFixed(2)}</div>
+                  </div>
+                  <div className="bg-dark-700 p-2 rounded text-center text-white">
+                    <div className="font-semibold">GT</div>
+                    <div className="text-gray-400">{grandTotal.toFixed(2)}</div>
+                  </div>
+                  <div className="bg-dark-700 p-2 rounded text-center text-white">
+                    <div className="font-semibold">Tax Rate</div>
+                    <div className="text-gray-400">{taxRate}%</div>
+                  </div>
+                </div>
+
+                {/* Function Buttons Row 1 */}
+                <div className="grid grid-cols-6 gap-2">
+                  <Button
+                    onClick={clearAll}
+                    className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                  >
+                    AC
+                  </Button>
+                  <Button
+                    onClick={clear}
+                    className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                  >
+                    C
+                  </Button>
+                  <Button
+                    onClick={memoryClear}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    MC
+                  </Button>
+                  <Button
+                    onClick={memoryRecall}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    MR
+                  </Button>
+                  <Button
+                    onClick={memoryAdd}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    M+
+                  </Button>
+                  <Button
+                    onClick={memorySubtract}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                  >
+                    M-
+                  </Button>
+                </div>
+
+                {/* Function Buttons Row 2 */}
+                <div className="grid grid-cols-6 gap-2">
+                  <Button
+                    onClick={() => setTaxRate(parseFloat(display))}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    TAX+
+                  </Button>
+                  <Button
+                    onClick={() => setTaxRate(-parseFloat(display))}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    TAX-
+                  </Button>
+                  <Button
+                    onClick={calculateTax}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  >
+                    TAX
+                  </Button>
+                  <Button
+                    onClick={addToGrandTotal}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT+
+                  </Button>
+                  <Button
+                    onClick={subtractFromGrandTotal}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT-
+                  </Button>
+                  <Button
+                    onClick={() => setDisplay(String(grandTotal))}
+                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
+                  >
+                    GT
+                  </Button>
+                </div>
+
+                {/* Main Calculator Grid */}
+                <div className="grid grid-cols-4 gap-2">
+                  <Button
+                    onClick={squareRoot}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    √
+                  </Button>
+                  <Button
+                    onClick={calculatePercentage}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    %
+                  </Button>
+                  <Button
+                    onClick={changeSign}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    +/-
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('/')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ÷
+                  </Button>
+
+                  <Button
+                    onClick={() => inputNumber('7')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    7
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('8')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    8
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('9')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    9
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('*')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    ×
+                  </Button>
+
+                  <Button
+                    onClick={() => inputNumber('4')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    4
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('5')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    5
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('6')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    6
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('-')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    -
+                  </Button>
+
+                  <Button
+                    onClick={() => inputNumber('1')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    1
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('2')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    2
+                  </Button>
+                  <Button
+                    onClick={() => inputNumber('3')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    3
+                  </Button>
+                  <Button
+                    onClick={() => performOperation('+')}
+                    className="bg-gray-600 hover:bg-gray-700 text-white row-span-2"
+                  >
+                    +
+                  </Button>
+
+                  <Button
+                    onClick={() => inputNumber('0')}
+                    className="bg-dark-700 hover:bg-dark-600 text-white col-span-2"
+                  >
+                    0
+                  </Button>
+                  <Button
+                    onClick={inputDecimal}
+                    className="bg-dark-700 hover:bg-dark-600 text-white"
+                  >
+                    .
+                  </Button>
+                  <Button
+                    onClick={handleEquals}
+                    className="bg-primary hover:bg-primary/90 text-black"
+                  >
+                    =
+                  </Button>
+                </div>
+
+                <div className="bg-black border border-white p-4 rounded-lg">
+                  <p className="font-paragraph text-sm text-white">
+                    <strong>Features:</strong> Memory functions (MC, MR, M+, M-), Tax calculations (TAX+, TAX-, TAX), 
+                    Grand Total (GT+, GT-, GT), Square root (√), Percentage (%), Sign change (+/-)
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* History Sidebar - Takes 1 column */}
+        <div className="lg:col-span-1">
+          <Card className="bg-black shadow-lg border border-white/20 h-fit">
+            <CardHeader>
+              <CardTitle className="font-heading text-lg font-bold text-secondary-foreground">
+                Calculation History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {history.length === 0 ? (
+                  <p className="font-paragraph text-sm text-secondary-foreground/60 text-center py-4">
+                    No calculations yet
+                  </p>
+                ) : (
+                  history.map((entry, index) => (
+                    <div key={index} className="bg-secondary p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-secondary-foreground/60 mb-2">
+                        {entry.timestamp.toLocaleTimeString()}
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <div className="font-paragraph font-mono text-secondary-foreground/80 break-all">
+                          {entry.operation}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function InvestorResourcesPage() {
   const [resources, setResources] = useState<InvestorResources[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1497,6 +2126,8 @@ export default function InvestorResourcesPage() {
         return <NormalCalculator />;
       case 'ba2plus':
         return <BAIIPlusCalculator />;
+      case 'casio-mj12d':
+        return <CasioMJ12DCalculator />;
       default:
         return null;
     }
@@ -1755,6 +2386,9 @@ export default function InvestorResourcesPage() {
                   </SelectItem>
                   <SelectItem value="ba2plus" className="text-white hover:bg-dark-600">
                     BA II Plus Calculator (Texas Instruments)
+                  </SelectItem>
+                  <SelectItem value="casio-mj12d" className="text-white hover:bg-dark-600">
+                    Casio MJ-12D Calculator
                   </SelectItem>
                 </SelectContent>
               </Select>
