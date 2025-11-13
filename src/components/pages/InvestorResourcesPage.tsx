@@ -29,18 +29,21 @@ function SIPCalculator() {
   }>>([]);
 
   const calculateSIP = () => {
-    const annualRate = expectedReturn / 100;
+    const monthlyRate = expectedReturn / 100 / 12;
     const totalMonths = timePeriod * 12;
     
     let totalInvestment = 0;
+    let futureValue = 0;
     let currentMonthlyInvestment = monthlyInvestment;
 
-    // Calculate total investment amount with annual step-ups
+    // Calculate with annual step-up and monthly compounding
     for (let year = 0; year < timePeriod; year++) {
       const monthsInThisYear = Math.min(12, totalMonths - (year * 12));
       
       for (let month = 0; month < monthsInThisYear; month++) {
+        const monthsRemaining = totalMonths - (year * 12 + month);
         totalInvestment += currentMonthlyInvestment;
+        futureValue += currentMonthlyInvestment * Math.pow(1 + monthlyRate, monthsRemaining - 1);
       }
       
       // Apply step-up for next year
@@ -49,8 +52,6 @@ function SIPCalculator() {
       }
     }
     
-    // Apply compounding at the end of the investment period
-    const futureValue = totalInvestment * Math.pow(1 + annualRate, timePeriod);
     const estimatedReturns = futureValue - totalInvestment;
 
     const newResults = {
@@ -312,8 +313,8 @@ function SIPCalculator() {
 
                   <div className="bg-black border border-white p-4 rounded-lg">
                     <p className="font-paragraph text-sm text-white">
-                      <strong>Note:</strong> This calculator applies compounding at the end of the investment period. 
-                      Total investment is accumulated over time, then compounded annually to show the final value.
+                      <strong>Note:</strong> This calculator provides estimates based on the inputs provided. 
+                      Actual returns may vary depending on market conditions. Mutual fund investments are subject to market risks.
                     </p>
                   </div>
                 </div>
@@ -386,33 +387,28 @@ function SWPCalculator() {
   }>>([]);
 
   const calculateSWP = () => {
-    const annualRate = expectedReturn / 100;
+    const monthlyRate = expectedReturn / 100 / 12;
+    let balance = totalInvestment;
+    let months = 0;
     let totalWithdrawn = 0;
     let currentWithdrawal = monthlyWithdrawal;
     const maxMonths = timePeriod * 12;
 
-    // Calculate total withdrawals with annual step-ups
-    for (let year = 0; year < timePeriod; year++) {
-      const monthsInThisYear = Math.min(12, maxMonths - (year * 12));
-      
-      for (let month = 0; month < monthsInThisYear; month++) {
-        totalWithdrawn += currentWithdrawal;
-      }
-      
-      // Apply step-up for next year
-      if (year < timePeriod - 1 && annualStepUp > 0) {
+    while (balance > currentWithdrawal && months < maxMonths) {
+      balance = balance * (1 + monthlyRate) - currentWithdrawal;
+      totalWithdrawn += currentWithdrawal;
+      months++;
+
+      // Apply annual step-up every 12 months
+      if (months % 12 === 0 && annualStepUp > 0) {
         currentWithdrawal = currentWithdrawal * (1 + annualStepUp / 100);
       }
     }
 
-    // Apply compounding to the remaining investment at the end of the period
-    const finalInvestmentValue = totalInvestment * Math.pow(1 + annualRate, timePeriod);
-    const remainingAmount = Math.max(0, finalInvestmentValue - totalWithdrawn);
-
     const newResults = {
       totalWithdrawals: totalWithdrawn,
-      remainingAmount: remainingAmount,
-      monthsLasted: maxMonths
+      remainingAmount: Math.max(0, balance),
+      monthsLasted: months
     };
 
     setResults(newResults);
@@ -424,7 +420,7 @@ function SWPCalculator() {
       expectedReturn,
       timePeriod,
       annualStepUp,
-      monthsLasted: maxMonths,
+      monthsLasted: months,
       timestamp: new Date()
     };
 
@@ -663,8 +659,8 @@ function SWPCalculator() {
 
                   <div className="bg-black border border-white p-4 rounded-lg">
                     <p className="font-paragraph text-sm text-white">
-                      <strong>Note:</strong> This calculator applies compounding at the end of the investment period. 
-                      Total withdrawals are calculated over the specified period, and remaining amount shows the final compounded value after all withdrawals.
+                      <strong>Note:</strong> This calculator assumes a constant withdrawal amount and return rate. 
+                      Actual performance may vary based on market conditions. Consider inflation impact on withdrawal needs.
                     </p>
                   </div>
                 </div>
