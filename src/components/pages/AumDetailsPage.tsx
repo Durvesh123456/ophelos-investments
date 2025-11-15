@@ -58,7 +58,7 @@ export default function AumDetailsPage() {
             Assets Under Management
           </h1>
           <p className="font-paragraph text-xl text-primary-foreground/90 max-w-3xl mx-auto">
-            Comprehensive overview of our total AUM under ARN number ARN-285360, showcasing our growth trajectory and client trust.
+            Comprehensive overview of our total AUM under MFD - Durvesh Prashant Badhe (ARN-285360), showcasing our growth trajectory and client trust.
           </p>
         </div>
       </section>
@@ -75,6 +75,10 @@ export default function AumDetailsPage() {
                 Total Assets Under Management as of December 2024, representing the trust of over 15,000 investors across India.
               </p>
               <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary w-2 h-2 rounded-full"></div>
+                  <span className="font-paragraph text-secondary-foreground">MFD: Durvesh Prashant Badhe</span>
+                </div>
                 <div className="flex items-center space-x-3">
                   <div className="bg-primary w-2 h-2 rounded-full"></div>
                   <span className="font-paragraph text-secondary-foreground">AMFI Registered ARN: ARN-285360</span>
@@ -267,6 +271,7 @@ export default function AumDetailsPage() {
                   Registration Details
                 </h3>
                 <div className="space-y-3 font-paragraph text-secondary-foreground/80">
+                  <p><strong>MFD:</strong> Durvesh Prashant Badhe</p>
                   <p><strong>ARN Number:</strong> ARN-285360</p>
                   <p><strong>SEBI Registration:</strong> INA000012345</p>
                   <p><strong>Valid Until:</strong> March 31, 2026</p>
@@ -343,6 +348,7 @@ export default function AumDetailsPage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
+                <p><strong>MFD:</strong> Durvesh Prashant Badhe</p>
                 <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>

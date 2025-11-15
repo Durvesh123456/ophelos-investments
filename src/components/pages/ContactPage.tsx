@@ -324,6 +324,9 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <p className="font-paragraph text-secondary-foreground/90">
+                    <strong>MFD:</strong> Durvesh Prashant Badhe
+                  </p>
+                  <p className="font-paragraph text-secondary-foreground/90">
                     <strong>ARN Number:</strong> ARN-285360
                   </p>
                   <p className="font-paragraph text-secondary-foreground/90">
@@ -333,7 +336,7 @@ export default function ContactPage() {
                     <strong>CIN:</strong> U65999MH2020PTC123456
                   </p>
                   <p className="font-paragraph text-sm text-secondary-foreground/70 mt-4">
-                    Ophelos Investments is a SEBI registered investment advisor and AMFI registered mutual fund distributor.
+                    Ophelos Investments is a SEBI registered investment advisor and AMFI registered mutual fund distributor under MFD - Durvesh Prashant Badhe.
                   </p>
                 </CardContent>
               </Card>
@@ -418,6 +421,7 @@ export default function ContactPage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
+                <p><strong>MFD:</strong> Durvesh Prashant Badhe</p>
                 <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>

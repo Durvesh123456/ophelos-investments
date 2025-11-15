@@ -61,7 +61,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
           <div className="text-foreground max-w-4xl mx-auto">
             <p className="text-lg font-paragraph mb-4 tracking-wide text-white">
-              BUILDING YOUR FINANCIAL FUTURE
+              MFD - DURVESH PRASHANT BADHE | BUILDING YOUR FINANCIAL FUTURE
             </p>
             <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
               Expert Mutual Fund
@@ -69,7 +69,7 @@ export default function HomePage() {
               Investment Solutions
             </h1>
             <p className="text-xl font-paragraph mb-8 leading-relaxed opacity-90">
-              Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance.
+              Navigate the complexities of mutual fund investments with our comprehensive portfolio management and expert financial guidance under the expertise of MFD - Durvesh Prashant Badhe.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 text-lg border border-gray-400 shadow-soft-glow transition-all duration-300">
@@ -128,7 +128,7 @@ export default function HomePage() {
                 Expert Guidance
               </h3>
               <p className="font-paragraph text-secondary-foreground/70">
-                Dedicated financial advisors with decades of mutual fund expertise.
+                Dedicated financial advisory services by MFD - Durvesh Prashant Badhe with decades of mutual fund expertise.
               </p>
             </div>
 
@@ -268,6 +268,7 @@ export default function HomePage() {
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4 text-white">Contact Info</h4>
               <div className="space-y-2 font-paragraph text-primary-foreground/80">
+                <p><strong>MFD:</strong> Durvesh Prashant Badhe</p>
                 <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>
