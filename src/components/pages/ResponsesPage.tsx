@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Eye, EyeOff, Download, Settings, Trash2 } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Download, Settings, Trash2, Menu } from 'lucide-react';
 import { BaseCrudService } from '@/integrations';
 import { Consultations } from '@/entities';
 import { format, differenceInDays } from 'date-fns';
@@ -22,6 +22,7 @@ export default function ResponsesPage() {
   const [customDays, setCustomDays] = useState<string>('7');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [deletingOld, setDeletingOld] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Load deletion days setting from localStorage on component mount
   useEffect(() => {
@@ -249,7 +250,9 @@ export default function ResponsesPage() {
                 Consultation Responses
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-4">
               <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
                 <DialogTrigger asChild>
                   <Button
@@ -330,6 +333,120 @@ export default function ResponsesPage() {
               >
                 Logout
               </Button>
+            </div>
+
+            {/* Mobile Hamburger Menu */}
+            <div className="md:hidden">
+              <Dialog open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-secondary-foreground p-2"
+                  >
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-black border border-white/20 w-[90vw] max-w-sm">
+                  <DialogHeader>
+                    <DialogTitle className="text-secondary-foreground font-heading">
+                      Menu
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3">
+                    <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full text-secondary-foreground border-secondary-foreground hover:bg-secondary-foreground hover:text-black justify-start"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <Settings className="w-4 h-4 mr-2" />
+                          Auto-Delete Settings
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-black border border-white/20">
+                        <DialogHeader>
+                          <DialogTitle className="text-secondary-foreground font-heading">
+                            Auto-Delete Settings
+                          </DialogTitle>
+                        </DialogHeader>
+                        <form onSubmit={handleDeletionSettingsSubmit} className="space-y-4">
+                          <div>
+                            <Label htmlFor="deletionDaysMobile" className="text-secondary-foreground font-paragraph">
+                              Delete responses older than (days):
+                            </Label>
+                            <Input
+                              id="deletionDaysMobile"
+                              type="number"
+                              min="1"
+                              value={customDays}
+                              onChange={(e) => setCustomDays(e.target.value)}
+                              className="mt-1 bg-black border-white/20 text-secondary-foreground"
+                              placeholder="Enter number of days"
+                              required
+                            />
+                            <p className="text-sm text-secondary-foreground/70 mt-1 font-paragraph">
+                              Current setting: {deletionDays} days. Responses are automatically deleted when the page loads.
+                            </p>
+                          </div>
+                          <div className="flex justify-end space-x-2">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              onClick={() => setIsSettingsOpen(false)}
+                              className="text-secondary-foreground"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              type="submit"
+                              className="bg-gray-600 hover:bg-gray-700 text-white"
+                            >
+                              Save Settings
+                            </Button>
+                          </div>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+                    
+                    <Button
+                      onClick={() => {
+                        manualDeleteOldResponses();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full text-red-400 border-red-400 hover:bg-red-400 hover:text-black justify-start"
+                      disabled={deletingOld}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      {deletingOld ? 'Deleting...' : `Delete Old (${deletionDays}+ days)`}
+                    </Button>
+                    
+                    <Button
+                      onClick={() => {
+                        exportToCSV();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full text-secondary-foreground border-secondary-foreground hover:bg-secondary-foreground hover:text-black justify-start"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export CSV
+                    </Button>
+                    
+                    <Button
+                      onClick={() => {
+                        setIsAuthenticated(false);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="ghost"
+                      className="w-full text-secondary-foreground justify-start"
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
