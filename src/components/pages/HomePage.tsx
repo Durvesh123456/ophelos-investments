@@ -60,7 +60,7 @@ export default function HomePage() {
         {/* Hero Content */}
         <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
           <div className="text-foreground max-w-4xl mx-auto">
-            <p className="text-lg font-paragraph mb-4 tracking-wide text-white">
+            <p className="text-lg font-paragraph mb-4 tracking-wide text-white md:text-base lg:text-lg">
               MFD - DURVESH PRASHANT BADHE | BUILDING YOUR FINANCIAL FUTURE
             </p>
             <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
@@ -242,19 +242,14 @@ export default function HomePage() {
         </div>
         
         <div className="max-w-[100rem] mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="font-heading text-xl font-bold mb-4 text-white">Ophelos Investments</h3>
-              <p className="font-paragraph text-primary-foreground/80">
-                Your trusted partner in mutual fund investments and wealth creation.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h4 className="font-heading text-lg font-semibold mb-4 text-white">Quick Links</h4>
               <ul className="space-y-2 font-paragraph">
                 <li><Link to="/mutual-funds" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Mutual Funds</Link></li>
                 <li><Link to="/investor-resources" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Investor Resources</Link></li>
                 <li><Link to="/aum-details" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">AUM Details</Link></li>
+                <li><Link to="/contact" className="text-primary-foreground/80 hover:text-white transition-colors duration-300">Contact Us</Link></li>
               </ul>
             </div>
             <div>
@@ -263,6 +258,7 @@ export default function HomePage() {
                 <li className="text-primary-foreground/80">Portfolio Management</li>
                 <li className="text-primary-foreground/80">Investment Advisory</li>
                 <li className="text-primary-foreground/80">Financial Planning</li>
+                <li className="text-primary-foreground/80">Risk Assessment</li>
               </ul>
             </div>
             <div>
@@ -272,6 +268,7 @@ export default function HomePage() {
                 <p>ARN-285360</p>
                 <p>Email: ophelosinvestments@gmail.com</p>
                 <p>Phone: +91 7620408920</p>
+                <p>Available: Mon-Fri, 9 AM - 6 PM</p>
               </div>
             </div>
           </div>
