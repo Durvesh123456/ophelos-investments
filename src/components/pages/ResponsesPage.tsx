@@ -245,7 +245,7 @@ export default function ResponsesPage() {
                   Back to Contact
                 </Link>
               </Button>
-              <div className="text-primary font-heading text-2xl font-bold">
+              <div className="text-primary font-heading text-2xl font-bold hidden lg:block">
                 Consultation Responses
               </div>
             </div>
@@ -338,8 +338,15 @@ export default function ResponsesPage() {
       {/* Main Content */}
       <section className="py-8">
         <div className="max-w-[100rem] mx-auto px-6">
-          <div className="mb-6">
+          {/* Mobile/Tablet Title - Hidden on Desktop */}
+          <div className="mb-6 lg:hidden">
             <h1 className="font-heading text-3xl font-bold text-secondary-foreground mb-2">
+              Consultation Responses
+            </h1>
+          </div>
+          
+          <div className="mb-6">
+            <h1 className="font-heading text-3xl font-bold text-secondary-foreground mb-2 hidden lg:block">
               Consultation Responses
             </h1>
             <p className="font-paragraph text-secondary-foreground/70">
