@@ -58,9 +58,9 @@ export default function HomePage() {
         </nav>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-[100rem] mx-auto px-6 text-center pt-24 md:pt-32">
           <div className="text-foreground max-w-4xl mx-auto">
-            <p className="text-lg font-paragraph mb-4 tracking-wide text-white md:text-base lg:text-lg">
+            <p className="text-lg font-paragraph mb-4 tracking-wide text-white md:text-base lg:text-lg bg-dark-900/40 backdrop-blur-sm px-4 py-2 rounded-lg inline-block border border-white/20">
               MFD - DURVESH PRASHANT BADHE | BUILDING YOUR FINANCIAL FUTURE
             </p>
             <h1 className="font-heading text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
