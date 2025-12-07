@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { BaseCrudService } from '@/integrations';
 import { Consultations } from '@/entities';
+import { saveConsultationToCSV } from '@/lib/csv-utils';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -43,12 +44,15 @@ export default function ContactPage() {
       };
 
       await BaseCrudService.create('consultations', consultationData);
+       
+      // Generate and download CSV file with all consultations
+      await saveConsultationToCSV(consultationData);
       
       // TODO: Send SMS notification to 7620408920
       // This would require a backend service or SMS API integration
       console.log('Form submitted:', formData);
       console.log('SMS notification should be sent to: 7620408920');
-      
+       
       setIsSubmitted(true);
       
       // Reset form after 3 seconds
