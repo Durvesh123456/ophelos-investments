@@ -27,6 +27,7 @@ function SIPCalculator() {
     totalValue: number;
     timestamp: Date;
   }>>([]);
+  const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   const calculateSIP = () => {
     const monthlyRate = expectedReturn / 100 / 12;
@@ -81,11 +82,14 @@ function SIPCalculator() {
       )];
       return updated.slice(0, 10);
     });
+
+    setHasChanges(false);
   };
 
+  // Initialize results on mount
   useEffect(() => {
     calculateSIP();
-  }, [monthlyInvestment, expectedReturn, timePeriod, annualStepUp]);
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -242,6 +246,19 @@ function SIPCalculator() {
                       Increase investment amount annually by this percentage
                     </p>
                   </div>
+
+                  {/* Calculate Button */}
+                  <Button
+                    onClick={calculateSIP}
+                    disabled={!hasChanges}
+                    className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
+                      hasChanges
+                        ? 'bg-primary hover:bg-primary/90 text-black'
+                        : 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                    }`}
+                  >
+                    Calculate
+                  </Button>
                 </div>
 
                 {/* Results Section */}
@@ -387,6 +404,7 @@ function SWPCalculator() {
     monthsLasted: number;
     timestamp: Date;
   }>>([]);
+  const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   const calculateSWP = () => {
     let balance = totalInvestment;
@@ -460,11 +478,14 @@ function SWPCalculator() {
       )];
       return updated.slice(0, 10);
     });
+
+    setHasChanges(false);
   };
 
+  // Initialize results on mount
   useEffect(() => {
     calculateSWP();
-  }, [totalInvestment, monthlyWithdrawal, expectedReturn, timePeriod, annualStepUp, compoundingFrequency]);
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -510,7 +531,10 @@ function SWPCalculator() {
                       <input
                         type="number"
                         value={totalInvestment}
-                        onChange={(e) => setTotalInvestment(Number(e.target.value))}
+                        onChange={(e) => {
+                          setTotalInvestment(Number(e.target.value));
+                          setHasChanges(true);
+                        }}
                         className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="100000"
                         step="50000"
