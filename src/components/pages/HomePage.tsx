@@ -19,11 +19,11 @@ export default function HomePage() {
           <Image
             src="https://static.wixstatic.com/media/7afb6a_8c712924d0e14685973458ca18930500~mv2.png?originWidth=1600&originHeight=896"
             alt="Daylight aerial view of New York City showing Central Park in the middle, surrounded by Manhattan skyscrapers under bright blue sky"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-top brightness-110"
             width={1600}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-dark-900/80 via-dark-800/70 to-dark-700/60"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-gray-300/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-900/50 via-dark-800/40 to-dark-700/35"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-white/5 via-transparent to-gray-300/5"></div>
         </div>
 
         {/* Navigation */}
