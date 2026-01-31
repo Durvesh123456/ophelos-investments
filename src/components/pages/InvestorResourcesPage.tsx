@@ -758,6 +758,19 @@ function SWPCalculator() {
                       How often returns are compounded on your investment
                     </p>
                   </div>
+
+                  {/* Calculate Button */}
+                  <Button
+                    onClick={calculateSWP}
+                    disabled={!hasChanges}
+                    className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
+                      hasChanges
+                        ? 'bg-primary hover:bg-primary/90 text-black'
+                        : 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                    }`}
+                  >
+                    Calculate
+                  </Button>
                 </div>
 
                 {/* Results Section */}
