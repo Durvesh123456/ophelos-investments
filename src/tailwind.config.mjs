@@ -24,29 +24,15 @@ export default {
                 roboto: ["roboto", "sans-serif"]
             },
             colors: {
-                foreground: "#FFFFFF",
-                background: "#000000",
-                secondary: "#1A1A1A",
-                "secondary-foreground": "#FFFFFF",
+                foreground: "#A8511E",
+                background: "#F9F7F3",
+                secondary: "#F9F7F3",
+                "secondary-foreground": "#1A1A1A",
                 "primary-foreground": "#FFFFFF",
-                primary: "#FFFFFF",
-                contentblockbackground: "#000000",
-                buttonborder: "#FFFFFF",
-                "secondary-foreground-alt": "#CCCCCC",
-                // Black and white accent colors
-                neon: {
-                    cyan: "#FFFFFF",
-                    purple: "#CCCCCC",
-                    pink: "#DDDDDD",
-                    green: "#EEEEEE",
-                    blue: "#F5F5F5",
-                },
-                dark: {
-                    900: "#000000",
-                    800: "#1A1A1A",
-                    700: "#333333",
-                    600: "#4A4A4A",
-                }
+                primary: "#A8511E",
+                contentblockbackground: "#F9F7F3",
+                buttonborder: "#A8511E",
+                "secondary-foreground-alt": "#8B7355",
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
