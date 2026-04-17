@@ -42,7 +42,7 @@ export interface InvestorResources {
   summary?: string;
   /** @wixFieldType text */
   content?: string;
-  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  /** @wixFieldType image */
   mainImage?: string;
   /** @wixFieldType date */
   publicationDate?: Date | string;
@@ -85,7 +85,7 @@ export interface MutualFunds {
   fundManager?: string;
   /** @wixFieldType date */
   inceptionDate?: Date | string;
-  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  /** @wixFieldType image */
   fundLogo?: string;
   /** @wixFieldType url */
   factSheetUrl?: string;

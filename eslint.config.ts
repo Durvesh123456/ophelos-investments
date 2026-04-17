@@ -5,12 +5,12 @@ import importPlugin from 'eslint-plugin-import';
 import reactPlugin from 'eslint-plugin-react';
 import globals from 'globals';
 import useImageComponent from './eslint-rules/use-image-component';
-import noEarlyReturnBeforeScrollRef from './eslint-rules/no-early-return-before-scroll-ref';
+import fixEmptySelectItemValue from './eslint-rules/fix-empty-select-item-value';
 
 export default [
   ...eslintPluginAstro.configs.recommended,
   {
-    ignores: ['node_modules', 'dist', '.astro', 'public', 'eslint-rules'],
+    ignores: ['node_modules', 'dist', '.astro', 'public'],
   },
   {
     plugins: {
@@ -20,7 +20,7 @@ export default [
       'custom': {
         rules: {
           'use-image-component': useImageComponent,
-          'no-early-return-before-scroll-ref': noEarlyReturnBeforeScrollRef,
+          'fix-empty-select-item-value': fixEmptySelectItemValue,
         },
       },
     },
@@ -54,7 +54,7 @@ export default [
     files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     rules: {
       'custom/use-image-component': 'error',
-      'custom/no-early-return-before-scroll-ref': 'error',
+      'custom/fix-empty-select-item-value': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
@@ -66,7 +66,6 @@ export default [
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-redeclare': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       'import/no-unresolved': 'off',
       'import/named': 'error',
@@ -75,11 +74,11 @@ export default [
         'error',
         {
           selector: 'JSXElement[openingElement.name.name="Route"] JSXText[value="Wix Vibe"]',
-          message: 'ROUTER NOT CONNECTED: The placeholder "<div>Wix Vibe</div>" must be replaced with your actual page component. FIX: 1) Import your page component (e.g., import { HomePage } from "./pages/HomePage"), 2) Replace element: <div>Wix Vibe</div> with element: <HomePage />',
+          message: 'Routes are not implemented. The default "Wix Vibe" route is still present, which means pages are probably not visible to the user. Please implement proper routes for your application.',
         },
         {
           selector: 'CallExpression[callee.name="createBrowserRouter"] JSXElement[openingElement.name.name="div"] JSXText[value="Wix Vibe"]',
-          message: 'ROUTER NOT CONNECTED: The placeholder "<div>Wix Vibe</div>" must be replaced with your actual page component. FIX: 1) Import your page component (e.g., import { HomePage } from "./pages/HomePage"), 2) Find the route with element: <div>Wix Vibe</div> and replace it with element: <HomePage />. Users will see blank content until this is fixed!',
+          message: 'Routes are not implemented. The default "Wix Vibe" route is still present, which means pages are probably not visible to the user. Please implement proper routes for your application.',
         },
         {
           selector:

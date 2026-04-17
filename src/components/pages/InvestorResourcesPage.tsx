@@ -27,7 +27,6 @@ function SIPCalculator() {
     totalValue: number;
     timestamp: Date;
   }>>([]);
-  const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   const calculateSIP = () => {
     const monthlyRate = expectedReturn / 100 / 12;
@@ -82,14 +81,11 @@ function SIPCalculator() {
       )];
       return updated.slice(0, 10);
     });
-
-    setHasChanges(false);
   };
 
-  // Initialize results on mount
   useEffect(() => {
     calculateSIP();
-  }, []);
+  }, [monthlyInvestment, expectedReturn, timePeriod, annualStepUp]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -135,10 +131,7 @@ function SIPCalculator() {
                       <input
                         type="number"
                         value={monthlyInvestment}
-                        onChange={(e) => {
-                          setMonthlyInvestment(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
                         className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="500"
                         step="500"
@@ -150,10 +143,7 @@ function SIPCalculator() {
                       max="100000"
                       step="500"
                       value={monthlyInvestment}
-                      onChange={(e) => {
-                        setMonthlyInvestment(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -170,10 +160,7 @@ function SIPCalculator() {
                       <input
                         type="number"
                         value={expectedReturn}
-                        onChange={(e) => {
-                          setExpectedReturn(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setExpectedReturn(Number(e.target.value))}
                         className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="1"
                         max="30"
@@ -187,10 +174,7 @@ function SIPCalculator() {
                       max="30"
                       step="0.5"
                       value={expectedReturn}
-                      onChange={(e) => {
-                        setExpectedReturn(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setExpectedReturn(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -206,10 +190,7 @@ function SIPCalculator() {
                     <input
                       type="number"
                       value={timePeriod}
-                      onChange={(e) => {
-                        setTimePeriod(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
                       className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                       min="1"
                       max="40"
@@ -219,10 +200,7 @@ function SIPCalculator() {
                       min="1"
                       max="40"
                       value={timePeriod}
-                      onChange={(e) => {
-                        setTimePeriod(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -239,10 +217,7 @@ function SIPCalculator() {
                       <input
                         type="number"
                         value={annualStepUp}
-                        onChange={(e) => {
-                          setAnnualStepUp(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setAnnualStepUp(Number(e.target.value))}
                         className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="0"
                         max="20"
@@ -256,10 +231,7 @@ function SIPCalculator() {
                       max="20"
                       step="0.5"
                       value={annualStepUp}
-                      onChange={(e) => {
-                        setAnnualStepUp(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setAnnualStepUp(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -270,19 +242,6 @@ function SIPCalculator() {
                       Increase investment amount annually by this percentage
                     </p>
                   </div>
-
-                  {/* Calculate Button */}
-                  <Button
-                    onClick={calculateSIP}
-                    disabled={!hasChanges}
-                    className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
-                      hasChanges
-                        ? 'bg-primary hover:bg-primary/90 text-black'
-                        : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                    }`}
-                  >
-                    Calculate
-                  </Button>
                 </div>
 
                 {/* Results Section */}
@@ -428,7 +387,6 @@ function SWPCalculator() {
     monthsLasted: number;
     timestamp: Date;
   }>>([]);
-  const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   const calculateSWP = () => {
     let balance = totalInvestment;
@@ -502,14 +460,11 @@ function SWPCalculator() {
       )];
       return updated.slice(0, 10);
     });
-
-    setHasChanges(false);
   };
 
-  // Initialize results on mount
   useEffect(() => {
     calculateSWP();
-  }, []);
+  }, [totalInvestment, monthlyWithdrawal, expectedReturn, timePeriod, annualStepUp, compoundingFrequency]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -555,10 +510,7 @@ function SWPCalculator() {
                       <input
                         type="number"
                         value={totalInvestment}
-                        onChange={(e) => {
-                          setTotalInvestment(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setTotalInvestment(Number(e.target.value))}
                         className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="100000"
                         step="50000"
@@ -588,10 +540,7 @@ function SWPCalculator() {
                       <input
                         type="number"
                         value={monthlyWithdrawal}
-                        onChange={(e) => {
-                          setMonthlyWithdrawal(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
                         className="w-full pl-8 pr-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="1000"
                         step="1000"
@@ -603,10 +552,7 @@ function SWPCalculator() {
                       max="100000"
                       step="1000"
                       value={monthlyWithdrawal}
-                      onChange={(e) => {
-                        setMonthlyWithdrawal(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setMonthlyWithdrawal(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -623,10 +569,7 @@ function SWPCalculator() {
                       <input
                         type="number"
                         value={expectedReturn}
-                        onChange={(e) => {
-                          setExpectedReturn(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setExpectedReturn(Number(e.target.value))}
                         className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="1"
                         max="30"
@@ -640,10 +583,7 @@ function SWPCalculator() {
                       max="30"
                       step="0.5"
                       value={expectedReturn}
-                      onChange={(e) => {
-                        setExpectedReturn(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setExpectedReturn(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -659,10 +599,7 @@ function SWPCalculator() {
                     <input
                       type="number"
                       value={timePeriod}
-                      onChange={(e) => {
-                        setTimePeriod(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
                       className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                       min="1"
                       max="50"
@@ -672,10 +609,7 @@ function SWPCalculator() {
                       min="1"
                       max="50"
                       value={timePeriod}
-                      onChange={(e) => {
-                        setTimePeriod(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setTimePeriod(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -692,10 +626,7 @@ function SWPCalculator() {
                       <input
                         type="number"
                         value={annualStepUp}
-                        onChange={(e) => {
-                          setAnnualStepUp(Number(e.target.value));
-                          setHasChanges(true);
-                        }}
+                        onChange={(e) => setAnnualStepUp(Number(e.target.value))}
                         className="w-full px-4 py-3 bg-dark-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent font-paragraph text-white"
                         min="0"
                         max="20"
@@ -709,10 +640,7 @@ function SWPCalculator() {
                       max="20"
                       step="0.5"
                       value={annualStepUp}
-                      onChange={(e) => {
-                        setAnnualStepUp(Number(e.target.value));
-                        setHasChanges(true);
-                      }}
+                      onChange={(e) => setAnnualStepUp(Number(e.target.value))}
                       className="w-full mt-2 accent-primary"
                     />
                     <div className="flex justify-between text-xs text-secondary-foreground/60 mt-1">
@@ -758,19 +686,6 @@ function SWPCalculator() {
                       How often returns are compounded on your investment
                     </p>
                   </div>
-
-                  {/* Calculate Button */}
-                  <Button
-                    onClick={calculateSWP}
-                    disabled={!hasChanges}
-                    className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
-                      hasChanges
-                        ? 'bg-primary hover:bg-primary/90 text-black'
-                        : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                    }`}
-                  >
-                    Calculate
-                  </Button>
                 </div>
 
                 {/* Results Section */}
